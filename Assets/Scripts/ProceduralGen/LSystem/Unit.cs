@@ -1,47 +1,96 @@
-using System.Collections;
+using NCalc;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Reflection;
+using System.Threading;
 using UnityEngine;
+using Debug = UnityEngine.Debug;
 
-public class Unit
+/*
+ * Encapsulates a single alphabet in an L-System sentence.
+ */
+public class Unit 
 {
-    public char character;
-    private Transformation transformation = x => x;
+    // a character that represents this unit.
+    public string name;
 
-    public Unit (char character)
+    /* Parameters of this unit.
+     */
+    public Expression[] unitParameters = {};
+
+    public Unit (string name)
     {
-        this.character = character;
-        transformation = LSystemConstants.GetTransformationFromUnit(this);
+        this.name = name;
     }
 
-    public static List<Unit> ListFromString(string sentence)
+    public Unit(string name, Expression[] parameters) {
+        this.name = name;
+        this.unitParameters = parameters;
+    }
+
+    public Expression[] GetParams()
     {
-        List<Unit> list = new List<Unit>();
-        foreach(char c in sentence)
+        return unitParameters;
+    }
+
+    public float GetParam(int index)
+    {
+        if (unitParameters.Length - 1 < index)
         {
-            list.Add(new Unit(c));
+            //default value for F for now
+            return 1f; 
         }
-        return list;
+        return Convert.ToSingle(unitParameters[index].Evaluate());
     }
 
-    public bool Equals(Unit u)
+    public static Unit Parse(string unitString)
     {
-        return u.character == character;
+        string[] unitComponents = unitString.Split(new char[] { '(', ')' , ','}, StringSplitOptions.RemoveEmptyEntries);
+        string name = unitComponents[0];
+        Expression[] parameters = new Expression[unitComponents.Length - 1];
+        for (int i = 0; i < parameters.Length; i++)
+        {
+            parameters[i] = new Expression(unitComponents[i + 1]);
+        }
+        return new Unit(name, parameters);
     }
 
-    public List<Unit> ApplyMatchingRule(List<Rule> rules)
+    // finds first valid rule from a list of rules and returns output List<Unit> from applying rule
+    public Word ApplyMatchingRule(RuleSet rules)
     {
-        foreach (Rule rule in rules)
+        foreach (Rule rule in rules.GetRules())
         {
             if (rule.Accepts(this))
             {
-                return rule.getOutput();
+                return rule.GetOutput(this);
             }
         }
-        return new List<Unit> { this };
+        return Word.Of(new List<Unit>() {this});
     }
 
-    public OrientedPoint ApplyTransformation(OrientedPoint start)
+    public void SetParameters(Dictionary<string, object> paramMap)
     {
-        return transformation.Invoke(start);
+        foreach(Expression unitParameter in unitParameters)
+        {
+            unitParameter.Parameters = paramMap; 
+        }
+    }
+
+    override 
+    public string ToString()
+    {
+        float[] parameters = new float[unitParameters.Length];
+        for (int i = 0; i < parameters.Length; i++)
+            parameters[i] = Convert.ToSingle(unitParameters[i].Evaluate());
+        if (unitParameters.Length > 0)
+            return this.name.ToString() + "(" + string.Join(",",parameters) + ")";
+        else
+            return this.name.ToString();
+    }
+
+    internal string GetName()
+    {
+        return name;
     }
 }

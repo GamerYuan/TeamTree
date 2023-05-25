@@ -2,54 +2,35 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class LSystem
-{   
-    private List<Rule> rules;
+/*
+ * ScriptableObject encapsulating an L-System.
+ */
+[CreateAssetMenu]
+public class LSystem : ScriptableObject
+{
+    //Starting state of the L-System.
+    [SerializeField]
+    private string axiomString;
 
-    private List<Unit> units;
+    //Current state of the L-System.
+    private Word word = Word.Of(new List<Unit>(){});
 
-    public LSystem(List<Rule> rules, string axiom)
+    public List<Unit> GetUnits() { return word.GetUnits(); }
+
+    //RuleSet for L-System.
+    [SerializeField]
+    private RuleSet ruleSet;
+
+    public void InitAxiom()
     {
-        this.rules = rules;
-        units = Unit.ListFromString(axiom);
+        word = Word.Parse(axiomString);
+        Debug.Log(this.word);
     }
 
-    public void setUnits(List<Unit> units)
-    {
-        this.units = units;
-    }
-
+    //Updates the current List of Units by applying the Rules in the RuleSet
     public void ApplyRules()
     {
-        List<Unit> newUnits = new List<Unit>();
-        foreach (Unit unit in units)
-        {
-            newUnits.AddRange(unit.ApplyMatchingRule(rules));
-        }
-        this.units = newUnits;
-    }
-
-    public List<TreeVert> generateTreeVerts(OrientedPoint origin)
-    {
-        List<TreeVert> newTreeVerts = new List<TreeVert>();
-        newTreeVerts.Add(new TreeVert(origin));
-        OrientedPoint turtlePos = origin;
-        foreach (Unit unit in units)
-        {
-            turtlePos = unit.ApplyTransformation(turtlePos);
-            newTreeVerts.Add(new TreeVert(turtlePos));
-        }
-        return newTreeVerts;
-    }
-
-    public List<int> generateTreeEdges()
-    {
-        List<int> newTreeEdges = new List<int>();
-        for(int i = 0; i < units.Count; i++)
-        {
-            newTreeEdges.Add(i);
-            newTreeEdges.Add(i + 1);
-        }
-        return newTreeEdges;
+        this.word = this.word.ApplyRules(ruleSet);
+        Debug.Log(this.word);
     }
 }
