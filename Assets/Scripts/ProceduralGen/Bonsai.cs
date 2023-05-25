@@ -67,7 +67,7 @@ public class Bonsai : MonoBehaviour
 
     private void OnGUI()
     {
-        if (GUI.Button(new Rect(10, 10, 50, 50), "update"))
+        if (GUI.Button(new Rect(10, 10, 100, 100), "update"))
         {
             lsystem.ApplyRules();
             GenerateSkeleton();
