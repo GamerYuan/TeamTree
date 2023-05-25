@@ -7,14 +7,12 @@ public class Word
     //List of units in this word
     private List<Unit> units = new List<Unit>();
 
-    public List<Unit> GetUnits() {return units;}
+    public List<Unit> GetUnits() { return units; }
+    public int GetNumberOfUnits() { return units.Count; }
 
     private Word (List<Unit> units)
     {
-        this.units = units;
-    }
-
-    public Word ApplyRules(RuleSet rules)
+    }public Word ApplyRules(RuleSet rules)
     {
         Word newWord = Word.Of(new List<Unit>(){ });
         foreach (Unit unit in units)

@@ -30,7 +30,10 @@ public class LSystem : ScriptableObject
     //Updates the current List of Units by applying the Rules in the RuleSet
     public void ApplyRules()
     {
-        this.word = this.word.ApplyRules(ruleSet);
-        Debug.Log(this.word);
+        Word nextWord = this.word.ApplyRules(ruleSet);
+        if (nextWord.GetNumberOfUnits() > 20000)
+            Debug.Log("Size Exceeded");
+        else
+            this.word = nextWord;
     }
 }
