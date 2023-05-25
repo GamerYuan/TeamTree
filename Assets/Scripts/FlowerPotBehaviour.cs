@@ -9,7 +9,7 @@ public class FlowerPotBehaviour : MonoBehaviour
     [SerializeField] private float maxWater;
     [SerializeField] private float minWater;
     [SerializeField] private TMP_Text text;
-
+    
     private bool startWater;
     
     // Start is called before the first frame update
@@ -52,7 +52,7 @@ public class FlowerPotBehaviour : MonoBehaviour
         }
     }
 
-    private void DecreaseWater(float num)
+    public void DecreaseWater(float num)
     {
         if (water - num >= minWater)
         {
@@ -62,6 +62,11 @@ public class FlowerPotBehaviour : MonoBehaviour
         {
             water = minWater;
         }
+    }
+
+    public float GetWater()
+    {
+        return water;
     }
 
     private IEnumerator WaterCall()
