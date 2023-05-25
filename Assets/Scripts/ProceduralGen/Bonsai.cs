@@ -4,8 +4,6 @@ using UnityEngine;
 using UnityEditor;
 using Unity.VisualScripting;
 using static MathNet.Symbolics.VisualExpression;
-using static UnityEditor.PlayerSettings;
-using TreeEditor;
 
 public class Bonsai : MonoBehaviour
 {
