@@ -12,7 +12,9 @@ public class Word
 
     private Word (List<Unit> units)
     {
-    }public Word ApplyRules(RuleSet rules)
+        this.units = units;
+    }
+    public Word ApplyRules(RuleSet rules)
     {
         Word newWord = Word.Of(new List<Unit>(){ });
         foreach (Unit unit in units)
