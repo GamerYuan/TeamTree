@@ -31,9 +31,13 @@ public class LSystem : ScriptableObject
     public void ApplyRules()
     {
         Word nextWord = this.word.ApplyRules(ruleSet);
-        if (nextWord.GetNumberOfUnits() > 20000)
+        if (nextWord.GetNumberOfUnits() > 50000)
+        {
             Debug.Log("Size Exceeded");
+        } 
         else
+        {
             this.word = nextWord;
+        }
     }
 }

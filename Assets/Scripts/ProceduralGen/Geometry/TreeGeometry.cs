@@ -55,6 +55,7 @@ public class TreeGeometry
     public Mesh GenerateSurfaceMesh(Mesh2d crosssec)
     {
         surfaceMesh = new Mesh();
+        surfaceMesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
 
         int segments = 5;
         CombineInstance[] combine = new CombineInstance[treeEdges.Count / 2];
