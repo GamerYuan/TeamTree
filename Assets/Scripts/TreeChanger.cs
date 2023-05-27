@@ -10,7 +10,7 @@ using UnityEngine.UI;
 public class TreeChanger : MonoBehaviour
 {
     [SerializeField]
-    private GameObject brocolliTree, tiltedTree, normalTree;
+    private GameObject brocolliTree, parametricTree, normalTree;
     [SerializeField] private Transform flowerPot;
     [SerializeField] private GameObject customTreeTemplate;
     private int currentTree;
@@ -39,7 +39,7 @@ public class TreeChanger : MonoBehaviour
                 break;
             case 1:
                 newTreeButton.SetActive(false);
-                Instantiate(tiltedTree, flowerPot);
+                Instantiate(parametricTree, flowerPot);
                 break;
             case 2:
                 newTreeButton.SetActive(false);
