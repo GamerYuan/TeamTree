@@ -20,6 +20,7 @@ public class TreeChanger : MonoBehaviour
     [SerializeField] private Mesh2d crossSectionMesh;
     [SerializeField] private TMP_InputField rule1, rule2, rule3, rule4, axiomString;
     [SerializeField] private Slider segmentLength, rotation;
+    [SerializeField] private GameObject newTreeButton;
 
     private LSystem customlsystem;
     private LSystemConstants customConst;
@@ -33,15 +34,19 @@ public class TreeChanger : MonoBehaviour
         switch (treeType)
         {
             case 0:
+                newTreeButton.SetActive(false);
                 Instantiate(brocolliTree, flowerPot);
                 break;
             case 1:
+                newTreeButton.SetActive(false);
                 Instantiate(tiltedTree, flowerPot);
                 break;
             case 2:
+                newTreeButton.SetActive(false);
                 Instantiate(normalTree, flowerPot);
                 break;
             case 3:
+                newTreeButton.SetActive(true);
                 ConstructCustomTree();
                 break;
         }

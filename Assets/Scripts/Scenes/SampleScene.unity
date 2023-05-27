@@ -966,6 +966,7 @@ MonoBehaviour:
   axiomString: {fileID: 1372519731}
   segmentLength: {fileID: 975180820}
   rotation: {fileID: 1475325947}
+  newTreeButton: {fileID: 1924767991}
 --- !u!4 &362137240
 Transform:
   m_ObjectHideFlags: 0
@@ -7183,7 +7184,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1924767992
 RectTransform:
   m_ObjectHideFlags: 0
