@@ -6449,7 +6449,7 @@ MonoBehaviour:
     m_Options:
     - m_Text: Brocolli Tree
       m_Image: {fileID: 0}
-    - m_Text: Tilted Tree
+    - m_Text: Parametric Tree
       m_Image: {fileID: 0}
     - m_Text: Normal Tree
       m_Image: {fileID: 0}
