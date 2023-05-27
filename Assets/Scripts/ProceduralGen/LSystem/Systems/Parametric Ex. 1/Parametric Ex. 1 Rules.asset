@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Parametric Ex. 1 Rules
   m_EditorClassIdentifier: 
   ruleStrings:
-  - 'F(w,x,y,z) : y > 0 : F(x, 0)[+F(x/2, 1)][-F(x/2, 1)]'
+  - 'F(x, y) : y > 0 : F(x * 2, 0)[+F(x, 1)][-F(x, 1)]'

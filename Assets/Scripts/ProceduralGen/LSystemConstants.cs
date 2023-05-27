@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 /*
  * ScriptableObject for storing Geometric Constant values in an L-System.
@@ -19,12 +20,19 @@ public class LSystemConstants : ScriptableObject
     //Alphabet Geometric Transformations for L-System
     public Transformation<TreeVert> GetTransformation(Unit u)
     {
+        u.defaultParameters[0] = SegmentLength;
+        float? param = u.GetParam(0);
+        if(param == null)
+        {
+            param = u.defaultParameters[0];
+        }
+
+        float parameter = param.Value;
+
         switch(u.name)
         {
             case "F":
-                return x => x.moveForward(SegmentLength * u.GetParam(0));
-            case "G":
-                return x => x.moveForward(SegmentLength * u.GetParam(0));   
+                return x => x.moveForward(SegmentLength * parameter);
             case "+":
                 return x => x.rotate(Quaternion.Euler(0f, Rotation, 0f));
             case "-":

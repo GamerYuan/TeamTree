@@ -10,14 +10,15 @@ using Debug = UnityEngine.Debug;
 /*
  * Encapsulates a single alphabet in an L-System sentence.
  */
-public class Unit 
+public class Unit
 {
     // a character that represents this unit.
     public string name;
 
     /* Parameters of this unit.
      */
-    public Expression[] unitParameters = {};
+    public Expression[] unitParameters = { };
+    public float[] defaultParameters = new float[10];
 
     public Unit (string name)
     {
@@ -29,17 +30,19 @@ public class Unit
         this.unitParameters = parameters;
     }
 
-    public Expression[] GetParams()
+    public float?[] GetParams()
     {
-        return unitParameters;
+        float?[] paramValues = new float?[unitParameters.Length];
+        for (int i = 0; i < unitParameters.Length; i++)
+            paramValues[i] = GetParam(i);
+        return paramValues;
     }
 
-    public float GetParam(int index)
+    public float? GetParam(int index)
     {
         if (unitParameters.Length - 1 < index)
         {
-            //default value for F for now
-            return 1f; 
+            return null; 
         }
         return Convert.ToSingle(unitParameters[index].Evaluate());
     }

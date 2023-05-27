@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Parametric Ex. 1 Constants
   m_EditorClassIdentifier: 
   SegmentLength: 1
-  Rotation: 90
+  Rotation: 30

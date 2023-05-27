@@ -60,15 +60,15 @@ public class Rule : ScriptableObject
     // tests whether this rule applies to a given unit.
     public bool Accepts(Unit unit)
     {
-        if(unit.GetParams().Length != paramnames.Length)
+        if(unit.GetParams().Length < paramnames.Length)
         {
             return false;
         }
 
         Dictionary<string,float> paramMap = new Dictionary<string,float>();
         for(int i = 0; i < paramnames.Length; i++)
-        {
-            paramMap[paramnames[i]] = unit.GetParam(i);
+        {   
+            paramMap[paramnames[i]] = unit.GetParam(i).Value;
         }
         return this.inputString == unit.GetName() && SubstituteConditionParams(paramMap);
     }
