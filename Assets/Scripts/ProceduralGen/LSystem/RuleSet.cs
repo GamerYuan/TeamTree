@@ -9,8 +9,7 @@ using UnityEngine;
 public class RuleSet : ScriptableObject
 {
     // List of Rules as Strings, in the format (inputChar) ? (outputString)
-    [SerializeField]
-    List<string> ruleStrings = new List<string>();
+    public List<string> ruleStrings = new List<string>();
 
     // List of Rules parsed from Strings.
     List<Rule> rules => ruleStrings.ConvertAll<Rule>(x => Rule.ParseRule(x));

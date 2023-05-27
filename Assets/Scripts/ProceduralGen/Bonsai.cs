@@ -8,11 +8,9 @@ using static MathNet.Symbolics.VisualExpression;
 public class Bonsai : MonoBehaviour
 {
     //L-System to use to generate this tree.
-    [SerializeField]
-    private LSystem lsystem;
+    public LSystem lsystem;
 
-    [SerializeField]
-    private Mesh2d crossSection;
+    public Mesh2d crossSection;
 
     private Mesh mesh;
     private MeshFilter meshFilter;
@@ -22,19 +20,17 @@ public class Bonsai : MonoBehaviour
     private OrientedPoint upwards = new OrientedPoint(Vector3.zero, Quaternion.Euler(Vector3.up));
 
     //Set of Geometric Constants for L-System.
-    [SerializeField]
-    private LSystemConstants constants;
+    public LSystemConstants constants;
 
     //Length of time for pointer to traverse the tree.
-    [SerializeField]
-    private float period;
+    public float period;
     private float t = 0;
 
 
     List<TreeVert> treeVertices = new List<TreeVert>();
     List<int> treeEdges = new List<int>();
 
-    private void Awake()
+    private void Start()
     {
         meshFilter = GetComponent<MeshFilter>();
         lsystem.InitAxiom();
@@ -63,16 +59,13 @@ public class Bonsai : MonoBehaviour
         meshFilter.sharedMesh = mesh;
     }
 
-    private void OnGUI()
+    public void TreeUpdate()
     {
-        if (GUI.Button(new Rect(10, 10, 100, 100), "update"))
-        {
-            lsystem.ApplyRules();
-            GenerateSkeleton();
-            GenerateMesh();
-            treeVertices = treeGeometry.getTreeVertices();
-            treeEdges = treeGeometry.getTreeEdges();
-        }
+        lsystem.ApplyRules();
+        GenerateSkeleton();
+        GenerateMesh();
+        treeVertices = treeGeometry.getTreeVertices();
+        treeEdges = treeGeometry.getTreeEdges();
     }
 
     private Vector3 LocalToWorldPos(Vector3 localPos)
@@ -88,7 +81,7 @@ public class Bonsai : MonoBehaviour
     private void OnDrawGizmosSelected()
     {
         OrientedPoint testPoint = new OrientedPoint(transform);
-        if (treeVertices.Count > 0)  testPoint = getPointOnLine(t);
+        if (treeVertices.Count > 0) testPoint = getPointOnLine(t);
         TreeVert[] verts = treeVertices.ToArray();
         int[] edges = treeEdges.ToArray();
         Gizmos.color = Color.blue;

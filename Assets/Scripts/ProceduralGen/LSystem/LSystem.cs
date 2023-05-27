@@ -9,8 +9,7 @@ using UnityEngine;
 public class LSystem : ScriptableObject
 {
     //Starting state of the L-System.
-    [SerializeField]
-    private string axiomString;
+    public string axiomString;
 
     //Current state of the L-System.
     private Word word = Word.Of(new List<Unit>(){});
@@ -18,8 +17,7 @@ public class LSystem : ScriptableObject
     public List<Unit> GetUnits() { return word.GetUnits(); }
 
     //RuleSet for L-System.
-    [SerializeField]
-    private RuleSet ruleSet;
+    public RuleSet ruleSet;
 
     public void InitAxiom()
     {

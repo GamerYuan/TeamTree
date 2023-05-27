@@ -14,7 +14,7 @@ public class CameraPan : MonoBehaviour
         {
             startPos = cam.ScreenToViewportPoint(Input.mousePosition);
         }
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && Time.timeScale > 0f)
         {
             CamPan();
         }

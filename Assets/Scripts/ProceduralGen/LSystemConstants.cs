@@ -9,14 +9,12 @@ using UnityEngine;
 public class LSystemConstants : ScriptableObject
 {
     //Length of a Segment 
-    [SerializeField]
     [Range(0.1f, 5f)]
-    private float SegmentLength;
+    public float SegmentLength;
 
     //Angle of Rotation
-    [SerializeField]
     [Range(1f, 180f)]
-    private float Rotation;
+    public float Rotation;
 
     //Alphabet Geometric Transformations for L-System
     public Transformation<TreeVert> GetTransformation(Unit u)
