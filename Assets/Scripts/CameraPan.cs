@@ -34,7 +34,7 @@ public class CameraPan : MonoBehaviour
                 cam.transform.Rotate(new Vector3(1, 0, 0), direction.y * 180);
             }
             cam.transform.Rotate(new Vector3(0, 1, 0), -direction.x * 180, Space.World);
-            cam.transform.Translate(0, 0, -10);
+            cam.transform.Translate(0, 0, -15);
 
             startPos = cam.ScreenToViewportPoint(Input.mousePosition);
 
