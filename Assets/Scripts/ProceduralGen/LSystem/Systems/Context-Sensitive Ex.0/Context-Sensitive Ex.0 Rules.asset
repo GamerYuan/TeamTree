@@ -10,9 +10,8 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 40d26d0fc5958f84887ae8159084af2c, type: 3}
-  m_Name: Sierpienski Rules
+  m_Name: Context-Sensitive Ex.0 Rules
   m_EditorClassIdentifier: 
   Constants: []
   ruleStrings:
-  - G = F+G+F
-  - F = G-F-G
+  - 'F(x) < F(y) > F(z) : '

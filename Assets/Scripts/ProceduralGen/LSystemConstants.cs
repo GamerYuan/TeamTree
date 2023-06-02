@@ -20,11 +20,10 @@ public class LSystemConstants : ScriptableObject
     //Alphabet Geometric Transformations for L-System
     public Transformation<TreeVert> GetTransformation(Unit u)
     {
-        u.defaultParameters[0] = SegmentLength;
         float? param = u.GetParam(0);
         if(param == null)
         {
-            param = u.defaultParameters[0];
+            param = 1;
         }
 
         float parameter = param.Value;
@@ -52,31 +51,5 @@ public class LSystemConstants : ScriptableObject
         }
     }
 
-    //Alphabet Stack Modifications for L-System
-    public StackMod<TreeVert> GetStackMod(Unit u)
-    {
-        switch(u.name)
-        {
-            case "[":
-                return (x, stack) =>
-                {
-                    stack.Push(x);
-                    return stack;
-                };
-            case "]":
-                return (x, stack) =>
-                {
-                    stack.Pop();
-                    return stack;
-                };
-            default:
-                return (x, stack) =>
-                {
-                    stack.Pop();
-                    stack.Push(x);
-                    return stack;
-                };
-
-        }
-    }
+    
 }

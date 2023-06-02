@@ -4,21 +4,28 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Reflection;
 using System.Threading;
+using UnityEditor.Search;
 using UnityEngine;
 using Debug = UnityEngine.Debug;
 
 /*
  * Encapsulates a single alphabet in an L-System sentence.
  */
-public class Unit
+public class Unit 
 {
+
+    public static Unit EMPTY_UNIT = new Unit("", new Expression[] { });
+
     // a character that represents this unit.
     public string name;
 
     /* Parameters of this unit.
      */
     public Expression[] unitParameters = { };
-    public float[] defaultParameters = new float[10];
+
+    //Neighbours of this Unit
+    public Unit leftUnit = EMPTY_UNIT;
+    public Unit rightUnit = EMPTY_UNIT;
 
     public Unit (string name)
     {
@@ -29,6 +36,15 @@ public class Unit
         this.name = name;
         this.unitParameters = parameters;
     }
+
+    public Unit(string name, Expression[] parameters, Unit leftUnit, Unit rightUnit)
+    {
+        this.name = name;
+        this.leftUnit = leftUnit;
+        this.rightUnit = rightUnit;
+        this.unitParameters = parameters;
+    }
+
 
     public float?[] GetParams()
     {
@@ -74,7 +90,7 @@ public class Unit
 
     public void SetParameters(Dictionary<string, object> paramMap)
     {
-        foreach(Expression unitParameter in unitParameters)
+        foreach (Expression unitParameter in unitParameters)
         {
             unitParameter.Parameters = paramMap; 
         }

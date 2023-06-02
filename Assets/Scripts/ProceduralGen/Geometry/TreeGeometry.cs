@@ -35,7 +35,7 @@ public class TreeGeometry
         {
             Unit currUnit = units[unit];
             Transformation<TreeVert> transformation = constants.GetTransformation(currUnit);
-            StackMod<TreeVert> stackMod = constants.GetStackMod(currUnit);
+            StackMod<TreeVert> stackMod = LSystem.GetStackMod<TreeVert>(currUnit);
 
             TreeVert nextVert = transformation.Invoke(currVert);
             

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52e6c5eac999f3946ab96d425ea0d6da, type: 3}
   m_Name: Parametric Ex. 1
   m_EditorClassIdentifier: 
-  axiomString: F(1, 1,1,1)
+  axiomString: F(1,1)
   ruleSet: {fileID: 11400000, guid: 2556e1214294aba45bafbc33c6a7de69, type: 2}

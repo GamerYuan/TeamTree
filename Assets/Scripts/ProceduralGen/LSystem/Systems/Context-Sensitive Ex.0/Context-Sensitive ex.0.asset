@@ -9,10 +9,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 40d26d0fc5958f84887ae8159084af2c, type: 3}
-  m_Name: Sierpienski Rules
+  m_Script: {fileID: 11500000, guid: 52e6c5eac999f3946ab96d425ea0d6da, type: 3}
+  m_Name: Context-Sensitive ex.0
   m_EditorClassIdentifier: 
-  Constants: []
-  ruleStrings:
-  - G = F+G+F
-  - F = G-F-G
+  axiomString: F(10)F(1)F(1)F(1)F(1)F(1)
+  ruleSet: {fileID: 11400000, guid: 4e7162bb586e37b40afa3987b22c41b8, type: 2}

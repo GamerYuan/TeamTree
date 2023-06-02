@@ -27,7 +27,6 @@ public class CameraPan : MonoBehaviour
             Vector3 direction = startPos - cam.ScreenToViewportPoint(Input.mousePosition);
 
             cam.transform.position = new Vector3();
-            Debug.Log(cam.transform.rotation.eulerAngles.x);
             float nextX = (cam.transform.rotation * Quaternion.Euler(new Vector3(direction.y * 180, 0, 0))).eulerAngles.x;
             if (nextX < 80 || nextX > 280)
             {

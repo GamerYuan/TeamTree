@@ -35,7 +35,35 @@ public class LSystem : ScriptableObject
         } 
         else
         {
+            Debug.Log(nextWord);
             this.word = nextWord;
+        }
+    }
+    // Stack Modifications for L-System
+    public static StackMod<T> GetStackMod<T>(Unit u)
+    {
+        switch (u.name)
+        {
+            case "[":
+                return (x, stack) =>
+                {
+                    stack.Push(x);
+                    return stack;
+                };
+            case "]":
+                return (x, stack) =>
+                {
+                    stack.Pop();
+                    return stack;
+                };
+            default:
+                return (x, stack) =>
+                {
+                    stack.Pop();
+                    stack.Push(x);
+                    return stack;
+                };
+
         }
     }
 }

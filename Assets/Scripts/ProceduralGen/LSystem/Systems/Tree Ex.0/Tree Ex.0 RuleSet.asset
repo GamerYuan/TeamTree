@@ -12,5 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40d26d0fc5958f84887ae8159084af2c, type: 3}
   m_Name: Tree Ex.0 RuleSet
   m_EditorClassIdentifier: 
+  Constants: []
   ruleStrings:
-  - 'F : F[+F-F]F'
+  - F = F[+F-F]F

@@ -1,5 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
+using System.Linq.Expressions;
 using UnityEngine;
 
 public class Word 
@@ -17,7 +19,9 @@ public class Word
     public Word ApplyRules(RuleSet rules)
     {
         Word newWord = Word.Of(new List<Unit>(){ });
-        foreach (Unit unit in units)
+        List<Unit> filteredList =  this.units.Where<Unit>(x => !rules.Ignore.Contains(x.name)).ToList();
+
+        foreach (Unit unit in filteredList)
         {
             Word nextWord = unit.ApplyMatchingRule(rules);
             newWord.AddWord(nextWord);
@@ -64,8 +68,26 @@ public class Word
                 currUnitString += word[i].ToString();
             }
         }
-        units.Add(Unit.Parse(currUnitString));
-        return new Word(units);
+        Unit currUnit = Unit.Parse(currUnitString);
+        units.Add(currUnit);
+        Word outputWord = new Word(units);
+        outputWord.AssignNeighbours();
+        return outputWord;
+    }
+
+    public void AssignNeighbours()
+    {
+        Unit currUnit = this.units[0];
+        Unit prevUnit;
+        Stack<Unit> unitStack = new Stack<Unit>();
+        unitStack.Push(currUnit);
+        for (int i = 1; i < this.units.Count; i++)
+        {
+            prevUnit = unitStack.Peek();
+            currUnit = this.units[i];
+            StackMod<Unit> stackMod = LSystem.GetStackMod<Unit>(currUnit);
+            stackMod.Invoke(currUnit, unitStack);
+        }
     }
 
     public void SetParameters(Dictionary<string, object> paramMap)
