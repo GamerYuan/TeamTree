@@ -474,6 +474,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 963194227}
+  maxZoom: -20
+  minZoom: -5
+  baseZoom: -10
+  zoomAmp: 0.01
 --- !u!4 &1862842564
 Transform:
   m_ObjectHideFlags: 0
