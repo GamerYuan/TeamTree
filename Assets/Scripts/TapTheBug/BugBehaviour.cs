@@ -7,7 +7,7 @@ public class BugBehaviour : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField] private float moveSpeed, moveCooldown;
-    [SerializeField] private int wallCollideCount, groundLayer, wallLayer;
+    [SerializeField] private int wallCollideCount, wallLayer, score;
     private bool isMoving = true;
     private float hitWalliFrame = 0.5f;
     private bool isHitWall = false;
@@ -24,7 +24,11 @@ public class BugBehaviour : MonoBehaviour
 
     private void OnMouseDown()
     {
-        Death();
+        if (!isMoving)
+        {
+            ScoreManager.AddScore(score);
+            Death();
+        }
     }
 
     void Update()
@@ -67,7 +71,7 @@ public class BugBehaviour : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         LayerMask layerMask = collision.gameObject.layer;
-        if (isMoving && layerMask == groundLayer)
+        if (isMoving)
         {
             StartCoroutine(Move());
             isMoving = false;
