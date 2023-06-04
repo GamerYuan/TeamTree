@@ -6,7 +6,6 @@ public class MaterialFadeChanger : MonoBehaviour
 {
     // Start is called before the first frame update
     private Renderer meshRenderer;
-    private bool fadeDone = false;
     private Color endColor, startColor;
     void Start()
     {

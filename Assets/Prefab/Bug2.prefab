@@ -121,7 +121,7 @@ GameObject:
   - component: {fileID: 4795591384278312735}
   - component: {fileID: 4947750002080571729}
   - component: {fileID: 8146275563339177471}
-  - component: {fileID: -1177403639667112327}
+  - component: {fileID: -6472968773969206681}
   m_Layer: 0
   m_Name: Bug2
   m_TagString: Untagged
@@ -176,7 +176,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 80
   m_CollisionDetection: 0
---- !u!114 &-1177403639667112327
+--- !u!114 &-6472968773969206681
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -185,7 +185,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4348641359935057973}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d0b7c2a5eba1fc64b957ed9d38807613, type: 3}
+  m_Script: {fileID: 11500000, guid: 7d6741afab64fa14d8878e39be5ea9e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 3
@@ -193,6 +193,9 @@ MonoBehaviour:
   wallCollideCount: 2
   wallLayer: 6
   score: 300
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
 --- !u!1 &8735009011079324249
 GameObject:
   m_ObjectHideFlags: 0

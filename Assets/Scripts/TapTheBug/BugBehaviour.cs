@@ -8,9 +8,11 @@ public class BugBehaviour : MonoBehaviour
     // Start is called before the first frame update
     [SerializeField] private float moveSpeed, moveCooldown;
     [SerializeField] private int wallCollideCount, wallLayer, score;
+    [SerializeField] private LayerMask groundLayer;
     private bool isMoving = true;
     private float hitWalliFrame = 0.5f;
     private bool isHitWall = false;
+    protected Coroutine moveCoroutine;
 
     private float velX, velZ;
 
@@ -31,7 +33,7 @@ public class BugBehaviour : MonoBehaviour
         }
     }
 
-    void Update()
+    protected virtual void Update()
     {
         rb.velocity = new Vector3(velX, rb.velocity.y, velZ);
         if (isHitWall)
@@ -45,12 +47,12 @@ public class BugBehaviour : MonoBehaviour
         }
     }
 
-    private void Death()
+    protected virtual void Death()
     {
         Destroy(gameObject);
     }
 
-    private IEnumerator Move()
+    protected IEnumerator Move()
     {
         while(true)
         {
@@ -71,9 +73,9 @@ public class BugBehaviour : MonoBehaviour
     void OnCollisionEnter(Collision collision)
     {
         LayerMask layerMask = collision.gameObject.layer;
-        if (isMoving)
+        if (isMoving && Physics.OverlapSphere(transform.position, 0.2f, groundLayer) != null)
         {
-            StartCoroutine(Move());
+            moveCoroutine = StartCoroutine(Move());
             isMoving = false;
             return;
         }
