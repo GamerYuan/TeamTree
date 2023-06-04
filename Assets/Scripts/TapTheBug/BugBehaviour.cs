@@ -16,7 +16,7 @@ public class BugBehaviour : MonoBehaviour
 
     private float velX, velZ;
 
-    private Rigidbody rb;
+    protected Rigidbody rb;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -28,7 +28,7 @@ public class BugBehaviour : MonoBehaviour
     {
         if (!isMoving)
         {
-            ScoreManager.AddScore(score);
+            MinigameManager.AddScore(score);
             Death();
         }
     }

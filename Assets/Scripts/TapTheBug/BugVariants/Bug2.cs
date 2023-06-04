@@ -6,7 +6,6 @@ public class Bug2 : BugBehaviour
 {
     private bool isDeath;
     private float flySpeed;
-    private Rigidbody rb;
     // Update is called once per frame
     protected override void Update()
     {

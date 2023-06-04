@@ -31,9 +31,19 @@ public class SpawnerBehaviour : MonoBehaviour
         
         while(true)
         {
-            int randBug = Random.Range(0, spawnList.Count);
+            int randBug;
+            float randNum = Random.Range(0f, 1f);
+            if (randNum < 0.7)
+            {
+                randBug = 0;
+            } 
+            else
+            {
+                randBug = 1;
+            }
             Vector3 pos = transform.position;
-            Instantiate(bugList[randBug], pos, Quaternion.identity);
+            GameObject currBug = Instantiate(bugList[randBug], pos, Quaternion.identity);
+            currBug.transform.localScale = Vector3.one * Random.Range(0.9f, 1.3f);
             float randCd = Random.Range(0.5f, spawnCooldown);
             spawnCooldown = Mathf.Clamp(spawnCooldown * cooldownMultiplier, 1.0f, spawnCooldown);
             Debug.Log($"New bug in {randCd.ToString("F2")}");
