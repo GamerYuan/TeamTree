@@ -7,10 +7,12 @@ public class GrabberBehaviour : MonoBehaviour
     [SerializeField] private float rotation;
     private bool isSpin, isCooldown;
     private float rotTime;
+    private LineRenderer lineRenderer;
     // Start is called before the first frame update
     void Start()
     {
         isSpin = true;
+        lineRenderer = GetComponent<LineRenderer>();
     }
 
     // Update is called once per frame
@@ -26,9 +28,11 @@ public class GrabberBehaviour : MonoBehaviour
             DisableSpin();
             StartCoroutine(CooldownCount());
         }
-        if (transform.GetChild(0).localPosition.y == -0.4f && !isCooldown) {
+        if (transform.GetChild(0).localPosition.y >= -0.4f && !isCooldown) {
             EnableSpin();
         }
+        lineRenderer.SetPosition(0, transform.position);
+        lineRenderer.SetPosition(1, transform.GetChild(0).position);
     }
 
     private void EnableSpin()

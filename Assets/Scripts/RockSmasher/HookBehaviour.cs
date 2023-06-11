@@ -1,26 +1,29 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class HookBehaviour : MonoBehaviour
 {
     // Start is called before the first frame update
-    [SerializeField] private float shootSpeed, pullBackSpeed;
+    [SerializeField] private float shootSpeed, pullBackSpeed, shootCooldown;
     //private Rigidbody rb;
-    private bool isShoot = false;
+    private bool isShoot, canShoot;
+    private Coroutine shootCountdown;
     void Start()
     {
         //rb = GetComponent<Rigidbody>();
         isShoot = false;
+        canShoot = true;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && canShoot)
         {
             EnableShoot();
-            StartCoroutine(ShootTimer());
+            shootCountdown = StartCoroutine(ShootTimer());
         }
         if (isShoot)
         {
@@ -32,6 +35,19 @@ public class HookBehaviour : MonoBehaviour
         }
     }
 
+    void OnTriggerEnter(Collider collider)
+    {
+        if (collider.tag == "Grabber")
+        {
+            StartCoroutine(ShootCooldown());
+        }
+        if (shootCountdown!= null)
+        {
+            StopCoroutine(shootCountdown);
+        }
+        DisableShoot();
+    }
+
     private void Shoot()
     {
         transform.localPosition -= new Vector3(0, shootSpeed * Time.deltaTime, 0);
@@ -39,7 +55,6 @@ public class HookBehaviour : MonoBehaviour
     
     private void PullBack()
     {
-        Debug.Log("Pulling back");
         transform.localPosition += new Vector3(0, pullBackSpeed * Time.deltaTime, 0);
         if (transform.localPosition.y > -0.4)
         {
@@ -49,12 +64,12 @@ public class HookBehaviour : MonoBehaviour
 
     private void EnableShoot()
     {
+        canShoot = false;
         isShoot = true;
     }
 
     private void DisableShoot()
     {
-        Debug.Log("Disabling Shoot");
         isShoot = false;
     }
 
@@ -62,5 +77,11 @@ public class HookBehaviour : MonoBehaviour
     {
         yield return new WaitForSeconds(5f);
         DisableShoot();
+    }
+    
+    private IEnumerator ShootCooldown()
+    {
+        yield return new WaitForSeconds(shootCooldown);
+        canShoot = true;
     }
 }
