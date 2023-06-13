@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.XR;
 
@@ -20,10 +21,10 @@ public class TreeGeometry
         this.constants = constants;
     }
 
-    public void CalcTreeSkeleton(OrientedPoint origin, List<Unit> units)
+    public void CalcTreeSkeleton(OrientedPoint origin, float[] startingParameters, List<Unit> units)
     {
         Stack<TreeVert> turtleVerts = new Stack<TreeVert>();
-        TreeVert originVert = new TreeVert(origin, 0);
+        TreeVert originVert = new TreeVert(origin, 0, startingParameters);
         turtleVerts.Push(originVert);
 
         treeVertices.Clear();
@@ -34,13 +35,14 @@ public class TreeGeometry
         for (int unit = 0; unit < units.Count; unit++)
         {
             Unit currUnit = units[unit];
+            currUnit.SetDefaults(constants.GetDefaultParams(currUnit.name));
             Transformation<TreeVert> transformation = constants.GetTransformation(currUnit);
-            StackMod<TreeVert> stackMod = constants.GetStackMod(currUnit);
+            StackMod<TreeVert> stackMod = LSystem.GetStackMod<TreeVert>(currUnit);
 
             TreeVert nextVert = transformation.Invoke(currVert);
             
             //Only adds an edge if the next point added is different from the previous point; i.e. no duplicate points on same point in space
-            if(!nextVert.point.Equals(currVert.point))
+            if(!nextVert.point.pos.Equals(currVert.point.pos))
             {
                 nextVert.id = treeVertices.Count;
                 treeVertices.Add(nextVert);
@@ -57,14 +59,18 @@ public class TreeGeometry
         surfaceMesh = new Mesh();
         surfaceMesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
 
-        int segments = 5;
+        int segments = 2;
         CombineInstance[] combine = new CombineInstance[treeEdges.Count / 2];
         Mesh segment;
         for(int i = 0; i < treeEdges.Count; i+= 2)
         {
-            OrientedPoint o1 = treeVertices[treeEdges[i]].point;
-            OrientedPoint o2 = treeVertices[treeEdges[i + 1]].point;
-            segment = ExtrudeEdge(segments, o1, o2, crosssec);
+            TreeVert t1 = treeVertices[treeEdges[i]];
+            TreeVert t2 = treeVertices[treeEdges[i + 1]];
+            OrientedPoint o1 = t1.point;
+            OrientedPoint o2 = t2.point;
+            float s1 = t1.GetParam(TreeVert.THICKNESS);
+            float s2 = t2.GetParam(TreeVert.THICKNESS);
+            segment = ExtrudeEdge(segments, o1, o2, crosssec, s1, s2);
             combine[i / 2].mesh = segment;
             combine[i / 2].transform = Matrix4x4.identity;
         }
@@ -73,19 +79,19 @@ public class TreeGeometry
         return surfaceMesh;
     }
 
-    public Mesh ExtrudeEdge(int segments, OrientedPoint o1, OrientedPoint o2, Mesh2d crosssec)
+    public Mesh ExtrudeEdge(int segments, OrientedPoint o1, OrientedPoint o2, Mesh2d crosssec, float s1, float s2)
     {
         Mesh prism = new Mesh();
-
         List<Vector3> verts = new List<Vector3>();
         List<Vector3> normals = new List<Vector3>();
         for (int s = 0; s < segments; s++)
         {
             float t = s / (float)(segments - 1);
             OrientedPoint op = OrientedPoint.Lerp(o1, o2, t);
+            float size = t * (s2 - s1) + s1;
             for (int i = 0; i < crosssec.VertexCount; i++)
             {
-                verts.Add(op.LocalToWorldPos(crosssec.vertices[i].point * 0.1f));
+                verts.Add(op.LocalToWorldPos(crosssec.vertices[i].point * size));
                 normals.Add(op.LocalToWorldVec(crosssec.vertices[i].normal));
             }
         }
