@@ -15,16 +15,19 @@ public class RuleSet : ScriptableObject
         public string String;
         public float Value;
     }
+
     [SerializeField]
-    private List<StringFloatPair> Constants;
-    // List of Rules as Strings, in the format (inputChar) ? (outputString)
-    public List<string> ruleStrings = new List<string>();
+    private List<StringFloatPair> Constants = new List<StringFloatPair>();
 
     [SerializeField]
     public List<string> Ignore = new List<string>();
 
+    // List of Rules as Strings, in the format (inputChar) ? (outputString)
+    [SerializeField]
+    public List<string> ruleStrings = new List<string>();
+
     // List of Rules parsed from Strings.
-    List<Rule> rules => ruleStrings.ConvertAll<string>(x => replaceConstants(x))
+    public List<Rule> rules => ruleStrings.ConvertAll<string>(x => replaceConstants(x))
                                    .ConvertAll<Rule>(x => Rule.ParseRule(x));
     //Split predecessor into character and parameters
 
@@ -39,9 +42,23 @@ public class RuleSet : ScriptableObject
         return output;
     }
 
+    public Word ApplyMatchingRule(Unit unit, Word word)
+    {
+        foreach (Rule rule in rules)
+        {
+            if (rule.Accepts(unit, word.GetLeftContext(unit, Ignore.ToArray()), word.GetRightContext(unit, Ignore.ToArray())))
+            {
+                return rule.GetOutput(unit, word.GetLeftContext(unit, Ignore.ToArray()), word.GetRightContext(unit, Ignore.ToArray()));
+            }
+        }
+
+        //Otherwise, return unchanged 
+        return Word.Of(new List<Unit>() { unit });
+    }
+
     private float GetValue(string key)
     {
-        for(int i = 0; i < Constants.Count; i++)
+        for (int i = 0; i < Constants.Count; i++)
         {
             if (Constants[i].String == key)
                 return Constants[i].Value;
@@ -51,6 +68,6 @@ public class RuleSet : ScriptableObject
 
     public List<Rule> GetRules()
     {
-        return rules; 
+        return rules;
     }
 }

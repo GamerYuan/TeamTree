@@ -10,8 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 52e6c5eac999f3946ab96d425ea0d6da, type: 3}
-  m_Name: Context-Sensitive ex.0
+  m_Name: Water Tree Ex. 0 L-System
   m_EditorClassIdentifier: 
-  axiomString: F1F1F1
+  axiomString: R(10)B(1,0.05, 0, 0, 0)
   ruleSets:
-  - {fileID: 11400000, guid: 4e7162bb586e37b40afa3987b22c41b8, type: 2}
+  - {fileID: 11400000, guid: 6c060d21e3e067f47aa1a3a80c8ddf1f, type: 2}
+  - {fileID: 11400000, guid: cc3b5115cedd31949905aa67f7230175, type: 2}
+  - {fileID: 11400000, guid: 66bbfd732814be543add9f4f17ed28e2, type: 2}

@@ -6,6 +6,9 @@ using UnityEngine;
 using NCalc;
 using System.Runtime.CompilerServices;
 using Unity.Profiling.LowLevel.Unsafe;
+using UnityEditor;
+using System.Linq;
+using System.Threading;
 
 /*
 * Encapsulates a Production Rule for an L-System.
@@ -55,9 +58,10 @@ public class Rule : ScriptableObject
     {
         if (parameters.Count == 0)
             return true;
+
         Expression substitutedCondition = condition;
 
-        foreach(string var in predParamNames)
+        foreach (string var in predParamNames)
         {
             if (parameters.ContainsKey(var))
                 substitutedCondition.Parameters[var] = parameters[var];
@@ -81,37 +85,44 @@ public class Rule : ScriptableObject
         return Convert.ToBoolean(substitutedCondition.Evaluate());
     }
 
-    // tests whether this rule applies to a given unit.
-    public bool Accepts(Unit unit)
+    // tests whether this rule applies to a given unit
+    public bool Accepts(Unit unit, Unit leftContext, Unit[] rightContext)
     {
-        // If units mismatch
-        if (predString != unit.GetName())
+        if (unit.GetName() != predString)
             return false;
-        if (leftString != null)
-            if (unit.leftUnit == Unit.EMPTY_UNIT || unit.leftUnit.GetName() != leftString)
-                return false;
-        if (rightString != null)
-            if (unit.rightUnit == Unit.EMPTY_UNIT || unit.rightUnit.GetName() != rightString)
-                return false;
 
-        // If no. of parameters in units mismatch
+        if (leftString != null && leftContext.GetName() != leftString)
+            return false;
+
         if (predParamNames.Length != unit.GetParams().Length)
             return false;
-        if (leftParamNames.Length != unit.leftUnit.GetParams().Length)
-            return false;
-        if (rightParamNames.Length != unit.rightUnit.GetParams().Length)
+
+        if (leftString != null && leftParamNames.Length != leftContext.GetParams().Length)
             return false;
 
-        // Construct parameter mappings
         Dictionary<string, float> paramMap = new Dictionary<string, float>();
         for (int i = 0; i < predParamNames.Length; i++)
-            paramMap.Add(predParamNames[i], (float)unit.GetParam(i));
+            paramMap.Add(predParamNames[i], unit.GetParamOrDefault(i));
         for (int i = 0; i < leftParamNames.Length; i++)
-                paramMap.Add(leftParamNames[i], (float)unit.leftUnit.GetParam(i));
-        for (int i = 0; i < rightParamNames.Length; i++)
-                paramMap.Add(rightParamNames[i], (float)unit.rightUnit.GetParam(i));
+            paramMap.Add(leftParamNames[i], leftContext.GetParamOrDefault(i));
 
-       return SubstituteConditionParams(paramMap);
+        if (rightString != null)
+        {
+            foreach (Unit right in rightContext)
+            {
+                if (right.GetName() == rightString)
+                {
+                    Dictionary<string, float> rightParams = new Dictionary<string, float>();
+                    for (int i = 0; i < rightParamNames.Length; i++)
+                        rightParams.Add(rightParamNames[i], right.GetParamOrDefault(i));
+                    if (SubstituteConditionParams(paramMap.Concat(rightParams).ToDictionary(x => x.Key, x => x.Value)))
+                        return true;
+                }
+         
+            }
+            return false;
+        }
+        return SubstituteConditionParams(paramMap);
     }
 
     // Parses a String into a Rule. 
@@ -176,7 +187,6 @@ public class Rule : ScriptableObject
             }
             else
             {
-
                 c = b[0].Split('>', 2, StringSplitOptions.RemoveEmptyEntries);
                 if (c.Length == 2)
                 {
@@ -193,10 +203,15 @@ public class Rule : ScriptableObject
         }
 
         successor = ReplaceWhitespace(successor, "");
-        if(stringCondition != null)
-            condition = new Expression(stringCondition);
+        if (stringCondition != null)
+        {
+            if (stringCondition == "*")
+                condition = new Expression("0 == 0");
+            else
+                condition = new Expression(stringCondition);
+        }
 
-        switch (ruleType)
+            switch (ruleType)
         {
             case RuleType.BasicRule:
                 {
@@ -301,16 +316,42 @@ public class Rule : ScriptableObject
 
 
     // returns new replacement List of Units.
-    public Word GetOutput(Unit unit)
+    public Word GetOutput(Unit unit, Unit leftContext, Unit[] rightContexts)
     {
-        Dictionary<string, object> paramMap = new Dictionary<string, object>();
+        Dictionary<string, float> paramMap = new Dictionary<string, float>();
         for (int i = 0; i < predParamNames.Length; i++)
-            paramMap.Add(predParamNames[i], unit.GetParam(i));
+            paramMap.Add(predParamNames[i], unit.GetParamOrDefault(i));
         for (int i = 0; i < leftParamNames.Length; i++)
-            paramMap.Add(leftParamNames[i], unit.leftUnit.GetParam(i));
-        for (int i = 0; i < rightParamNames.Length; i++)
-            paramMap.Add(rightParamNames[i], unit.rightUnit.GetParam(i));
-        outputWord.SetParameters(paramMap);
+            paramMap.Add(leftParamNames[i], leftContext.GetParamOrDefault(i));
+
+        foreach (Unit rightContext in rightContexts)
+        {
+            Dictionary<string, float> rightParamMap = new Dictionary<string, float>();
+            if (rightContext.GetName() == rightString)
+            {
+                for (int i = 0; i < rightParamNames.Length; i++)
+                {
+                    rightParamMap.Add(rightParamNames[i], rightContext.GetParamOrDefault(i));
+                }
+                if (SubstituteConditionParams(paramMap.Concat(rightParamMap).ToDictionary(x => x.Key, x => x.Value)))
+                {
+                    foreach (KeyValuePair<string, float> rightparam in rightParamMap)
+                    {
+                        if (paramMap.ContainsKey(rightparam.Key))
+                            paramMap[rightparam.Key] = (float)rightparam.Value + (float)paramMap[rightparam.Key];
+                        else
+                            paramMap.Add(rightparam.Key, rightparam.Value);
+                    }
+                }
+            }
+        }
+
+        Dictionary<string, object> objectParamMap = new Dictionary<string, object>();
+        foreach (KeyValuePair<string, float> kvp in paramMap)
+        {
+            objectParamMap.Add(kvp.Key, kvp.Value);
+        }
+        outputWord.SetParameters(objectParamMap);
         return outputWord;
     }
 }

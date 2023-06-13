@@ -12,12 +12,12 @@ public class LSystem : ScriptableObject
     public string axiomString;
 
     //Current state of the L-System.
-    private Word word = Word.Of(new List<Unit>(){});
+    private Word word = Word.Of(new List<Unit>() { });
 
     public List<Unit> GetUnits() { return word.GetUnits(); }
 
     //RuleSet for L-System.
-    public RuleSet ruleSet;
+    public RuleSet[] ruleSets;
 
     public void InitAxiom()
     {
@@ -28,16 +28,20 @@ public class LSystem : ScriptableObject
     //Updates the current List of Units by applying the Rules in the RuleSet
     public void ApplyRules()
     {
-        Word nextWord = this.word.ApplyRules(ruleSet);
-        if (nextWord.GetNumberOfUnits() > 50000)
+        Word nextWord = this.word;
+        foreach (RuleSet ruleSet in ruleSets)
         {
-            Debug.Log("Size Exceeded");
-        } 
-        else
-        {
-            Debug.Log(nextWord);
-            this.word = nextWord;
+            nextWord = nextWord.ApplyRules(ruleSet);
+            if (nextWord.GetNumberOfUnits() > 50000)
+            {
+                Debug.Log("Size Exceeded");
+            }
+            else
+            {
+                Debug.Log(nextWord);
+            }
         }
+        this.word = nextWord;
     }
     // Stack Modifications for L-System
     public static StackMod<T> GetStackMod<T>(Unit u)
@@ -65,5 +69,15 @@ public class LSystem : ScriptableObject
                 };
 
         }
+    }
+
+    public void LoadString(string str)
+    {
+        word = Word.Parse(str);
+    }
+
+    override public string ToString()
+    {
+        return word.ToString();
     }
 }

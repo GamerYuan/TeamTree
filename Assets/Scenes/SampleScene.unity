@@ -956,7 +956,7 @@ MonoBehaviour:
     type: 3}
   flowerPot: {fileID: 776637383}
   customTreeTemplate: {fileID: 796620793}
-  treeMat: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+  treeMat: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 3}
   treeMesh: {fileID: 0}
   crossSectionMesh: {fileID: 11400000, guid: 4f0941206d30a67448a20bfb90ca64ae, type: 2}
   rule1: {fileID: 1281131492}
@@ -7371,21 +7371,13 @@ PrefabInstance:
         type: 3}
       propertyPath: lsystem
       value: 
-<<<<<<< HEAD
-      objectReference: {fileID: 11400000, guid: e7372c57030d6c84ab70e8fdcd97e895,
-=======
-      objectReference: {fileID: 11400000, guid: 1f304c8dae1383a48aee48419220337e,
->>>>>>> fbee59a (Add Context-Sensitive LSystem)
+      objectReference: {fileID: 11400000, guid: 3da4a3834b30e944396106ea8ed26b7a,
         type: 2}
     - target: {fileID: 4792331704641498910, guid: 37c96c708538012449cc1cebae0338ab,
         type: 3}
       propertyPath: constants
       value: 
-<<<<<<< HEAD
-      objectReference: {fileID: 11400000, guid: 9a1557e4183f03542bf1c6d22c7c433e,
-        type: 2}
-=======
-      objectReference: {fileID: 11400000, guid: a9979e158a14ae549b9734f8b9e8c1b2,
+      objectReference: {fileID: 11400000, guid: 3f1644305aaf7044fb137c2463f7b978,
         type: 2}
     - target: {fileID: 4792331704641498910, guid: 37c96c708538012449cc1cebae0338ab,
         type: 3}
@@ -7402,7 +7394,6 @@ PrefabInstance:
       propertyPath: rootParameters.Array.data[1]
       value: 0.2
       objectReference: {fileID: 0}
->>>>>>> fbee59a (Add Context-Sensitive LSystem)
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 37c96c708538012449cc1cebae0338ab, type: 3}
 --- !u!4 &1966658020 stripped

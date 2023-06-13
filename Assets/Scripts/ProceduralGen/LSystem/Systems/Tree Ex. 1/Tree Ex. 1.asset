@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: Tree Ex. 1
   m_EditorClassIdentifier: 
   axiomString: A
-  ruleSet: {fileID: 11400000, guid: 2257fb014f9a24e47987963046d2e1c3, type: 2}
-  constants: {fileID: 11400000, guid: a605075ada805224786687029ff53e00, type: 2}
+  ruleSets:
+  - {fileID: 11400000, guid: 2257fb014f9a24e47987963046d2e1c3, type: 2}

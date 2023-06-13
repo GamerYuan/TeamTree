@@ -98,7 +98,7 @@ public class TreeChanger : MonoBehaviour
 
         customlsystem = ScriptableObject.CreateInstance<LSystem>();
         customlsystem.axiomString = axiomString.text;
-        customlsystem.ruleSet = customRules;
+        customlsystem.ruleSets = new RuleSet[] { customRules };
 
         customConst = ScriptableObject.CreateInstance<LSystemConstants>();
         customConst.SegmentLength = segmentLength.value;

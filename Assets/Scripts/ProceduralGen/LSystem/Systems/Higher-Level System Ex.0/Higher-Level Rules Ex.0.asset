@@ -10,21 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 40d26d0fc5958f84887ae8159084af2c, type: 3}
-  m_Name: Context-Sensitive Ex.0 Rules
+  m_Name: Higher-Level Rules Ex.0
   m_EditorClassIdentifier: 
-  Constants: []
-  Ignore:
-  - +
-  - '-'
-  - F
   ruleStrings:
-  - "0 < 0 > 1 : * \u2192 1[-F1F1]"
-  - "1 < 0 > 1 : * \u2192 1F1 "
-  - "0 < 0 > 0 : * \u2192 1"
-  - "0 < 1 > 0 : * \u2192 1"
-  - "0 < 1 > 1 : * \u2192 1"
-  - "1 < 0 > 0 : * \u2192 0"
-  - "1 < 1 > 0 : * \u2192 1"
-  - "1 < 1 > 1 : * \u2192 0"
-  - + = -
-  - '- = +'
+<<<<<<< Updated upstream:Assets/Scripts/ProceduralGen/LSystem/Systems/Tree Ex.0/Tree Ex.0 RuleSet.asset
+  - 'F : F[+F-F]F'
+=======
+  - 'B(l, t, r, w) : 0 == 0  = B(l, t, r ,w)B(l,t,r,w)'
+  Ignore: []
+>>>>>>> Stashed changes:Assets/Scripts/ProceduralGen/LSystem/Systems/Higher-Level System Ex.0/Higher-Level Rules Ex.0.asset
