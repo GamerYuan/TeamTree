@@ -28,7 +28,7 @@ public class OrientedPoint
         this.rot = Quaternion.LookRotation(normal);
     }
 
-    override
+    override 
     public string ToString()
     {
         return pos.ToString() + " " + rot.ToString();

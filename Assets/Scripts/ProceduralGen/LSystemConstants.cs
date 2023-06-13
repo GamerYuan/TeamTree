@@ -1,4 +1,3 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,60 +11,41 @@ public class LSystemConstants : ScriptableObject
     //Length of a Segment 
     [SerializeField]
     [Range(0.1f, 5f)]
-<<<<<<< Updated upstream
     private float SegmentLength;
-=======
-    public float SegmentLength = 1f;
->>>>>>> Stashed changes
 
     //Angle of Rotation
     [SerializeField]
     [Range(1f, 180f)]
-<<<<<<< Updated upstream
     private float Rotation;
-=======
-    public float Rotation = 60f;
->>>>>>> Stashed changes
 
     //Alphabet Geometric Transformations for L-System
     public Transformation<TreeVert> GetTransformation(Unit u)
     {
         switch(u.name)
         {
-            case "B":
-                return x => x.SetParams(u.GetParams())
-                             .Rotate(Quaternion.Euler(0f, u.GetParamOrDefault(2), 0f))
-                             .MoveForward(u.GetParamOrDefault(0));
             case "F":
-<<<<<<< Updated upstream
                 return x => x.moveForward(SegmentLength * u.GetParam(0));
             case "G":
                 return x => x.moveForward(SegmentLength * u.GetParam(0));   
-=======
-                return x => x.MoveForward(SegmentLength * u.GetParamOrDefault(0));
-            case "G":
-                return x => x.MoveForward(SegmentLength * u.GetParamOrDefault(0)).Inflate(u.GetParamOrDefault(1));
->>>>>>> Stashed changes
             case "+":
-                return x => x.Rotate(Quaternion.Euler(0f, Rotation, 0f));
+                return x => x.rotate(Quaternion.Euler(0f, Rotation, 0f));
             case "-":
-                return x => x.Rotate(Quaternion.Euler(0f, -Rotation, 0f));
+                return x => x.rotate(Quaternion.Euler(0f, -Rotation, 0f));
             case "&":
-                return x => x.Rotate(Quaternion.Euler(Rotation, 0f, 0f));
+                return x => x.rotate(Quaternion.Euler(Rotation, 0f, 0f));
             case "^":
-                return x => x.Rotate(Quaternion.Euler(-Rotation, 0f, 0f));
+                return x => x.rotate(Quaternion.Euler(-Rotation, 0f, 0f));
             case "/":
-                return x => x.Rotate(Quaternion.Euler(0f, 0f, Rotation));
+                return x => x.rotate(Quaternion.Euler(0f, 0f, Rotation));
             case "\\":
-                return x => x.Rotate(Quaternion.Euler(0f, 0f, -Rotation));
+                return x => x.rotate(Quaternion.Euler(0f, 0f, -Rotation));
             case "|":
-                return x => x.Rotate(Quaternion.Euler(0f, 180f, 0f));
+                return x => x.rotate(Quaternion.Euler(0f, 180f, 0f));
             default:
                 return x => x;
         }
     }
 
-<<<<<<< Updated upstream
     //Alphabet Stack Modifications for L-System
     public StackMod<TreeVert> GetStackMod(Unit u)
     {
@@ -93,32 +73,4 @@ public class LSystemConstants : ScriptableObject
 
         }
     }
-=======
-    public float[] GetDefaultParams(string name)
-    {
-        switch (name)
-        {
-            case "F":
-                return new float[] { SegmentLength, 0.05f };
-            case "G":
-                return new float[] { SegmentLength, 0.05f };
-            case "+":
-                return new float[] { Rotation };
-            case "-":
-                return new float[] { Rotation };
-            case "&":
-                return new float[] { Rotation };
-            case "^":
-                return new float[] { Rotation };
-            case "/":
-                return new float[] { Rotation };
-            case "\\":
-                return new float[] { Rotation };
-            case "|":
-                return new float[] { 180f };
-            default:
-                return new float[] { 0f, 0f };
-        }
-    } 
->>>>>>> Stashed changes
 }

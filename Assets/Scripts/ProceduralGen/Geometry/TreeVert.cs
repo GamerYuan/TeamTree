@@ -7,66 +7,35 @@ using UnityEngine;
 public class TreeVert
 {
     public OrientedPoint point;
-
-    //Parameters of the vertex.
-    public float[] parameters;
-
-    public static int LENGTH = 0;
-    public static int THICKNESS = 1;
-
-
     public int id;
 
-    public TreeVert(OrientedPoint point, int id, float[] parameters)
+    public TreeVert(OrientedPoint point, int id)
     {
         this.point = point;
         this.id = id;
-        this.parameters = parameters;
+    }
+    
+    public TreeVert moveForward(float magnitude)
+    {
+        return new TreeVert(point.moveForward(magnitude), id);
     }
 
-    public TreeVert MoveForward(float magnitude)
+    public TreeVert rotate(Quaternion rotation)
     {
-        return new TreeVert(point.moveForward(magnitude), id, parameters);
-    }
-
-    public TreeVert Inflate(float magnitude)
-    {
-        float[] newparameters = new float[parameters.Length];
-        Array.Copy(parameters, newparameters, parameters.Length);
-        newparameters[1] = magnitude;
-        return new TreeVert(point, id, newparameters);
-    }
-
-    public TreeVert SetParams(float[] parameters)
-    {
-        return new TreeVert(point, id, parameters);
-    }
-
-    public float GetParam(int i)
-    {
-        if (i < parameters.Length)
-        {
-            return parameters[i];
-        }
-        else
-        {
-            return 0.05f;
-        }
-    }
-
-    public TreeVert Rotate(Quaternion rotation)
-    {
-        return new TreeVert(point.rotate(rotation), id, parameters);
+        return new TreeVert(point.rotate(rotation), id);
     }
 
     override
     public string ToString()
     {
-        return point.ToString() + "(" + string.Join(",", parameters) + ")";
+        return point.ToString(); 
     }
-
+    
     public TreeVert clone()
     {
-        return new TreeVert(point, id, parameters);
+        return new TreeVert(point, id);
     }
+
+    
+
 }

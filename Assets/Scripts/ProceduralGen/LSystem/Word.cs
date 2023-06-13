@@ -1,16 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-<<<<<<< Updated upstream
-=======
-using System.Linq;
-using System.Linq.Expressions;
-using System.Net.Mime;
-using System.Net.NetworkInformation;
->>>>>>> Stashed changes
 using UnityEngine;
-using UnityEngine.Rendering;
 
-public class Word
+public class Word 
 {
     //List of units in this word
     private List<Unit> units = new List<Unit>();
@@ -18,23 +10,16 @@ public class Word
     public List<Unit> GetUnits() { return units; }
     public int GetNumberOfUnits() { return units.Count; }
 
-    private Word(List<Unit> units)
+    private Word (List<Unit> units)
     {
         this.units = units;
     }
-
     public Word ApplyRules(RuleSet rules)
     {
-<<<<<<< Updated upstream
         Word newWord = Word.Of(new List<Unit>(){ });
-=======
-        Word newWord = Word.Of(new List<Unit>() { });
-        List<Unit> filteredList = this.units.Where<Unit>(x => !rules.Ignore.Contains(x.name)).ToList();
-
->>>>>>> Stashed changes
         foreach (Unit unit in units)
         {
-            Word nextWord = rules.ApplyMatchingRule(unit, this);
+            Word nextWord = unit.ApplyMatchingRule(rules);
             newWord.AddWord(nextWord);
         }
         return newWord;
@@ -47,59 +32,7 @@ public class Word
 
     public static Word Of(List<Unit> units)
     {
-        return new Word(units);
-    }
-
-    public Unit GetLeftContext(Unit unit, string[] ignore)
-    {
-        int bracketDepth = 0;
-        for (int unitIndex = units.IndexOf(unit) - 1; unitIndex > -1; unitIndex--)
-        {
-            if (units[unitIndex].IsRightBracket())
-            {
-                bracketDepth++;
-            }
-            else if (units[unitIndex].IsLeftBracket())
-            {
-                if (bracketDepth > 0)
-                    bracketDepth--;
-            }
-            else if (bracketDepth <= 0 && !ignore.Contains(units[unitIndex].GetName()))
-            {
-                return units[unitIndex];
-            }
-        }
-        return Unit.EMPTY_UNIT;
-    }
-
-    public Unit[] GetRightContext(Unit unit, string[] ignore)
-    {
-        List<Unit> rightContexts = new List<Unit>();
-        int bracketDepth = 0;
-        Stack<int> distance = new Stack<int>();
-        distance.Push(0);
-        for (int unitIndex = units.IndexOf(unit) + 1; unitIndex < units.Count; unitIndex++)
-        {
-            Unit nextUnit = units[unitIndex];
-            if (bracketDepth < 0)
-                break;
-            else if (nextUnit.IsLeftBracket())
-            {
-                distance.Push(distance.Peek());
-                bracketDepth++;
-            }
-            else if (nextUnit.IsRightBracket())
-            {
-                distance.Pop();
-                bracketDepth--;
-            }
-            else if (distance.Peek() == 0 && !ignore.Contains(nextUnit.GetName()))
-            {
-                rightContexts.Add(nextUnit);
-                distance.Push(distance.Pop() + 1);
-            }
-        }
-        return rightContexts.ToArray();
+        return new Word (units);
     }
 
     public static Word Parse(string word)
@@ -131,20 +64,13 @@ public class Word
                 currUnitString += word[i].ToString();
             }
         }
-<<<<<<< Updated upstream
         units.Add(Unit.Parse(currUnitString));
         return new Word(units);
-=======
-        Unit currUnit = Unit.Parse(currUnitString);
-        units.Add(currUnit);
-        Word outputWord = new Word(units);
-        return outputWord;
->>>>>>> Stashed changes
     }
 
     public void SetParameters(Dictionary<string, object> paramMap)
     {
-        foreach (Unit unit in units)
+        foreach(Unit unit in units)
         {
             unit.SetParameters(paramMap);
         }

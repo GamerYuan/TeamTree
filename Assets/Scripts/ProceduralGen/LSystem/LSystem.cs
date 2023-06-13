@@ -13,17 +13,13 @@ public class LSystem : ScriptableObject
     private string axiomString;
 
     //Current state of the L-System.
-    private Word word = Word.Of(new List<Unit>() { });
+    private Word word = Word.Of(new List<Unit>(){});
 
     public List<Unit> GetUnits() { return word.GetUnits(); }
 
     //RuleSet for L-System.
-<<<<<<< Updated upstream
     [SerializeField]
     private RuleSet ruleSet;
-=======
-    public RuleSet[] ruleSets;
->>>>>>> Stashed changes
 
     public void InitAxiom()
     {
@@ -34,67 +30,14 @@ public class LSystem : ScriptableObject
     //Updates the current List of Units by applying the Rules in the RuleSet
     public void ApplyRules()
     {
-        Word nextWord = this.word;
-        foreach (RuleSet ruleSet in ruleSets)
+        Word nextWord = this.word.ApplyRules(ruleSet);
+        if (nextWord.GetNumberOfUnits() > 50000)
         {
-<<<<<<< Updated upstream
             Debug.Log("Size Exceeded");
         } 
         else
         {
             this.word = nextWord;
-=======
-            nextWord = nextWord.ApplyRules(ruleSet);
-            if (nextWord.GetNumberOfUnits() > 50000)
-            {
-                Debug.Log("Size Exceeded");
-            }
-            else
-            {
-                Debug.Log(nextWord);
-            }
->>>>>>> Stashed changes
-        }
-        this.word = nextWord;
-    }
-<<<<<<< Updated upstream
-=======
-    // Stack Modifications for L-System
-    public static StackMod<T> GetStackMod<T>(Unit u)
-    {
-        switch (u.name)
-        {
-            case "[":
-                return (x, stack) =>
-                {
-                    stack.Push(x);
-                    return stack;
-                };
-            case "]":
-                return (x, stack) =>
-                {
-                    stack.Pop();
-                    return stack;
-                };
-            default:
-                return (x, stack) =>
-                {
-                    stack.Pop();
-                    stack.Push(x);
-                    return stack;
-                };
-
         }
     }
-
-    public void LoadString(string str)
-    {
-        word = Word.Parse(str);
-    }
-
-    public string ToString()
-    {
-        return word.ToString();
-    }
->>>>>>> Stashed changes
 }
