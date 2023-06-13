@@ -18,6 +18,7 @@ public class DataSerializer : MonoBehaviour
     void Start()
     {
         Debug.Log(Application.persistentDataPath);
+        StartCoroutine(SaveDataRoutine());
     }
 
     public void SaveData()
@@ -106,6 +107,33 @@ public class DataSerializer : MonoBehaviour
 
         return decrypted;
     }
+
+    void OnApplicationPause(bool pause)
+    {
+        if (pause)
+        {
+            SaveData();
+        } 
+        else
+        {
+            LoadData();
+        }
+    }
+
+    void OnApplicationQuit()
+    {
+        SaveData();
+    }
+
+    private IEnumerator SaveDataRoutine()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(10f);
+            Debug.Log("10s Autosave!");
+            SaveData();
+        }
+    }
 }
 
 [Serializable]
@@ -119,3 +147,4 @@ public struct DataProgress
         return currentString + " " + waterVal.ToString();
     }
 }
+

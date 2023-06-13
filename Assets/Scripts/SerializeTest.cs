@@ -12,12 +12,12 @@ public class SerializeTest : MonoBehaviour
     public void Test1()
     {
         dataSerializer.SetData("FF", 10f);
-        dataSerializer.SaveData();
+        //dataSerializer.SaveData();
     }
     public void Test2()
     {
         dataSerializer.SetData("F[+F]F", 50.345f);
-        dataSerializer.SaveData();
+        //dataSerializer.SaveData();
     }
     public void Test3()
     {
@@ -26,7 +26,7 @@ public class SerializeTest : MonoBehaviour
         float randFloat = Random.Range(0f, 100f);
         dataSerializer.SetData(randStr, randFloat);
         Debug.Log(randStr+ " " + randFloat);
-        dataSerializer.SaveData();
+        //dataSerializer.SaveData();
     }
 
     public void LoadData()
