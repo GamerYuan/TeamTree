@@ -58,7 +58,6 @@ public class CameraPan : MonoBehaviour
             Vector3 direction = startPos - cam.ScreenToViewportPoint(Input.mousePosition);
 
             cam.transform.position = new Vector3();
-            Debug.Log(cam.transform.rotation.eulerAngles.x);
             if ((cam.transform.rotation * Quaternion.Euler(new Vector3(direction.y * 180, 0, 0))).eulerAngles.x < 80)
             {
                 cam.transform.Rotate(new Vector3(1, 0, 0), direction.y * 180);
@@ -77,7 +76,6 @@ public class CameraPan : MonoBehaviour
         {
             cam.transform.Translate(0, 0, increment);
             currZoom += increment;
-            Debug.Log("CurrZoom = " + currZoom);
         }
     }
 }
