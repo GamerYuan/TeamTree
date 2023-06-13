@@ -54,7 +54,7 @@ public class Bonsai : MonoBehaviour
 
     private void GenerateSkeleton()
     {
-        treeGeometry.CalcTreeSkeleton(upwards, lsystem.GetUnits());
+        treeGeometry.CalcTreeSkeleton(upwards, lsystem.GetUnits()[0].GetParams(), lsystem.GetUnits());
     }
 
     private void GenerateMesh()
@@ -74,6 +74,17 @@ public class Bonsai : MonoBehaviour
             treeEdges = treeGeometry.getTreeEdges();
         }
     }
+
+    public string GetTreeString()
+    {
+        return lsystem.ToString();
+    }
+
+    public void LoadString(string str)
+    {
+        lsystem.LoadString(str);
+    }
+
 
     private Vector3 LocalToWorldPos(Vector3 localPos)
     {
@@ -96,7 +107,7 @@ public class Bonsai : MonoBehaviour
         {
             Vector3 vertpos = LocalToWorldPos(treeVert.point.pos);
             Quaternion vertrot = LocalToWorldRot(treeVert.point.rot);
-            Gizmos.DrawSphere(vertpos, 0.05f);
+            Gizmos.DrawSphere(vertpos, treeVert.GetParam(3) / 100);
         }
             Gizmos.color = Color.white;
         for (int i = 0; i < edges.Length - 1; i+= 2)

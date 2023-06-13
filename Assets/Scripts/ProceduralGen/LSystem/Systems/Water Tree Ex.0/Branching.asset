@@ -9,9 +9,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52e6c5eac999f3946ab96d425ea0d6da, type: 3}
-  m_Name: Tree Ex. 1
+  m_Script: {fileID: 11500000, guid: 40d26d0fc5958f84887ae8159084af2c, type: 3}
+  m_Name: Branching
   m_EditorClassIdentifier: 
-  axiomString: A
-  ruleSets:
-  - {fileID: 11400000, guid: 2257fb014f9a24e47987963046d2e1c3, type: 2}
+  Constants:
+  - String: T
+    Value: 5
+  ruleStrings:
+  - 'B(l,t,r,w,b) : w > T && b == 0 = B(l,t,r,w / 2,1)[B(0, t / 2, -30, 0, 0)][B(0,
+    t / 2, 30, 0, 0)]'
+  Ignore: []
