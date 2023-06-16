@@ -6,8 +6,6 @@ using UnityEngine.Video;
 public class LoadingAnimManager : MonoBehaviour
 {
     [SerializeField] private VideoPlayer player;
-    private int frame = 0;
-
     public static bool done;
     private static int totalFrames;
 

@@ -9,9 +9,6 @@ EditorBuildSettings:
     path: Assets/Scripts/Scenes/SampleScene.unity
     guid: c850ee8c3b14cc8459e7e186857cf567
   - enabled: 1
-    path: Assets/Scenes/FlowerPotTest.unity
-    guid: 131d8a79fd40e2349aa857a913fe7743
-  - enabled: 1
     path: Assets/Scenes/LoadingScreen.unity
     guid: dc738cbdd152b4b4a972c6c8279624e2
   m_configObjects:

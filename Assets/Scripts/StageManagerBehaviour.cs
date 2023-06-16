@@ -7,9 +7,11 @@ public class StageManagerBehaviour : MonoBehaviour
     public static bool isPaused;
     
     [SerializeField] private GameObject minigameMenu, baseCanvas;
+    private LoadingScreenTrigger loadScreenTrigger;
     void Awake()
     {
         isPaused = false;
+        loadScreenTrigger= GetComponent<LoadingScreenTrigger>();
     }
 
     public static void StopTime()
@@ -33,5 +35,10 @@ public class StageManagerBehaviour : MonoBehaviour
         minigameMenu.SetActive(false);
         baseCanvas.SetActive(true);
         StartTime();
+    }
+    public void LoadStage(string stageToLoad)
+    {
+        Debug.Log(stageToLoad);
+        loadScreenTrigger.LoadLoadingScreen(stageToLoad);
     }
 }
