@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class GoodWorm : ObstacleBehaviour
 {
-    public override void OnHit()
+    protected override void OnHit()
     {
         base.OnHit();
+        GlobalMinigameManager.AddScore(score);
         transform.localScale *= 0.9f;
         float randX = Random.Range(-0.2f, 0.2f);
         float randY = Random.Range(-0.2f, 0.2f);

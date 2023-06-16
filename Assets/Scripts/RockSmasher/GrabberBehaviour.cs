@@ -8,10 +8,12 @@ public class GrabberBehaviour : MonoBehaviour
     private bool isSpin, isCooldown;
     private float rotTime;
     private LineRenderer lineRenderer;
+    private bool isEnd;
     // Start is called before the first frame update
     void Start()
     {
         isSpin = true;
+        isEnd = false;
         lineRenderer = GetComponent<LineRenderer>();
     }
 
@@ -23,13 +25,16 @@ public class GrabberBehaviour : MonoBehaviour
             rotTime += Time.deltaTime;
             Spin();
         }
-        if (Input.GetMouseButtonDown(0))
+        if (!isEnd)
         {
-            DisableSpin();
-            StartCoroutine(CooldownCount());
-        }
-        if (transform.GetChild(0).localPosition.y >= -0.4f && !isCooldown) {
-            EnableSpin();
+            if (Input.GetMouseButtonDown(0))
+            {
+                DisableSpin();
+                StartCoroutine(CooldownCount());
+            }
+            if (transform.GetChild(0).localPosition.y >= -0.4f && !isCooldown) {
+                EnableSpin();
+            }
         }
         lineRenderer.SetPosition(0, transform.position);
         lineRenderer.SetPosition(1, transform.GetChild(0).position);
@@ -57,5 +62,9 @@ public class GrabberBehaviour : MonoBehaviour
         isCooldown = true;
         yield return new WaitForSeconds(0.05f);
         isCooldown = false;
+    }
+    public void EndStage()
+    {
+        isEnd = true;
     }
 }

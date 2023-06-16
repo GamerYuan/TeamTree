@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class MinigameManager : MonoBehaviour
+public class GlobalMinigameManager : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField] private float timer;
@@ -17,8 +17,9 @@ public class MinigameManager : MonoBehaviour
     private LoadingScreenTrigger loadingScreenTrigger;
 
 
-    void Start()
+    void Awake()
     {
+        score = 0;
         loadingScreenTrigger = GetComponent<LoadingScreenTrigger>();
         scoreText = scoreTextHelper;
         timerText.text = $"Time: {timer}";
@@ -46,7 +47,10 @@ public class MinigameManager : MonoBehaviour
         endStage = true;
         foreach (GameObject go in disableList)
         {
-            go.SetActive(false);
+            if (go != null) 
+            {
+                go.SetActive(false);
+            }
         }
         timerText.text = "";
         scoreText.text = "";

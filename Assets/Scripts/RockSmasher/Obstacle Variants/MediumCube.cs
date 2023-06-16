@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MediumCube : ObstacleBehaviour
 {
-    public override void OnHit()
+    protected override void OnHit()
     {
         base.OnHit();
         MeshRenderer meshRenderer = GetComponent<MeshRenderer>();

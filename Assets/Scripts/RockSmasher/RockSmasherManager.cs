@@ -4,18 +4,15 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 
-public class MinigameManagerBehaviour : MonoBehaviour
+public class RockSmasherManager : MonoBehaviour
 {
     [SerializeField] private List<GameObject> obstacleList;
     [SerializeField] private int obstacleCount;
     [SerializeField] private LayerMask obstacleLayer;
-    [SerializeField] private TMP_Text scoreTextHelper;
-    private static TMP_Text scoreText;
-    private static int score;
+    [SerializeField] private HookBehaviour hookBehaviour;
+    [SerializeField] private GrabberBehaviour grabberBehaviour;
     void Awake()
     {
-        scoreText = scoreTextHelper;
-        scoreText.text = $"Score: {score}";
         int i = 0;
         while (i < obstacleCount)
         {
@@ -27,12 +24,6 @@ public class MinigameManagerBehaviour : MonoBehaviour
                 ++i;
             }
         }
-    }
-
-    public static void AddScore(int add)
-    {
-        score += add;
-        scoreText.text = $"Score: {score}";
     }
 
     private bool SpawnObstacle(int obstacleType)
@@ -67,4 +58,9 @@ public class MinigameManagerBehaviour : MonoBehaviour
         return false;
     }
 
+    private void OnDisable()
+    {
+        hookBehaviour.EndStage();
+        grabberBehaviour.EndStage();
+    }
 }

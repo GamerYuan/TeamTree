@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class ObstacleBehaviour : MonoBehaviour
 {
-    [SerializeField] private int score, hitCount;
+    [SerializeField] protected int score, hitCount;
     private void Death()
     {
+        GlobalMinigameManager.AddScore(score);
         Destroy(gameObject);
     }
     void OnTriggerEnter(Collider other)
@@ -18,8 +19,8 @@ public class ObstacleBehaviour : MonoBehaviour
             Death();
         }
     }
-    public virtual void OnHit()
+    protected virtual void OnHit()
     {
-        MinigameManagerBehaviour.AddScore(score);
+        // do nothing
     }
 }

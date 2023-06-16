@@ -84,4 +84,8 @@ public class HookBehaviour : MonoBehaviour
         yield return new WaitForSeconds(shootCooldown);
         canShoot = true;
     }
+    public void EndStage()
+    {
+        canShoot = false;
+    }
 }
