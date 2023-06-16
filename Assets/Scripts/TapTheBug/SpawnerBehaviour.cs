@@ -46,7 +46,6 @@ public class SpawnerBehaviour : MonoBehaviour
             currBug.transform.localScale = Vector3.one * Random.Range(0.9f, 1.3f);
             float randCd = Random.Range(0.5f, spawnCooldown);
             spawnCooldown = Mathf.Clamp(spawnCooldown * cooldownMultiplier, 1.0f, spawnCooldown);
-            Debug.Log($"New bug in {randCd.ToString("F2")}");
             counter--;
             if (counter == 0) spawnList.Add(bugList[1]);
             yield return new WaitForSeconds(randCd);

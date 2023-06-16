@@ -24,7 +24,6 @@ public class LoadingAnimManager : MonoBehaviour
             player.StepForward();
             --frames;
             --totalFrames;
-            Debug.Log(totalFrames);
             if (totalFrames <= 0)
             {
                 done = true;

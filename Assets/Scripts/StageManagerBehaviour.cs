@@ -38,7 +38,6 @@ public class StageManagerBehaviour : MonoBehaviour
     }
     public void LoadStage(string stageToLoad)
     {
-        Debug.Log(stageToLoad);
         loadScreenTrigger.LoadLoadingScreen(stageToLoad);
     }
 }

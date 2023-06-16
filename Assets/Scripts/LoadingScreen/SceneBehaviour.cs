@@ -28,18 +28,15 @@ public class SceneBehaviour : MonoBehaviour
         while (!operation.isDone && !LoadingAnimManager.done)
         {
             currProcess = operation.progress;
-            Debug.Log(currProcess);
             float diff = currProcess - prevProcces;
             int frames = Mathf.RoundToInt(diff * 122);
             if (frames > 0)
             {
-                Debug.Log("outside");
                 StartCoroutine(loadingAnimManager.StepFrames(Mathf.Clamp(frames, 1, 20), 0.1f));
             } 
             
             if (currProcess >= 0.9f)
             {
-                Debug.Log("inside");
                 StartCoroutine(loadingAnimManager.StepFrames(20, 0.1f));
             }
             prevProcces = currProcess;

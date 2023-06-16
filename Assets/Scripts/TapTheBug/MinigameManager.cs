@@ -29,12 +29,15 @@ public class MinigameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        timer -= Time.deltaTime;
-        timerText.text = $"Time: {timer.Round(0)}";
-        if (timer <= 0 && !endStage)
+        if (!endStage)
         {
-            timer = 0;
-            StopStage();
+            timer -= Time.deltaTime;
+            timerText.text = $"Time: {timer.Round(0)}";
+            if (timer <= 0)
+            {
+                timer = 0;
+                StopStage();
+            }
         }
     }
 
