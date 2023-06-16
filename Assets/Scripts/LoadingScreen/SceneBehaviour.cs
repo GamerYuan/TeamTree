@@ -10,6 +10,7 @@ public class SceneBehaviour : MonoBehaviour
     void Awake()
     {
         loadingAnimManager = GetComponent<LoadingAnimManager>();
+        Time.timeScale = 1.0f;
     }
     void Start()
     {
