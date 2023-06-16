@@ -2,6 +2,7 @@ using NCalc;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 using UnityEditor.Search;
@@ -61,14 +62,45 @@ public class Unit
     //Convert a string of form "A(1,2,3,..)" to a Unit
     public static Unit Parse(string unitString)
     {
-        string[] unitComponents = unitString.Split(new char[] { '(', ')', ',' }, StringSplitOptions.RemoveEmptyEntries);
+        string[] unitComponents = new string[2];
+        unitComponents[0] = unitString.Substring(0, Math.Max(unitString.IndexOf("("),1));
+        if (unitString.Contains("("))
+            unitComponents[1] = unitString.Substring(unitString.IndexOf("(") + 1, unitString.LastIndexOf(")") - 2);
+        else
+            unitComponents[1] = "";
+
         string name = unitComponents[0];
-        Expression[] parameters = new Expression[unitComponents.Length - 1];
-        for (int i = 0; i < parameters.Length; i++)
+        int bracketdepth = 0;
+        string parameter = "";
+        List<string> parameters = new List<string>();
+        for(int i = 0; i < unitComponents[1].Length; i++)
         {
-            parameters[i] = new Expression(unitComponents[i + 1]);
+            if (unitComponents[1][i] == '(')
+            {
+                parameter += unitComponents[1][i];
+                bracketdepth++;
+            }
+            else if (unitComponents[1][i] == ')')
+            {
+                parameter += unitComponents[1][i];
+                bracketdepth--;
+            }
+            else if (bracketdepth == 0 && unitComponents[1][i] == ',')
+            {
+                parameters.Add(parameter);
+                parameter = "";
+            }
+            else
+                parameter += unitComponents[1][i];
         }
-        return new Unit(name, parameters);
+        if(parameter != "")
+            parameters.Add(parameter);
+        Expression[] expressions = new Expression[parameters.Count];
+        for (int i = 0; i < parameters.Count; i++)
+        { 
+            expressions[i] = new Expression(parameters[i]);
+        }
+        return new Unit(name, expressions);
     }
 
     public Dictionary<string, float> ConstructParamMap(string[] paramNames)

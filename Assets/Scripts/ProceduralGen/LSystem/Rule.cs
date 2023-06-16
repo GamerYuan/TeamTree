@@ -324,23 +324,25 @@ public class Rule : ScriptableObject
         for (int i = 0; i < leftParamNames.Length; i++)
             paramMap.Add(leftParamNames[i], leftContext.GetParamOrDefault(i));
 
+        Dictionary<string, float> paramMapClone = new(paramMap);
         foreach (Unit rightContext in rightContexts)
         {
-            Dictionary<string, float> rightParamMap = new Dictionary<string, float>();
+            Dictionary<string, float> rightParamMap = new(paramMapClone);
             if (rightContext.GetName() == rightString)
             {
                 for (int i = 0; i < rightParamNames.Length; i++)
                 {
                     rightParamMap.Add(rightParamNames[i], rightContext.GetParamOrDefault(i));
-                }
-                if (SubstituteConditionParams(paramMap.Concat(rightParamMap).ToDictionary(x => x.Key, x => x.Value)))
+                }   
+
+                if (SubstituteConditionParams(rightParamMap))
                 {
-                    foreach (KeyValuePair<string, float> rightparam in rightParamMap)
+                    foreach(string rightparam in rightParamNames)
                     {
-                        if (paramMap.ContainsKey(rightparam.Key))
-                            paramMap[rightparam.Key] = (float)rightparam.Value + (float)paramMap[rightparam.Key];
+                        if (paramMap.ContainsKey(rightparam))
+                            paramMap[rightparam] += rightParamMap[rightparam];
                         else
-                            paramMap.Add(rightparam.Key, rightparam.Value);
+                            paramMap.Add(rightparam, rightParamMap[rightparam]);
                     }
                 }
             }

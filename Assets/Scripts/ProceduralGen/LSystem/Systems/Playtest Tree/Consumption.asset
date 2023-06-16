@@ -10,9 +10,19 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 40d26d0fc5958f84887ae8159084af2c, type: 3}
-  m_Name: Signal Propagation Ex.1 Rules
+  m_Name: Consumption
   m_EditorClassIdentifier: 
-  Constants: []
+  Constants:
+  - String: water_loss
+    Value: 0.5
+  - String: length_gain
+    Value: 0.1
+  - String: thickness_gain
+    Value: 0.1
+  - String: MATH_E
+    Value: 2.7128
   Ignore: []
   ruleStrings:
-  - 'p(x) < p(y) > p(z) : * = p(y + z)'
+  - 'B(l,t,r,w,b,s) : w < 0= B(l, t,r,0,b,s)'
+  - 'B(l,t,r,w,b,s) : s < b = B(l + Pow(MATH_E, -Pow(4 * s/b + 2,1)),  t +  Pow(MATH_E,
+    -Pow(4 * s/b + 2,1)) / 100 , r, w * water_loss,b,s + 0.1)'

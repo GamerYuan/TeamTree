@@ -61,6 +61,7 @@ public class Bonsai : MonoBehaviour
 
     public void TreeUpdate()
     {
+        WaterTree(0.1f);
         lsystem.ApplyRules();
         GenerateSkeleton();
         GenerateMesh();
@@ -76,6 +77,11 @@ public class Bonsai : MonoBehaviour
     public void LoadString(string str)
     {
         lsystem.LoadString(str);
+    }
+
+    public void WaterTree(float f)
+    {
+        lsystem.ModifyUnit("R", 0, f);
     }
 
 

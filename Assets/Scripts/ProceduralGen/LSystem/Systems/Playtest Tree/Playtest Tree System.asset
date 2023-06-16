@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 52e6c5eac999f3946ab96d425ea0d6da, type: 3}
+  m_Name: Playtest Tree System
+  m_EditorClassIdentifier: 
+  axiomString: R(1)B(1,0.01,0,0,1,0)
+  ruleSets:
+  - {fileID: 11400000, guid: 0f5be3c033a76c641979ee4be13f2ae2, type: 2}
+  - {fileID: 11400000, guid: f7c0c08cc7f84154bbfb01849dc9bb82, type: 2}
+  - {fileID: 11400000, guid: a905f8228874af6419bffe2e77008d66, type: 2}
+  - {fileID: 11400000, guid: f9873f76bef05684d9a137d0e3edb1cb, type: 2}
+  - {fileID: 11400000, guid: 8c4852aef1d1eb04ebebd7901e5185a8, type: 2}

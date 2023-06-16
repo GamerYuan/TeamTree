@@ -1,3 +1,4 @@
+using NCalc;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -22,7 +23,7 @@ public class LSystem : ScriptableObject
     public void InitAxiom()
     {
         word = Word.Parse(axiomString);
-        Debug.Log(this.word);
+        Debug.Log(this.word);   
     }
 
     //Updates the current List of Units by applying the Rules in the RuleSet
@@ -68,6 +69,18 @@ public class LSystem : ScriptableObject
                     return stack;
                 };
 
+        }
+    }
+
+    public void ModifyUnit(string name, int paramIndex, float newValue)
+    {
+        foreach(Unit unit in GetUnits())
+        {
+            if (unit.name == name)
+            {
+                unit.unitParameters[paramIndex] = new Expression((unit.GetParamOrDefault(paramIndex) + newValue).ToString());
+                break;
+            }
         }
     }
 

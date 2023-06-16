@@ -9,9 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 52e6c5eac999f3946ab96d425ea0d6da, type: 3}
-  m_Name: Signal Propagation Ex.0
+  m_Script: {fileID: 11500000, guid: 40d26d0fc5958f84887ae8159084af2c, type: 3}
+  m_Name: Rootdraw
   m_EditorClassIdentifier: 
-  axiomString: p(0)p(1)[p(2)][p(3)]p(4)p(5)
-  ruleSets:
-  - {fileID: 11400000, guid: 1b2e7ad39e0840a42bcef366264d9ed1, type: 2}
+  Constants: []
+  Ignore: []
+  ruleStrings:
+  - 'R(W) < B(l,t,r,w,b,s) : * = B(l,t,r,w + W/2,b,s)'
+  - 'R(w) : * = R(w/2)'

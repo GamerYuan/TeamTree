@@ -96,17 +96,20 @@ public class Word
         List<Unit> units = new List<Unit>();
         string currUnitString = word[0].ToString();
         bool nextFlag = true;
+        int bracketDepth = 0;
         for (int i = 1; i < word.Length; i++)
         {
             if (word[i] == '(')
             {
+                bracketDepth++;
                 nextFlag = false;
                 currUnitString += word[i].ToString();
             }
             else if (word[i] == ')')
             {
-
-                nextFlag = true;
+                bracketDepth--;
+                if(bracketDepth == 0)
+                    nextFlag = true;
                 currUnitString += word[i].ToString();
             }
             else if (nextFlag)

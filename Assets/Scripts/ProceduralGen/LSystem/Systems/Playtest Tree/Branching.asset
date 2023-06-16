@@ -10,9 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 40d26d0fc5958f84887ae8159084af2c, type: 3}
-  m_Name: Signal Propagation Ex.1 Rules
+  m_Name: Branching
   m_EditorClassIdentifier: 
   Constants: []
   Ignore: []
   ruleStrings:
-  - 'p(x) < p(y) > p(z) : * = p(y + z)'
+  - 'B(l,t,r,w,b,s) : w > 0.5 && b == 1 = B(l,t,r,w,4,s)[B(0.1, 0.001, 30, 0, 1,0)][B(0.1,
+    0.001, -30, 0, 1,0)]B(0.1, 0.001, 0, 0, 1,0)'
+  - 'B(l,t,r,w,b,s)  > B(L,T,R,W,B,S) : * =B(l,t,r,w,B + 1,s)'
