@@ -1342,7 +1342,7 @@ MonoBehaviour:
   obstacleCount: 40
   obstacleLayer:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 192
   scoreTextHelper: {fileID: 591802968}
 --- !u!4 &1837081359
 Transform:
