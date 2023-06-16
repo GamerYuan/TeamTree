@@ -1,0 +1,15 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class LargeCube : ObstacleBehaviour
+{
+    public override void OnHit()
+    {
+        base.OnHit();
+        MeshRenderer meshRenderer = GetComponent<MeshRenderer>();
+        Color currColor = meshRenderer.material.color;
+        Color newColor = currColor * 0.4f;
+        meshRenderer.material.color = newColor;
+    }
+}
