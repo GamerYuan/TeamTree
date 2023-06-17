@@ -30,7 +30,7 @@ public class GrabberBehaviour : MonoBehaviour
             DisableSpin();
             StartCoroutine(CooldownCount());
         }
-        if (transform.GetChild(0).localPosition.y >= -0.4f && !isCooldown)
+        if (transform.GetChild(0).localPosition.y >= -0.41f && !isCooldown)
         {
             EnableSpin();
         }
@@ -58,7 +58,7 @@ public class GrabberBehaviour : MonoBehaviour
     private IEnumerator CooldownCount()
     {
         isCooldown = true;
-        yield return new WaitForSeconds(0.05f);
+        yield return new WaitForSeconds(0.01f);
         isCooldown = false;
     }
     public void EndStage()
