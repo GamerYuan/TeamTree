@@ -21,7 +21,7 @@ public class SceneBehaviour : MonoBehaviour
     {
         AsyncOperation operation;
         
-        if (SceneManager.GetSceneByName(SceneToLoad.sceneToLoad).IsValid())
+        if (Application.CanStreamedLevelBeLoaded(SceneToLoad.sceneToLoad))
         {
             operation = SceneManager.LoadSceneAsync(SceneToLoad.sceneToLoad);
         } 

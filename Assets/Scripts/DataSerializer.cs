@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class DataSerializer : MonoBehaviour
 {
@@ -11,20 +12,27 @@ public class DataSerializer : MonoBehaviour
 
     private string currentString;
     private float waterVal;
+    private Bonsai bonsai;
 
     private static string key = "N7OnL3lf8YasErkERkQAE7+u5R6fspD6QkQZhWhCv/4=";
     private static string iv = "dt9espR+qOm3M5jlfo5uqQ==";
 
-    void Start()
+    void Awake()
     {
-        Debug.Log(Application.persistentDataPath);
-        StartCoroutine(SaveDataRoutine());
+        //Debug.Log(Application.persistentDataPath);
+        bonsai = GameObject.FindGameObjectWithTag("Tree").GetComponent<Bonsai>();
     }
 
     public void SaveData()
     {
         string filePath = Application.persistentDataPath + fileName;
         DataProgress data = new DataProgress();
+        if (bonsai == null)
+        {
+            bonsai = GameObject.FindGameObjectWithTag("Tree").GetComponent<Bonsai>();
+        }
+        currentString = bonsai.GetTreeString();
+        Debug.Log("File Saved");
         data.currentString = currentString;
         data.waterVal = waterVal;
         string jsonString = JsonUtility.ToJson(data);
@@ -40,14 +48,24 @@ public class DataSerializer : MonoBehaviour
             byte[] soup = File.ReadAllBytes(filePath);
             string jsonString = Decrypt(soup);
             DataProgress data = JsonUtility.FromJson<DataProgress>(jsonString);
+            if (bonsai == null)
+            {
+                bonsai = GameObject.FindGameObjectWithTag("Tree").GetComponent<Bonsai>();
+            }
             currentString = data.currentString;
+            bonsai.LoadString(currentString);
             waterVal = data.waterVal;
-            Debug.Log($"Save File Loaded! {data}");
+            Debug.Log($"Save File Loaded!");
         } 
         else
         {
             Debug.Log("No save file is found! Loading default values");
-            currentString = "F";
+            if (bonsai == null)
+            {
+                bonsai = GameObject.FindGameObjectWithTag("Tree").GetComponent<Bonsai>();
+            }
+            bonsai.lsystem.InitAxiom();
+            currentString = bonsai.GetTreeString();
             waterVal = 0;
         }
     }
@@ -123,6 +141,11 @@ public class DataSerializer : MonoBehaviour
     void OnApplicationQuit()
     {
         SaveData();
+    }
+    void OnEnable()
+    {
+        LoadData();
+        StartCoroutine(SaveDataRoutine());
     }
 
     private IEnumerator SaveDataRoutine()
