@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 
@@ -9,16 +10,19 @@ public class FlowerPotBehaviour : MonoBehaviour
     [SerializeField] private float maxWater;
     [SerializeField] private float minWater;
     [SerializeField] private TMP_Text text;
-    
+
+    public static FlowerPotBehaviour instance;
+
     private bool startWater;
-    private GameObject currTree;
-    
+
     // Start is called before the first frame update
+    void Awake()
+    {
+        instance = this;
+    }
     void Start()
     {
         StartCoroutine(WaterCall());
-        currTree = GameObject.FindGameObjectWithTag("Tree");
-        StartCoroutine(WaterTree());
         //StartCoroutine(WaterCountdown());
     }
 
@@ -51,6 +55,7 @@ public class FlowerPotBehaviour : MonoBehaviour
         if (water + 5 * Time.deltaTime <= maxWater)
         {
             water += 5 * Time.deltaTime;
+            CoinManager.instance.RemoveCoins(1 * Time.deltaTime);
         }
     }
 
@@ -70,6 +75,10 @@ public class FlowerPotBehaviour : MonoBehaviour
     {
         return water;
     }
+    public void SetWater(float waterVal)
+    {
+        water = waterVal;
+    }
 
     private IEnumerator WaterCall()
     {
@@ -77,27 +86,6 @@ public class FlowerPotBehaviour : MonoBehaviour
         {
             Debug.Log($"Current Water Level is: {water}/{maxWater}");
             yield return new WaitForSeconds(2f);
-        }
-    }
-
-    // Let tree suck water every 5s
-    private IEnumerator WaterTree()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(5f);
-            if (water >= 0.5f)
-            {
-                Debug.Log("Watering Tree!");
-                float decAmount = water * 0.7f;
-                DecreaseWater(decAmount);
-                if (currTree == null)
-                {
-                    currTree = GameObject.FindGameObjectWithTag("Tree");
-                }
-                Bonsai bonsai = currTree.GetComponent<Bonsai>();
-                bonsai.WaterTree(decAmount * 0.95f);
-            }
         }
     }
     

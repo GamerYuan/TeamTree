@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 1804034013}
-  m_IndirectSpecularColor: {r: 0.18222922, g: 0.22793415, b: 0.3073572, a: 1}
+  m_IndirectSpecularColor: {r: 0.17964885, g: 0.22493887, b: 0.30649084, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1538,7 +1538,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 72f12ad19d8c1d34397242a9e1eaac65, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  timer: 10
+  timer: 30
   timerText: {fileID: 90091614}
   scoreTextHelper: {fileID: 2047025781}
   finalText: {fileID: 515482181}
@@ -1549,6 +1549,7 @@ MonoBehaviour:
   - {fileID: 1751594925}
   - {fileID: 179860536}
   panel: {fileID: 1247668414}
+  scoreMultiplier: 300
 --- !u!114 &2008269678
 MonoBehaviour:
   m_ObjectHideFlags: 0

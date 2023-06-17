@@ -1,10 +1,8 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
 using System.Security.Cryptography;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 
 public class DataSerializer : MonoBehaviour
 {
@@ -12,6 +10,7 @@ public class DataSerializer : MonoBehaviour
 
     private string currentString;
     private float waterVal;
+    private float coinVal;
     private Bonsai bonsai;
 
     private static string key = "N7OnL3lf8YasErkERkQAE7+u5R6fspD6QkQZhWhCv/4=";
@@ -32,9 +31,12 @@ public class DataSerializer : MonoBehaviour
             bonsai = GameObject.FindGameObjectWithTag("Tree").GetComponent<Bonsai>();
         }
         currentString = bonsai.GetTreeString();
+        waterVal = FlowerPotBehaviour.instance.GetWater();
+        coinVal = CoinManager.instance.GetCoins();
         Debug.Log("File Saved");
         data.currentString = currentString;
         data.waterVal = waterVal;
+        data.coinVal = coinVal;
         string jsonString = JsonUtility.ToJson(data);
         byte[] soup = Encrypt(jsonString);
         File.WriteAllBytes(filePath, soup);
@@ -53,8 +55,11 @@ public class DataSerializer : MonoBehaviour
                 bonsai = GameObject.FindGameObjectWithTag("Tree").GetComponent<Bonsai>();
             }
             currentString = data.currentString;
-            bonsai.LoadString(currentString);
             waterVal = data.waterVal;
+            coinVal = data.coinVal;
+            bonsai.LoadString(currentString);
+            FlowerPotBehaviour.instance.SetWater(waterVal);
+            CoinManager.instance.SetCoins(coinVal);
             Debug.Log($"Save File Loaded!");
         } 
         else
@@ -66,7 +71,10 @@ public class DataSerializer : MonoBehaviour
             }
             bonsai.lsystem.InitAxiom();
             currentString = bonsai.GetTreeString();
-            waterVal = 0;
+            waterVal = 5;
+            coinVal = 5;
+            FlowerPotBehaviour.instance.SetWater(waterVal);
+            CoinManager.instance.SetCoins(coinVal);
         }
     }
 
@@ -164,10 +172,11 @@ public struct DataProgress
 {
     public string currentString;
     public float waterVal;
+    public float coinVal;
 
     public override string ToString()
     {
-        return currentString + " " + waterVal.ToString();
+        return currentString + " " + waterVal.ToString() + coinVal.ToString();
     }
 }
 

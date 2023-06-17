@@ -11,6 +11,7 @@ public class GlobalMinigameManager : MonoBehaviour
     [SerializeField] private TMP_Text timerText, scoreTextHelper, finalText, returnText;
     [SerializeField] private List<GameObject> disableList;
     [SerializeField] private GameObject panel;
+    [SerializeField] private int scoreMultiplier;
     private static TMP_Text scoreText;
     private static int score;
     private static bool endStage;
@@ -56,6 +57,8 @@ public class GlobalMinigameManager : MonoBehaviour
         scoreText.text = "";
         panel.SetActive(true);
         finalText.text = $"Time's Up!\nFinal Score: {score}";
+        Debug.Log(CoinManager.instance.CalculateCoins(score, scoreMultiplier));
+        CoinManager.instance.AddCoins(CoinManager.instance.CalculateCoins(score, scoreMultiplier));
         StartCoroutine(ReturnTimer());
     }
     public static void AddScore(int num)

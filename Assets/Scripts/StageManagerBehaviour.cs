@@ -12,6 +12,7 @@ public class StageManagerBehaviour : MonoBehaviour
     void Awake()
     {
         currTree = GameObject.FindGameObjectWithTag("Tree");
+        StartCoroutine(WaterTree());
         isPaused = false;
         loadScreenTrigger= GetComponent<LoadingScreenTrigger>();
     }
@@ -51,6 +52,7 @@ public class StageManagerBehaviour : MonoBehaviour
         GameObject nextTree = Instantiate(treePrefab, flowerPot.transform);
         nextTree.transform.localPosition = treePos;
         nextTree.transform.localEulerAngles = treeRot;
+        nextTree.GetComponent<Bonsai>().lsystem.InitAxiom();
         currTree = nextTree;
     }
 
@@ -60,4 +62,26 @@ public class StageManagerBehaviour : MonoBehaviour
         bonsai.TreeUpdate();
     }
 
+    // Let tree suck water and update every 5s
+    private IEnumerator WaterTree()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(5f);
+            float water = FlowerPotBehaviour.instance.GetWater();
+            if (water >= 0.5f)
+            {
+                Debug.Log("Watering Tree!");
+                float decAmount = water * 0.7f;
+                FlowerPotBehaviour.instance.DecreaseWater(decAmount);
+                if (currTree == null)
+                {
+                    currTree = GameObject.FindGameObjectWithTag("Tree");
+                }
+                Bonsai bonsai = currTree.GetComponent<Bonsai>();
+                bonsai.WaterTree(decAmount * 0.95f);
+            }
+            UpdateTree();
+        }
+    }
 }
