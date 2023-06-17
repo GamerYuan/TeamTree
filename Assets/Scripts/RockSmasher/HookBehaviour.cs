@@ -8,19 +8,20 @@ public class HookBehaviour : MonoBehaviour
     // Start is called before the first frame update
     [SerializeField] private float shootSpeed, pullBackSpeed, shootCooldown;
     //private Rigidbody rb;
-    private bool isShoot, canShoot;
+    private bool isShoot, canShoot, isEnd;
     private Coroutine shootCountdown;
     void Start()
     {
         //rb = GetComponent<Rigidbody>();
         isShoot = false;
         canShoot = true;
+        isEnd = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && canShoot)
+        if (Input.GetMouseButtonDown(0) && canShoot && !isEnd)
         {
             EnableShoot();
             shootCountdown = StartCoroutine(ShootTimer());
@@ -86,6 +87,6 @@ public class HookBehaviour : MonoBehaviour
     }
     public void EndStage()
     {
-        canShoot = false;
+        isEnd = true;
     }
 }

@@ -25,16 +25,14 @@ public class GrabberBehaviour : MonoBehaviour
             rotTime += Time.deltaTime;
             Spin();
         }
-        if (!isEnd)
+        if (Input.GetMouseButtonDown(0) && !isEnd)
         {
-            if (Input.GetMouseButtonDown(0))
-            {
-                DisableSpin();
-                StartCoroutine(CooldownCount());
-            }
-            if (transform.GetChild(0).localPosition.y >= -0.4f && !isCooldown) {
-                EnableSpin();
-            }
+            DisableSpin();
+            StartCoroutine(CooldownCount());
+        }
+        if (transform.GetChild(0).localPosition.y >= -0.4f && !isCooldown)
+        {
+            EnableSpin();
         }
         lineRenderer.SetPosition(0, transform.position);
         lineRenderer.SetPosition(1, transform.GetChild(0).position);
