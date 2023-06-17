@@ -6,10 +6,12 @@ public class StageManagerBehaviour : MonoBehaviour
 {
     public static bool isPaused;
     
-    [SerializeField] private GameObject minigameMenu, baseCanvas;
+    [SerializeField] private GameObject minigameMenu, baseCanvas, flowerPot, treePrefab;
     private LoadingScreenTrigger loadScreenTrigger;
+    private GameObject currTree;
     void Awake()
     {
+        currTree = GameObject.FindGameObjectWithTag("Tree");
         isPaused = false;
         loadScreenTrigger= GetComponent<LoadingScreenTrigger>();
     }
@@ -40,4 +42,22 @@ public class StageManagerBehaviour : MonoBehaviour
     {
         loadScreenTrigger.LoadLoadingScreen(stageToLoad);
     }
+
+    public void ResetTree()
+    {
+        Vector3 treePos = currTree.transform.localPosition;
+        Vector3 treeRot = currTree.transform.localEulerAngles;
+        Destroy(currTree);
+        GameObject nextTree = Instantiate(treePrefab, flowerPot.transform);
+        nextTree.transform.localPosition = treePos;
+        nextTree.transform.localEulerAngles = treeRot;
+        currTree = nextTree;
+    }
+
+    public void UpdateTree()
+    {
+        Bonsai bonsai = currTree.GetComponent<Bonsai>();
+        bonsai.TreeUpdate();
+    }
+
 }

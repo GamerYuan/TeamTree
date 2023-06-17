@@ -11,12 +11,15 @@ public class FlowerPotBehaviour : MonoBehaviour
     [SerializeField] private TMP_Text text;
     
     private bool startWater;
+    private GameObject currTree;
     
     // Start is called before the first frame update
     void Start()
     {
         StartCoroutine(WaterCall());
-        StartCoroutine(WaterCountdown());
+        currTree = GameObject.FindGameObjectWithTag("Tree");
+        StartCoroutine(WaterTree());
+        //StartCoroutine(WaterCountdown());
     }
 
     // Update is called once per frame
@@ -29,9 +32,8 @@ public class FlowerPotBehaviour : MonoBehaviour
         if (startWater)
         {
             AddWater();
-            Debug.Log("Adding Water");
         }
-        text.text = $"Water: {System.Math.Round(water, 2)}/{maxWater}";
+        //text.text = $"Water: {System.Math.Round(water, 2)}/{maxWater}";
     }
 
     void OnMouseDown()
@@ -77,14 +79,34 @@ public class FlowerPotBehaviour : MonoBehaviour
             yield return new WaitForSeconds(2f);
         }
     }
+
+    // Let tree suck water every 5s
+    private IEnumerator WaterTree()
+    {
+        while (true)
+        {
+            yield return new WaitForSeconds(5f);
+            if (water >= 0.5f)
+            {
+                Debug.Log("Watering Tree!");
+                float decAmount = water * 0.7f;
+                DecreaseWater(decAmount);
+                if (currTree == null)
+                {
+                    currTree = GameObject.FindGameObjectWithTag("Tree");
+                }
+                Bonsai bonsai = currTree.GetComponent<Bonsai>();
+                bonsai.WaterTree(decAmount * 0.95f);
+            }
+        }
+    }
     
     private IEnumerator WaterCountdown()
     {
-        yield return new WaitForSeconds(5f);
         while (true)
         {
-            DecreaseWater(1);
             yield return new WaitForSeconds(5f);
+            DecreaseWater(1);
         }
     }
 }
