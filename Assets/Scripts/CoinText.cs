@@ -23,7 +23,7 @@ public class CoinText : MonoBehaviour
         if (data is float) { 
         
             SetCoin((float)data);
-            coinText.text = $"Coin: {coinAmount.ToString("n2")}";
+            coinText.text = $"<mark=#4d4d4d88 padding=\"20, 20, 0, 0\">Coin: {coinAmount.ToString("n2")}</mark>";
         }
     }
 }
