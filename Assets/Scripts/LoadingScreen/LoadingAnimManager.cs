@@ -9,11 +9,12 @@ public class LoadingAnimManager : MonoBehaviour
     public static bool done;
     private static int totalFrames;
 
-    void Awake()
+    void Start()
     {
         player.Pause();
+        player.StepForward();
         done = false;
-        totalFrames = 122;
+        totalFrames = 121;
     }
 
     public IEnumerator StepFrames(int frames, float t)
