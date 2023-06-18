@@ -16,14 +16,13 @@ public class CoinText : MonoBehaviour
     private void SetCoin(float coin)
     {
         coinAmount = coin;
+        coinText.text = $"<mark=#4d4d4d88 padding=\"20, 20, 0, 0\">Coin: {coinAmount.ToString("n2")}</mark>";
     }
 
     public void UpdateCoin(Component sender, object data)
     {
         if (data is float) { 
-        
             SetCoin((float)data);
-            coinText.text = $"<mark=#4d4d4d88 padding=\"20, 20, 0, 0\">Coin: {coinAmount.ToString("n2")}</mark>";
         }
     }
 }

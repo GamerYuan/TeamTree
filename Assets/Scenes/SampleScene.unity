@@ -461,6 +461,7 @@ GameObject:
   - component: {fileID: 112149502}
   - component: {fileID: 112149501}
   - component: {fileID: 112149505}
+  - component: {fileID: 112149506}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -561,7 +562,34 @@ MonoBehaviour:
   water: 5
   maxWater: 100
   minWater: 0
-  text: {fileID: 0}
+--- !u!114 &112149506
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 112149500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b6e244e4e6e134f92b142c3b091dd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: 406ce034ed1033f44a42f691e6913693, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 112149505}
+        m_TargetAssemblyTypeName: FlowerPotBehaviour, Assembly-CSharp
+        m_MethodName: ChangeWaterState
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &174977552
 GameObject:
   m_ObjectHideFlags: 0
@@ -3570,6 +3598,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   onCoinChanged: {fileID: 11400000, guid: b2843aee29f67ac4e954fdb395608101, type: 2}
+  onCoinCanUse: {fileID: 11400000, guid: 406ce034ed1033f44a42f691e6913693, type: 2}
 --- !u!4 &946525466
 Transform:
   m_ObjectHideFlags: 0

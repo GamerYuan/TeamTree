@@ -11,6 +11,7 @@ public class CoinManager : MonoBehaviour
 
     [Header("Events")]
     [SerializeField] private GameEvent onCoinChanged;
+    [SerializeField] private GameEvent onCoinCanUse;
         
     void Awake()
     {
@@ -31,12 +32,20 @@ public class CoinManager : MonoBehaviour
         cachedCoins = currentCoins + val;
         Debug.Log($"Add Coins: {cachedCoins}");
         onCoinChanged.Raise(this, cachedCoins);
+        if (currentCoins <= 0 && cachedCoins > 0)
+        {
+            onCoinCanUse.Raise(this, false);
+        }
     }
 
     public void RemoveCoins(float val)
     {
         currentCoins -= val;
         onCoinChanged.Raise(this, currentCoins);
+        if (currentCoins <= 0)
+        {
+            onCoinCanUse.Raise(this, false);
+        }
     }
     public int CalculateCoins(int score, int multiplier)
     {
@@ -51,6 +60,7 @@ public class CoinManager : MonoBehaviour
     {
         currentCoins = val;
         onCoinChanged.Raise(this, currentCoins);
+        onCoinCanUse.Raise(this, currentCoins > 0);
     }
 
     private void ChangedActiveScene(Scene scene, LoadSceneMode mode)
@@ -64,6 +74,7 @@ public class CoinManager : MonoBehaviour
             if (currentCoins != 0)
             {
                 onCoinChanged.Raise(this, currentCoins);
+                onCoinCanUse.Raise(this, currentCoins > 0);
             }
         }
     }

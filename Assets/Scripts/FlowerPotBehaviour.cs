@@ -9,16 +9,16 @@ public class FlowerPotBehaviour : MonoBehaviour
     [SerializeField] private float water;
     [SerializeField] private float maxWater;
     [SerializeField] private float minWater;
-    [SerializeField] private TMP_Text text;
 
     public static FlowerPotBehaviour instance;
 
-    private bool startWater;
+    private bool startWater, canWater;
 
     // Start is called before the first frame update
     void Awake()
     {
         instance = this;
+        canWater = true;
     }
     void Start()
     {
@@ -37,7 +37,6 @@ public class FlowerPotBehaviour : MonoBehaviour
         {
             AddWater();
         }
-        //text.text = $"Water: {System.Math.Round(water, 2)}/{maxWater}";
     }
 
     void OnMouseDown()
@@ -52,7 +51,7 @@ public class FlowerPotBehaviour : MonoBehaviour
 
     private void AddWater()
     {
-        if (water + 5 * Time.deltaTime <= maxWater)
+        if (water + 5 * Time.deltaTime <= maxWater && canWater)
         {
             water += 5 * Time.deltaTime;
             CoinManager.instance.RemoveCoins(1 * Time.deltaTime);
@@ -95,6 +94,14 @@ public class FlowerPotBehaviour : MonoBehaviour
         {
             yield return new WaitForSeconds(5f);
             DecreaseWater(1);
+        }
+    }
+
+    public void ChangeWaterState(Component sender, object data)
+    {
+        if (data is bool)
+        {
+            canWater = (bool) data;
         }
     }
 }
