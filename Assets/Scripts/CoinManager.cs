@@ -40,11 +40,13 @@ public class CoinManager : MonoBehaviour
 
     public void RemoveCoins(float val)
     {
-        currentCoins -= val;
-        onCoinChanged.Raise(this, currentCoins);
-        if (currentCoins <= 0)
+        if (currentCoins - val <= 0)
         {
             onCoinCanUse.Raise(this, false);
+        } else
+        {
+            currentCoins -= val;
+            onCoinChanged.Raise(this, currentCoins);
         }
     }
     public int CalculateCoins(int score, int multiplier)
