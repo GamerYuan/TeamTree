@@ -18,7 +18,7 @@ public class GlobalMinigameManager : MonoBehaviour
     private LoadingScreenTrigger loadingScreenTrigger;
 
 
-    void Awake()
+    protected virtual void Awake()
     {
         score = 0;
         loadingScreenTrigger = GetComponent<LoadingScreenTrigger>();
