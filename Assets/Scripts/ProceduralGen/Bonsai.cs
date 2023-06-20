@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEditor;
 using Unity.VisualScripting;
 using static MathNet.Symbolics.VisualExpression;
+using UnityEngine.UIElements;
 
 public class Bonsai : MonoBehaviour
 {
@@ -32,25 +33,21 @@ public class Bonsai : MonoBehaviour
 
     private void Start()
     {
+        mesh = new Mesh();
         meshFilter = GetComponent<MeshFilter>();
         lsystem.InitAxiom();
-        treeGeometry.setConstants(constants);
+        treeGeometry.SetConstants(constants);
     }
 
     private void Update()
     {
         t += Time.deltaTime / period;
         if (t > 1) t = 0;
-        GenerateSkeleton();
-        GenerateMesh();
-        treeVertices = treeGeometry.getTreeVertices();
-        treeEdges = treeGeometry.getTreeEdges();
-
     }
 
     private void GenerateSkeleton()
     {
-        treeGeometry.CalcTreeSkeleton(upwards, lsystem.GetUnits()[0].GetParams(), lsystem.GetUnits());
+        treeGeometry.CalcTreeSkeleton(upwards, new float[] {0,0.05f}, lsystem.GetUnits());
     }
 
     private void GenerateMesh()
@@ -61,6 +58,7 @@ public class Bonsai : MonoBehaviour
 
     public void TreeUpdate()
     {
+        mesh.Clear();
         WaterTree(0.1f);
         lsystem.ApplyRules();
         GenerateSkeleton();

@@ -10,12 +10,11 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 40d26d0fc5958f84887ae8159084af2c, type: 3}
-  m_Name: Tree Ex.1 RuleSet
+  m_Name: Polygon Test RuleSety
   m_EditorClassIdentifier: 
   Constants: []
   Ignore: []
   ruleStrings:
   - "A \u2192 [&FL!A]/////\u2019[&FL!A]///////\u2019[&FL!A]"
-  - "F \u2192 S ///// F"
-  - "S \u2192 F L"
-  - "L \u2192 ['''\u2227\u2227{-f+f+f-|-f+f+f}]"
+  - "L \u2192 [\u2019\u2019\u2019\u2227\u2227{-f+f+f-|-f+f+f}]"
+  - F = FF

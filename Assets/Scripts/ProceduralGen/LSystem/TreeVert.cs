@@ -31,9 +31,9 @@ public class TreeVert
 
     public TreeVert Inflate(float magnitude)
     {
-        float[] newparameters = new float[parameters.Length];
+        float[] newparameters = new float[Math.Max(2,parameters.Length)];
         Array.Copy(parameters, newparameters, parameters.Length);
-        newparameters[1] = magnitude;
+        newparameters[1] *= magnitude;
         return new TreeVert(point, id, newparameters);
     }
 
@@ -65,7 +65,7 @@ public class TreeVert
         return point.ToString() + "(" + string.Join(",", parameters) + ")";
     }
 
-    public TreeVert clone()
+    public TreeVert Clone()
     {
         return new TreeVert(point, id, parameters);
     }

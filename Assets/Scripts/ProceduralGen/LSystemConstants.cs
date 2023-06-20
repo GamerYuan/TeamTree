@@ -1,8 +1,8 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using System.Runtime.InteropServices.WindowsRuntime;
+using System.Text;
+using UnityEditor;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 /*
  * ScriptableObject for storing Geometric Constant values in an L-System.
@@ -28,6 +28,8 @@ public class LSystemConstants : ScriptableObject
                              .MoveForward(u.GetParamOrDefault(0));
             case "F":
                 return x => x.MoveForward(SegmentLength * u.GetParamOrDefault(0));
+            case "f":
+                return x => x.MoveForward(SegmentLength * u.GetParamOrDefault(0));
             case "G":
                 return x => x.MoveForward(SegmentLength * u.GetParamOrDefault(0)).Inflate(u.GetParamOrDefault(1));
             case "+":
@@ -44,44 +46,36 @@ public class LSystemConstants : ScriptableObject
                 return x => x.Rotate(Quaternion.Euler(0f, 0f, -Rotation));
             case "|":
                 return x => x.Rotate(Quaternion.Euler(0f, 180f, 0f));
+            case "!":
+                return x => x.Inflate(0.707f);
             default:
                 return x => x;
         }
     }
-    public StackMod<TreeVert> GetStackMod(Unit u)
-    {
-        switch(u.name)
-        {
-            case "[":
-                return (x, stack) =>
-                {
-                    stack.Push(x);
-                    return stack;
-                };
-            case "]":
-                return (x, stack) =>
-                {
-                    stack.Pop();
-                    return stack;
-                };
-            default:
-                return (x, stack) =>
-                {
-                    stack.Pop();
-                    stack.Push(x);
-                    return stack;
-                };
 
+    public bool AddsNode(Unit u)
+    {
+        switch (u.name)
+        {
+            case "F":
+                return true;
+            case "f":
+                return true;
+            default:
+                return false;
         }
     }
+
     public float[] GetDefaultParams(string name)
     {
         switch (name)
         {
+            case "f":
+                return new float[] { SegmentLength };
             case "F":
                 return new float[] { SegmentLength, 0.05f };
             case "G":
-                return new float[] { SegmentLength, 0.05f };
+                return new float[] { SegmentLength, 0.02f };
             case "+":
                 return new float[] { Rotation };
             case "-":
