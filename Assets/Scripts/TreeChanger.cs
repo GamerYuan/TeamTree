@@ -2,8 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using TMPro;
-using Unity.VisualScripting;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -80,13 +78,13 @@ public class TreeChanger : MonoBehaviour
 
     public void CallCustomTreeUI()
     {
-        StopTime();
+        StageManagerBehaviour.StopTime();
         customTreeTemplate.SetActive(true);
     }
 
     public void SetTreeParams()
     {
-        StartTime();
+        StageManagerBehaviour.StartTime();
         List<string> rules = new List<string>
         {
             rule1.text, rule2.text, rule3.text, rule4.text
@@ -132,17 +130,6 @@ public class TreeChanger : MonoBehaviour
     public void CancelTreeConstruct(TMP_Dropdown dropdown)
     {
         dropdown.value = currentTree;
-        StartTime();
+        StageManagerBehaviour.StartTime();
     }
-
-    private void StopTime()
-    {
-        Time.timeScale = 0f;
-    }
-
-    private void StartTime()
-    {
-        Time.timeScale = 1f;
-    }
-
 }

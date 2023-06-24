@@ -37,6 +37,7 @@ public class Bonsai : MonoBehaviour
         meshFilter = GetComponent<MeshFilter>();
         lsystem.InitAxiom();
         treeGeometry.SetConstants(constants);
+        treeGeometry.setConstants(constants);
     }
 
     private void Update()

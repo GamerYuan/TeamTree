@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 
@@ -8,15 +9,21 @@ public class FlowerPotBehaviour : MonoBehaviour
     [SerializeField] private float water;
     [SerializeField] private float maxWater;
     [SerializeField] private float minWater;
-    [SerializeField] private TMP_Text text;
-    
-    private bool startWater;
-    
+
+    public static FlowerPotBehaviour instance;
+
+    private bool startWater, canWater;
+
     // Start is called before the first frame update
+    void Awake()
+    {
+        instance = this;
+        canWater = true;
+    }
     void Start()
     {
         StartCoroutine(WaterCall());
-        StartCoroutine(WaterCountdown());
+        //StartCoroutine(WaterCountdown());
     }
 
     // Update is called once per frame
@@ -29,9 +36,7 @@ public class FlowerPotBehaviour : MonoBehaviour
         if (startWater)
         {
             AddWater();
-            Debug.Log("Adding Water");
         }
-        text.text = $"Water: {System.Math.Round(water, 2)}/{maxWater}";
     }
 
     void OnMouseDown()
@@ -46,9 +51,10 @@ public class FlowerPotBehaviour : MonoBehaviour
 
     private void AddWater()
     {
-        if (water + 5 * Time.deltaTime <= maxWater)
+        if (water + 5 * Time.deltaTime <= maxWater && canWater)
         {
             water += 5 * Time.deltaTime;
+            CoinManager.instance.RemoveCoins(1 * Time.deltaTime);
         }
     }
 
@@ -68,6 +74,10 @@ public class FlowerPotBehaviour : MonoBehaviour
     {
         return water;
     }
+    public void SetWater(float waterVal)
+    {
+        water = waterVal;
+    }
 
     private IEnumerator WaterCall()
     {
@@ -80,11 +90,18 @@ public class FlowerPotBehaviour : MonoBehaviour
     
     private IEnumerator WaterCountdown()
     {
-        yield return new WaitForSeconds(5f);
         while (true)
         {
-            DecreaseWater(1);
             yield return new WaitForSeconds(5f);
+            DecreaseWater(1);
+        }
+    }
+
+    public void ChangeWaterState(Component sender, object data)
+    {
+        if (data is bool)
+        {
+            canWater = (bool) data;
         }
     }
 }

@@ -18,35 +18,37 @@ public class CameraPan : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
-        if (Input.GetAxis("Mouse ScrollWheel") != 0)
+        if (!StageManagerBehaviour.isPaused)
         {
-            Zoom(Input.GetAxis("Mouse ScrollWheel"));
-        }
-        if (Input.touchCount == 2)
-        {
-            Touch touchZero = Input.GetTouch(0);
-            Touch touchOne = Input.GetTouch(1);
-
-            Vector2 touchZeroDelta = touchZero.position - touchZero.deltaPosition;
-            Vector2 touchOneDelta = touchOne.position - touchOne.deltaPosition;
-
-            float deltaMag = (touchZeroDelta - touchOneDelta).magnitude;
-            float currMag = (touchZero.position - touchOne.position).magnitude;
-
-            float diff = currMag - deltaMag;
-
-            Zoom(diff * zoomAmp);
-        } 
-        else
-        {
-            if (Input.GetMouseButtonDown(0))
+            if (Input.GetAxis("Mouse ScrollWheel") != 0)
             {
-                startPos = cam.ScreenToViewportPoint(Input.mousePosition);
+                Zoom(Input.GetAxis("Mouse ScrollWheel"));
             }
-            if (Input.GetMouseButton(0))
+            if (Input.touchCount == 2)
             {
-                CamPan();
+                Touch touchZero = Input.GetTouch(0);
+                Touch touchOne = Input.GetTouch(1);
+
+                Vector2 touchZeroDelta = touchZero.position - touchZero.deltaPosition;
+                Vector2 touchOneDelta = touchOne.position - touchOne.deltaPosition;
+
+                float deltaMag = (touchZeroDelta - touchOneDelta).magnitude;
+                float currMag = (touchZero.position - touchOne.position).magnitude;
+
+                float diff = currMag - deltaMag;
+
+                Zoom(diff * zoomAmp);
+            }
+            else
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+                    startPos = cam.ScreenToViewportPoint(Input.mousePosition);
+                }
+                if (Input.GetMouseButton(0))
+                {
+                    CamPan();
+                }
             }
         }
     }
