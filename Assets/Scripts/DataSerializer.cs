@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Security.Cryptography;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DataSerializer : MonoBehaviour
@@ -69,7 +70,7 @@ public class DataSerializer : MonoBehaviour
             {
                 bonsai = GameObject.FindGameObjectWithTag("Tree").GetComponent<Bonsai>();
             }
-            bonsai.lsystem.InitAxiom();
+            bonsai.InitTree();
             currentString = bonsai.GetTreeString();
             waterVal = 5;
             coinVal = 5;

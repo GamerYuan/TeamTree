@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 96474ff2d05de0349955f5698963b7b5, type: 3}
   m_Name: Tree Ex. 1 Constants
   m_EditorClassIdentifier: 
-  SegmentLength: 1
+  SegmentLength: 0.5
   Rotation: 18

@@ -31,11 +31,11 @@ public class Bonsai : MonoBehaviour
     List<TreeVert> treeVertices = new List<TreeVert>();
     List<int> treeEdges = new List<int>();
 
-    private void Start()
+    private void Awake()
     {
         mesh = new Mesh();
         meshFilter = GetComponent<MeshFilter>();
-        lsystem.InitAxiom();
+        //lsystem.InitAxiom();
         treeGeometry.SetConstants(constants);
     }
 
@@ -67,6 +67,14 @@ public class Bonsai : MonoBehaviour
         treeEdges = treeGeometry.getTreeEdges();
     }
 
+    public void InitTree()
+    {
+        mesh.Clear();
+        lsystem.InitAxiom();
+        GenerateSkeleton();
+        GenerateMesh();
+    }
+
     public string GetTreeString()
     {
         return lsystem.ToString();
@@ -74,7 +82,10 @@ public class Bonsai : MonoBehaviour
 
     public void LoadString(string str)
     {
+        Awake();
         lsystem.LoadString(str);
+        GenerateSkeleton();
+        GenerateMesh();
     }
 
     public void WaterTree(float f)

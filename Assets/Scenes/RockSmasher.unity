@@ -1350,8 +1350,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb1690020f841e14eb28c9df4e3c23dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shootSpeed: 4
-  pullBackSpeed: 2.5
+  shootSpeed: 4.5
+  pullBackSpeed: 3
   shootCooldown: 0.15
 --- !u!54 &1097734959
 Rigidbody:

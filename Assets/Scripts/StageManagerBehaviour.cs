@@ -11,7 +11,7 @@ public class StageManagerBehaviour : MonoBehaviour
     private GameObject currTree;
     void Awake()
     {
-        currTree = GameObject.FindGameObjectWithTag("Tree");
+        //currTree = GameObject.FindGameObjectWithTag("Tree");
         StartCoroutine(WaterTree());
         isPaused = false;
         loadScreenTrigger= GetComponent<LoadingScreenTrigger>();
@@ -46,18 +46,19 @@ public class StageManagerBehaviour : MonoBehaviour
 
     public void ResetTree()
     {
-        Vector3 treePos = currTree.transform.localPosition;
-        Vector3 treeRot = currTree.transform.localEulerAngles;
-        Destroy(currTree);
-        GameObject nextTree = Instantiate(treePrefab, flowerPot.transform);
-        nextTree.transform.localPosition = treePos;
-        nextTree.transform.localEulerAngles = treeRot;
-        nextTree.GetComponent<Bonsai>().lsystem.InitAxiom();
-        currTree = nextTree;
+        if (currTree == null)
+        {
+            currTree = GameObject.FindGameObjectWithTag("Tree");
+        }
+        currTree.GetComponent<Bonsai>().InitTree();
     }
 
     public void UpdateTree()
     {
+        if (currTree == null)
+        {
+            currTree = GameObject.FindGameObjectWithTag("Tree");
+        }
         Bonsai bonsai = currTree.GetComponent<Bonsai>();
         bonsai.TreeUpdate();
     }

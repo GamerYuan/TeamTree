@@ -40,7 +40,7 @@ public class CoinManager : MonoBehaviour
 
     public void RemoveCoins(float val)
     {
-        if (currentCoins - val <= 0)
+        if (currentCoins - val <= 0.02f)
         {
             onCoinCanUse.Raise(this, false);
         } else

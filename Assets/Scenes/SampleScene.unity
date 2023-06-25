@@ -6235,11 +6235,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 776637383}
     m_Modifications:
-    - target: {fileID: 4792331704641498904, guid: 88fed723c2e32cc48a338a903601de5a,
-        type: 3}
-      propertyPath: m_Materials.Array.data[0]
-      value: 
-      objectReference: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 4792331704641498906, guid: 88fed723c2e32cc48a338a903601de5a,
         type: 3}
       propertyPath: m_Name
@@ -6300,18 +6295,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4792331704641498910, guid: 88fed723c2e32cc48a338a903601de5a,
-        type: 3}
-      propertyPath: lsystem
-      value: 
-      objectReference: {fileID: 11400000, guid: 2b1dc0c57b8ae1740a17005471925754,
-        type: 2}
-    - target: {fileID: 4792331704641498910, guid: 88fed723c2e32cc48a338a903601de5a,
-        type: 3}
-      propertyPath: constants
-      value: 
-      objectReference: {fileID: 11400000, guid: a605075ada805224786687029ff53e00,
-        type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 88fed723c2e32cc48a338a903601de5a, type: 3}
 --- !u!1 &1651461495
@@ -7118,7 +7101,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   cam: {fileID: 963194227}
-  maxZoom: -20
+  maxZoom: -35
   minZoom: -5
   baseZoom: -10
   zoomAmp: 0.01
