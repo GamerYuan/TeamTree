@@ -1,7 +1,9 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 /* Encapsulates a List of Production Rules for use in an L-System.
  *
@@ -13,7 +15,7 @@ public class RuleSet : ScriptableObject
     private class StringFloatPair
     {
         public string String;
-        public float Value;
+        public float Value = 1f;
     }
 
     [SerializeField]
@@ -24,13 +26,12 @@ public class RuleSet : ScriptableObject
 
     // List of Rules as Strings, in the format (inputChar) ? (outputString)
     [SerializeField]
-    public List<string> ruleStrings = new List<string>();
+    private List<StringFloatPair> ruleStrings = new List<StringFloatPair>();
 
     // List of Rules parsed from Strings.
-    public List<Rule> rules => ruleStrings.ConvertAll<string>(x => replaceConstants(x))
-                                   .ConvertAll<Rule>(x => Rule.ParseRule(x));
-    //Split predecessor into character and parameters
-
+    public List<Rule> rules => ruleStrings.ConvertAll<Rule>(x => Rule.ParseRule(x.String, x.Value));
+   
+    public Dictionary<string, bool> ruleCheck => rules.ToDictionary(key => key.Name, value => true);
 
     private string replaceConstants(string str)
     {
@@ -44,16 +45,30 @@ public class RuleSet : ScriptableObject
 
     public Word ApplyMatchingRule(Unit unit, Word word)
     {
+        List<Rule> matchingRules = new List<Rule>();
+
         foreach (Rule rule in rules)
         {
             if (rule.Accepts(unit, word.GetLeftContext(unit, Ignore.ToArray()), word.GetRightContext(unit, Ignore.ToArray())))
             {
-                return rule.GetOutput(unit, word.GetLeftContext(unit, Ignore.ToArray()), word.GetRightContext(unit, Ignore.ToArray()));
+                matchingRules.Add(rule);
             }
         }
-
-        //Otherwise, return unchanged 
-        return Word.Of(new List<Unit>() { unit });
+        if (matchingRules.Count > 0)
+            return matchingRules[0].GetOutput(unit, word.GetLeftContext(unit, Ignore.ToArray()), word.GetRightContext(unit, Ignore.ToArray()));
+        else if (matchingRules.Count > 1)
+        {
+            float random = Random.Range(0, 1);
+            for(int i = 0; i < matchingRules.Count; i++) 
+            { 
+                random -= matchingRules[i].Weight;
+                if (random < 0)
+                    return matchingRules[i].GetOutput(unit, word.GetLeftContext(unit, Ignore.ToArray()), word.GetRightContext(unit, Ignore.ToArray()));
+            }
+            return Word.Of(new List<Unit>() { unit });
+        }
+        else
+            return Word.Of(new List<Unit>() { unit });
     }
 
     private float GetValue(string key)

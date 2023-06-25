@@ -92,7 +92,7 @@ public class TreeChanger : MonoBehaviour
         rules.RemoveAll(x => x == "");
 
         customRules = ScriptableObject.CreateInstance<RuleSet>();
-        customRules.ruleStrings = rules;
+        //customRules.ruleStrings = rules;
 
         customlsystem = ScriptableObject.CreateInstance<LSystem>();
         customlsystem.axiomString = axiomString.text;

@@ -81,7 +81,7 @@ public class StageManagerBehaviour : MonoBehaviour
                 Bonsai bonsai = currTree.GetComponent<Bonsai>();
                 bonsai.WaterTree(decAmount * 0.95f);
             }
-            UpdateTree();
+            //UpdateTree();
         }
     }
 }

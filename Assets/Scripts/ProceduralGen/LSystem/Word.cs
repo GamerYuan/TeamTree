@@ -23,8 +23,14 @@ public class Word
         Word newWord = Word.Of(new List<Unit>(){ });
         foreach (Unit unit in units)
         {
-            Word nextWord = rules.ApplyMatchingRule(unit, this);
-            newWord.AddWord(nextWord);
+            if (rules.ruleCheck.ContainsKey(unit.name))
+            {
+                Word nextWord = rules.ApplyMatchingRule(unit, this);
+                newWord.AddWord(nextWord);
+            } else
+            {
+                newWord.units.Add(unit);
+            }
         }
         return newWord;
     }

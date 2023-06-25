@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52e6c5eac999f3946ab96d425ea0d6da, type: 3}
   m_Name: Tree Ex. 1
   m_EditorClassIdentifier: 
-  axiomString: A
+  axiomString: p
   ruleSets:
   - {fileID: 11400000, guid: 2257fb014f9a24e47987963046d2e1c3, type: 2}

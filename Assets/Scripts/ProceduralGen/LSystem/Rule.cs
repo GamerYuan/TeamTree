@@ -9,6 +9,7 @@ using Unity.Profiling.LowLevel.Unsafe;
 using UnityEditor;
 using System.Linq;
 using System.Threading;
+using System.Net;
 
 /*
 * Encapsulates a Production Rule for an L-System.
@@ -22,7 +23,8 @@ public class Rule : ScriptableObject
         ParametricRule,
         LeftContextRule,
         RightContextRule,
-        FullContextRule
+        FullContextRule,
+        StochasticRule
     }
     // String of Unit to accept as input.
     private string predString = null;
@@ -37,8 +39,16 @@ public class Rule : ScriptableObject
     private string[] predParamNames = new string[] { };
 
     private string[] rightParamNames = new string[] { };
+
+    private Expression weight = new Expression("1");
+
+    public float Weight => Convert.ToSingle(weight.Evaluate());
+
+    public string Name => predString;
+
     //Condition 
     private Expression condition;
+
     public string Condition
     {
         set
@@ -63,6 +73,7 @@ public class Rule : ScriptableObject
 
         foreach (string var in predParamNames)
         {
+            weight.Parameters[var] = parameters[var];
             if (parameters.ContainsKey(var))
                 substitutedCondition.Parameters[var] = parameters[var];
             else
@@ -70,6 +81,7 @@ public class Rule : ScriptableObject
         }
         foreach (string var in leftParamNames)
         {
+            weight.Parameters[var] = parameters[var];
             if (parameters.ContainsKey(var))
                 substitutedCondition.Parameters[var] = parameters[var];
             else
@@ -77,6 +89,7 @@ public class Rule : ScriptableObject
         }
         foreach (string var in rightParamNames)
         {
+            weight.Parameters[var] = parameters[var];
             if (parameters.ContainsKey(var))
                 substitutedCondition.Parameters[var] = parameters[var];
             else
@@ -84,6 +97,7 @@ public class Rule : ScriptableObject
         }
         return Convert.ToBoolean(substitutedCondition.Evaluate());
     }
+
 
     // tests whether this rule applies to a given unit
     public bool Accepts(Unit unit, Unit leftContext, Unit[] rightContext)
@@ -130,6 +144,13 @@ public class Rule : ScriptableObject
     private static string ReplaceWhitespace(string input, string replacement)
     {
         return sWhitespace.Replace(input, replacement);
+    }
+
+    public static Rule ParseRule(string ruleString, float weight)
+    {
+        Rule rule = ParseRule(ruleString);
+        rule.weight = new Expression(weight.ToString());
+        return rule;
     }
 
     public static Rule ParseRule(string ruleString)
