@@ -72,8 +72,8 @@ public class DataSerializer : MonoBehaviour
             }
             bonsai.InitTree();
             currentString = bonsai.GetTreeString();
-            waterVal = 5;
-            coinVal = 5;
+            waterVal = 5f;
+            coinVal = 5f;
             FlowerPotBehaviour.instance.SetWater(waterVal);
             CoinManager.instance.SetCoins(coinVal);
         }

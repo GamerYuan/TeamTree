@@ -69,7 +69,7 @@ public class Bonsai : MonoBehaviour
 
     public void InitTree()
     {
-        mesh.Clear();
+        Awake();
         lsystem.InitAxiom();
         GenerateSkeleton();
         GenerateMesh();

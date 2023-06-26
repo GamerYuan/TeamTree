@@ -33,7 +33,7 @@ public class FlowerPotBehaviour : MonoBehaviour
         {
             water = maxWater;
         }
-        if (startWater)
+        if (startWater && water < maxWater)
         {
             AddWater();
         }
