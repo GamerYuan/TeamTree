@@ -4,17 +4,33 @@ using UnityEngine;
 
 public class StageManagerBehaviour : MonoBehaviour
 {
+    public static StageManagerBehaviour instance;
+    
     public static bool isPaused;
+    private int updateCount;
     
     [SerializeField] private GameObject minigameMenu, baseCanvas, flowerPot, treePrefab;
     private LoadingScreenTrigger loadScreenTrigger;
     private GameObject currTree;
+
+    [Header("Events")]
+    [SerializeField] private GameEvent onUpdateChanged;
+
     void Awake()
     {
         //currTree = GameObject.FindGameObjectWithTag("Tree");
         StartCoroutine(WaterTree());
         isPaused = false;
         loadScreenTrigger= GetComponent<LoadingScreenTrigger>();
+        updateCount = 0;
+        if (instance != null && instance != this)
+        {
+            Destroy(this);
+        } 
+        else
+        {
+            instance = this;
+        }
     }
 
     public static void StopTime()
@@ -51,6 +67,9 @@ public class StageManagerBehaviour : MonoBehaviour
             currTree = GameObject.FindGameObjectWithTag("Tree");
         }
         currTree.GetComponent<Bonsai>().InitTree();
+        updateCount = 0;
+        onUpdateChanged.Raise(this, updateCount);
+        Debug.Log("Update Count = " + updateCount);
     }
 
     public void UpdateTree()
@@ -61,7 +80,18 @@ public class StageManagerBehaviour : MonoBehaviour
         }
         Bonsai bonsai = currTree.GetComponent<Bonsai>();
         bonsai.TreeUpdate();
+        updateCount += 1;
+        onUpdateChanged.Raise(this, updateCount);
+        Debug.Log("Update Count = " + updateCount);
     }
+
+    public void SetUpdateCount(int updateCount)
+    {
+        this.updateCount = updateCount;
+        onUpdateChanged.Raise(this, this.updateCount);
+    }
+
+    public int GetUpdateCount() { return updateCount; }
 
     // Let tree suck water and update every 5s
     private IEnumerator WaterTree()

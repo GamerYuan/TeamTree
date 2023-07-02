@@ -12,6 +12,7 @@ public class DataSerializer : MonoBehaviour
     private string currentString;
     private float waterVal;
     private float coinVal;
+    private int updateCount;
     private Bonsai bonsai;
 
     private static string key = "N7OnL3lf8YasErkERkQAE7+u5R6fspD6QkQZhWhCv/4=";
@@ -34,10 +35,12 @@ public class DataSerializer : MonoBehaviour
         currentString = bonsai.GetTreeString();
         waterVal = FlowerPotBehaviour.instance.GetWater();
         coinVal = CoinManager.instance.GetCoins();
+        updateCount = StageManagerBehaviour.instance.GetUpdateCount();
         Debug.Log("File Saved");
         data.currentString = currentString;
         data.waterVal = waterVal;
         data.coinVal = coinVal;
+        data.updateCount = updateCount;
         string jsonString = JsonUtility.ToJson(data);
         byte[] soup = Encrypt(jsonString);
         File.WriteAllBytes(filePath, soup);
@@ -58,9 +61,11 @@ public class DataSerializer : MonoBehaviour
             currentString = data.currentString;
             waterVal = data.waterVal;
             coinVal = data.coinVal;
+            updateCount = data.updateCount;
             bonsai.LoadString(currentString);
             FlowerPotBehaviour.instance.SetWater(waterVal);
             CoinManager.instance.SetCoins(coinVal);
+            StageManagerBehaviour.instance.SetUpdateCount(updateCount);
             Debug.Log($"Save File Loaded!");
         } 
         else
@@ -74,8 +79,10 @@ public class DataSerializer : MonoBehaviour
             currentString = bonsai.GetTreeString();
             waterVal = 5f;
             coinVal = 5f;
+            updateCount= 0;
             FlowerPotBehaviour.instance.SetWater(waterVal);
             CoinManager.instance.SetCoins(coinVal);
+            StageManagerBehaviour.instance.SetUpdateCount(updateCount);
         }
     }
 
@@ -174,10 +181,11 @@ public struct DataProgress
     public string currentString;
     public float waterVal;
     public float coinVal;
+    public int updateCount;
 
     public override string ToString()
     {
-        return currentString + " " + waterVal.ToString() + coinVal.ToString();
+        return currentString + " " + waterVal.ToString() + coinVal.ToString() + updateCount.ToString();
     }
 }
 
