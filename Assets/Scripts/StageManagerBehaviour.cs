@@ -88,7 +88,7 @@ public class StageManagerBehaviour : MonoBehaviour
     public void SetUpdateCount(int updateCount)
     {
         this.updateCount = updateCount;
-        onUpdateChanged.Raise(this, this.updateCount);
+        onUpdateChanged.Raise(this, updateCount);
     }
 
     public int GetUpdateCount() { return updateCount; }

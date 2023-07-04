@@ -1,12 +1,54 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel.Design;
+using System.IO;
 using UnityEngine;
 
 public class RandomEventManager : MonoBehaviour
 {
+    public static RandomEventManager instance;
 
     [SerializeField] private List<int> triggerCount = new List<int>();
     [SerializeField] private GameObject minigamePanel;
+    
+    private bool[] tutDone;
+    private TutorialDataClass[] tutData;
+
+    //[Header("Events")]
+    //[SerializeField] private GameEvent onTutorialChange;
+
+    void Awake()
+    {
+        if (instance != null && instance != this)
+        {
+            Destroy(this);
+        } 
+        else
+        {
+            instance = this;
+        }
+        Debug.Log(File.ReadAllText($"{Application.streamingAssetsPath}/tutData.json"));
+        TutorialDataArray tutDataArray = JsonUtility.FromJson<TutorialDataArray>(File.ReadAllText($"{Application.streamingAssetsPath}/tutData.json"));
+        tutData = tutDataArray.tutData;
+    }
+
+    public void SetTutDone(bool[] tutSave)
+    {
+        tutDone = new bool[triggerCount.Count];
+        Debug.Log("test1");
+        if (tutSave.Length != 0)
+        {
+            Debug.Log("inside");
+            Array.Copy(tutSave, tutDone, tutSave.Length);
+        }
+    }
+    
+    public bool[] GetTutDone()
+    {
+        return tutDone;
+    }
+
 
     public void CheckEvent(Component sender, object data)
     {
@@ -22,11 +64,25 @@ public class RandomEventManager : MonoBehaviour
                     Debug.Log($"Trigger {minigameIndex} met");
                     for (int i = 0; i <= minigameIndex; i++)
                     {
-                        EnableGame(i);
+                        if (tutDone[i])
+                        {
+                            EnableGame(i);
+                        }
+                        else
+                        {
+                            StartTutorial(i);
+                        }
                     }
                     break;
             }
         }
+    }
+
+    private void StartTutorial(int index)
+    {
+        TutorialDataClass currTut = tutData[index];
+        if (currTut != null) Debug.Log(currTut);
+        //onTutorialChange.Raise(this, currTut);
     }
 
     private void EnableGame(int gameVal)
