@@ -3,20 +3,22 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class RandomEventManager : MonoBehaviour
 {
     public static RandomEventManager instance;
 
     [SerializeField] private List<int> triggerCount = new List<int>();
-    [SerializeField] private GameObject minigamePanel;
+    [SerializeField] private GameObject minigamePanel, tutorialCanvas;
     
     private bool[] tutDone;
     private TutorialDataClass[] tutData;
-
-    //[Header("Events")]
-    //[SerializeField] private GameEvent onTutorialChange;
+    private GameObject tutorialText, tutorialButton;
+    private bool tutorialTriggered, firstLoad;
+    private int tutIndex;
 
     void Awake()
     {
@@ -28,19 +30,26 @@ public class RandomEventManager : MonoBehaviour
         {
             instance = this;
         }
+        firstLoad = true;
+        DontDestroyOnLoad(this);
         Debug.Log(File.ReadAllText($"{Application.streamingAssetsPath}/tutData.json"));
         TutorialDataArray tutDataArray = JsonUtility.FromJson<TutorialDataArray>(File.ReadAllText($"{Application.streamingAssetsPath}/tutData.json"));
         tutData = tutDataArray.tutData;
+        tutorialText = tutorialCanvas.transform.GetChild(0).GetChild(0).gameObject;
+        tutorialButton = tutorialCanvas.transform.GetChild(0).GetChild(1).gameObject;
     }
 
     public void SetTutDone(bool[] tutSave)
     {
-        tutDone = new bool[triggerCount.Count];
-        Debug.Log("test1");
-        if (tutSave.Length != 0)
+        if (firstLoad)
         {
-            Debug.Log("inside");
-            Array.Copy(tutSave, tutDone, tutSave.Length);
+            Debug.Log("Set Tut Done");
+            tutDone = new bool[triggerCount.Count];
+            if (tutSave.Length != 0)
+            {
+                Array.Copy(tutSave, tutDone, tutSave.Length);
+            }
+            firstLoad = false;
         }
     }
     
@@ -68,7 +77,7 @@ public class RandomEventManager : MonoBehaviour
                         {
                             EnableGame(i);
                         }
-                        else
+                        else if (!tutorialTriggered)
                         {
                             StartTutorial(i);
                         }
@@ -80,9 +89,27 @@ public class RandomEventManager : MonoBehaviour
 
     private void StartTutorial(int index)
     {
+        tutorialTriggered = true;
         TutorialDataClass currTut = tutData[index];
-        if (currTut != null) Debug.Log(currTut);
-        //onTutorialChange.Raise(this, currTut);
+        if (currTut != null)
+        {
+            Debug.Log(currTut);
+            tutIndex = index;
+            tutorialText.GetComponent<TMP_Text>().text = currTut.tutorialText;
+            tutorialCanvas.SetActive(true);
+            tutorialButton.GetComponent<Button>().onClick.AddListener(() => ButtonClick(currTut.tutorialStageName));
+        }
+    }
+
+    public void CompleteTutorial()
+    {
+        tutDone[tutIndex] = true;
+        tutorialTriggered = false;
+    }
+
+    private void ButtonClick(string sceneName)
+    {
+        Debug.Log(sceneName);
     }
 
     private void EnableGame(int gameVal)
