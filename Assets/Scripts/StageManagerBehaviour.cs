@@ -18,19 +18,19 @@ public class StageManagerBehaviour : MonoBehaviour
 
     void Awake()
     {
+        if (instance != null && instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            instance = this;
+        }
         //currTree = GameObject.FindGameObjectWithTag("Tree");
         StartCoroutine(WaterTree());
         isPaused = false;
         loadScreenTrigger= GetComponent<LoadingScreenTrigger>();
         updateCount = 0;
-        if (instance != null && instance != this)
-        {
-            Destroy(this);
-        } 
-        else
-        {
-            instance = this;
-        }
     }
 
     public static void StopTime()

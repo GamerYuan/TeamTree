@@ -8,6 +8,7 @@ using UnityEngine;
 public class DataSerializer : MonoBehaviour
 {
     private static string fileName = "/SaveData.dat";
+    public static DataSerializer instance;
 
     private string currentString;
     private float waterVal;
@@ -18,6 +19,14 @@ public class DataSerializer : MonoBehaviour
 
     void Awake()
     {
+        if (instance != null && instance != this)
+        {
+            Destroy(this);
+        }
+        else
+        {
+            instance = this;
+        }
         //Debug.Log(Application.persistentDataPath);
         bonsai = GameObject.FindGameObjectWithTag("Tree").GetComponent<Bonsai>();
     }
@@ -46,7 +55,7 @@ public class DataSerializer : MonoBehaviour
         File.WriteAllBytes(filePath, soup);
     }
 
-    public void LoadData()
+    private void LoadData()
     {
         string filePath = Application.persistentDataPath + fileName;
         if (File.Exists(filePath))

@@ -8,7 +8,7 @@ public class GlobalMinigameManager : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField] private float timer;
-    [SerializeField] private TMP_Text timerText, scoreTextHelper, finalText, returnText;
+    [SerializeField] protected TMP_Text timerText, scoreTextHelper, finalText, returnText;
     [SerializeField] private List<GameObject> disableList;
     [SerializeField] private GameObject panel;
     [SerializeField] private int scoreMultiplier;
@@ -29,7 +29,7 @@ public class GlobalMinigameManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    protected virtual void Update()
     {
         if (!endStage)
         {
@@ -43,7 +43,7 @@ public class GlobalMinigameManager : MonoBehaviour
         }
     }
 
-    private void StopStage()
+    protected void StopStage()
     {
         endStage = true;
         foreach (GameObject go in disableList)

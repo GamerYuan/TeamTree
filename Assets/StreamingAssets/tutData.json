@@ -2,7 +2,7 @@
     "tutData" : [
         {
             "tutorialText": "Testing123",
-            "tutorialStageName": "Test1"
+            "tutorialStageName": "TapTheBugTut"
         }, 
         {
             "tutorialText": "Testing2223",

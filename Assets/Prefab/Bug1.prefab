@@ -196,6 +196,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 128
+  gameEvent: {fileID: 11400000, guid: 253f0030bcc7af94c9581da97c9b0a05, type: 2}
 --- !u!65 &838454838
 BoxCollider:
   m_ObjectHideFlags: 0

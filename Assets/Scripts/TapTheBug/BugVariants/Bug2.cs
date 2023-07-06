@@ -18,6 +18,7 @@ public class Bug2 : BugBehaviour
 
     protected override void Death()
     {
+        base.Death();
         GetComponent<CapsuleCollider>().enabled = false;
         gameObject.layer = 2;
         rb = GetComponent<Rigidbody>();

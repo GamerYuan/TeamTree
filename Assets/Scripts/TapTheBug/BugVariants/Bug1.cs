@@ -9,6 +9,7 @@ public class Bug1 : BugBehaviour
     private GameObject body, head;
     protected override void Death()
     {
+        base.Death();
         body = gameObject.transform.GetChild(0).gameObject;
         head = gameObject.transform.GetChild(1).gameObject;
         gameObject.layer = 2;

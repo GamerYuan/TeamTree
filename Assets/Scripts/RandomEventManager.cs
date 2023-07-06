@@ -3,8 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel.Design;
 using System.IO;
+using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class RandomEventManager : MonoBehaviour
@@ -17,7 +19,7 @@ public class RandomEventManager : MonoBehaviour
     private bool[] tutDone;
     private TutorialDataClass[] tutData;
     private GameObject tutorialText, tutorialButton;
-    private bool tutorialTriggered, firstLoad;
+    private bool tutorialTriggered, firstLaunch, tutDoneCache;
     private int tutIndex;
 
     void Awake()
@@ -30,18 +32,19 @@ public class RandomEventManager : MonoBehaviour
         {
             instance = this;
         }
-        firstLoad = true;
+        firstLaunch = true;
         DontDestroyOnLoad(this);
         Debug.Log(File.ReadAllText($"{Application.streamingAssetsPath}/tutData.json"));
         TutorialDataArray tutDataArray = JsonUtility.FromJson<TutorialDataArray>(File.ReadAllText($"{Application.streamingAssetsPath}/tutData.json"));
         tutData = tutDataArray.tutData;
         tutorialText = tutorialCanvas.transform.GetChild(0).GetChild(0).gameObject;
         tutorialButton = tutorialCanvas.transform.GetChild(0).GetChild(1).gameObject;
+        SceneManager.sceneLoaded += ChangedActiveScene;
     }
 
     public void SetTutDone(bool[] tutSave)
     {
-        if (firstLoad)
+        if (firstLaunch)
         {
             Debug.Log("Set Tut Done");
             tutDone = new bool[triggerCount.Count];
@@ -49,7 +52,7 @@ public class RandomEventManager : MonoBehaviour
             {
                 Array.Copy(tutSave, tutDone, tutSave.Length);
             }
-            firstLoad = false;
+            firstLaunch = false;
         }
     }
     
@@ -94,6 +97,16 @@ public class RandomEventManager : MonoBehaviour
         if (currTut != null)
         {
             Debug.Log(currTut);
+            if (tutorialCanvas == null)
+            {
+                Debug.Log("point0");
+                tutorialCanvas = GameObject.Find("TutorialCanvas");
+                Debug.Log("point1");
+                tutorialText = tutorialCanvas.transform.GetChild(0).GetChild(0).gameObject;
+                Debug.Log("point2");
+                tutorialButton = tutorialCanvas.transform.GetChild(0).GetChild(1).gameObject;
+                Debug.Log("point3");
+            }
             tutIndex = index;
             tutorialText.GetComponent<TMP_Text>().text = currTut.tutorialText;
             tutorialCanvas.SetActive(true);
@@ -101,25 +114,40 @@ public class RandomEventManager : MonoBehaviour
         }
     }
 
-    public void CompleteTutorial()
+    public void TutorialDone()
     {
         tutDone[tutIndex] = true;
+        tutDoneCache = true;
+    }
+
+    private void CompleteTutorial()
+    {
         tutorialTriggered = false;
     }
 
     private void ButtonClick(string sceneName)
     {
-        Debug.Log(sceneName);
+        StageManagerBehaviour.instance.LoadStage(sceneName);
+        tutorialCanvas.SetActive(false);
     }
 
     private void EnableGame(int gameVal)
     {
+        if (minigamePanel == null)
+        {
+            minigamePanel = Resources.FindObjectsOfTypeAll<GameObject>().First(x => x.name == "Minigame Panel");
+        }
         minigamePanel.transform.GetChild(gameVal).gameObject.SetActive(true);
         // enable the minigame
     }
 
     private void DisableGame()
     {
+        if (minigamePanel == null)
+        {
+            minigamePanel = Resources.FindObjectsOfTypeAll<GameObject>().First(x => x.name == "Minigame Panel");
+            Debug.Log(minigamePanel);
+        }
         for (int i = 0; i < minigamePanel.transform.childCount; i++)
         {
             minigamePanel.transform.GetChild(i).gameObject.SetActive(false);
@@ -158,6 +186,14 @@ public class RandomEventManager : MonoBehaviour
                 // return the index of the largest smallest element to A
                 return index - 1;
             }
+        }
+    }
+
+    private void ChangedActiveScene(Scene scene, LoadSceneMode mode)
+    {
+        if (scene.name.Equals("SampleScene") && tutDoneCache)
+        {
+            CompleteTutorial();
         }
     }
 }

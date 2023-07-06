@@ -5,9 +5,10 @@ using UnityEngine.SceneManagement;
 
 public class CoinManager : MonoBehaviour 
 {
-    protected float currentCoins;
-    private float cachedCoins;
+    protected static float currentCoins;
+    private float coinsToAdd;
     public static CoinManager instance;
+    private bool firstLaunch;
 
     [Header("Events")]
     [SerializeField] private GameEvent onCoinChanged;
@@ -23,16 +24,18 @@ public class CoinManager : MonoBehaviour
         {
             instance = this;
         }
+        firstLaunch = true;
         SceneManager.sceneLoaded += ChangedActiveScene;
         DontDestroyOnLoad(gameObject);
     }
 
     public void AddCoins(float val)
     {
-        cachedCoins = currentCoins + val;
-        Debug.Log($"Add Coins: {cachedCoins}");
-        onCoinChanged.Raise(this, cachedCoins);
-        if (currentCoins <= 0 && cachedCoins > 0)
+        currentCoins += val;
+        coinsToAdd = val;
+        Debug.Log($"Add Coins: {currentCoins}");
+        onCoinChanged.Raise(this, currentCoins);
+        if (currentCoins <= 0.02)
         {
             onCoinCanUse.Raise(this, false);
         }
@@ -60,24 +63,21 @@ public class CoinManager : MonoBehaviour
     }
     public void SetCoins(float val)
     {
-        currentCoins = val;
-        onCoinChanged.Raise(this, currentCoins);
-        onCoinCanUse.Raise(this, currentCoins > 0);
+        if (firstLaunch)
+        {
+            currentCoins = val;
+            onCoinChanged.Raise(this, currentCoins);
+            onCoinCanUse.Raise(this, currentCoins > 0);
+            firstLaunch = false;
+        }
     }
 
     private void ChangedActiveScene(Scene scene, LoadSceneMode mode)
     {
         if (scene.name.Equals("SampleScene"))
         {
-            if (cachedCoins != 0)
-            {
-                currentCoins = cachedCoins;
-            }
-            if (currentCoins != 0)
-            {
-                onCoinChanged.Raise(this, currentCoins);
-                onCoinCanUse.Raise(this, currentCoins > 0);
-            }
+            onCoinChanged.Raise(this, currentCoins);
+            onCoinCanUse.Raise(this, currentCoins > 0);
         }
     }
 }

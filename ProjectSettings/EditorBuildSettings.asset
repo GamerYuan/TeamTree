@@ -17,6 +17,9 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/RockSmasher.unity
     guid: 5a4b92cae3ddfbe4c930fe8f607bbcdf
+  - enabled: 1
+    path: Assets/Scenes/Tutorial Stages/TapTheBugTut.unity
+    guid: 1a4721313ed883349b585b9443f73d07
   m_configObjects:
     com.unity.adaptiveperformance.loader_settings: {fileID: 11400000, guid: e6efa66e62db47d49a3331dfb4abdca0,
       type: 2}
