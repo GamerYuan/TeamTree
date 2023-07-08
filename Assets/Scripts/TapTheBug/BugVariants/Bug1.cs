@@ -9,7 +9,6 @@ public class Bug1 : BugBehaviour
     private GameObject body, head;
     protected override void Death()
     {
-        base.Death();
         body = gameObject.transform.GetChild(0).gameObject;
         head = gameObject.transform.GetChild(1).gameObject;
         gameObject.layer = 2;
@@ -34,6 +33,7 @@ public class Bug1 : BugBehaviour
         head.GetComponent<Rigidbody>().AddForce(new Vector3(Random.Range(0.5f, 1f) * xDir, 0, Random.Range(0.5f, 1f) * zDir), ForceMode.Impulse);
         Destroy(body, 3);
         Destroy(head, 3);
+        base.Death();
     }
 
     private void GenerateSplatter()

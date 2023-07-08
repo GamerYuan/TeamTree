@@ -4159,6 +4159,7 @@ MonoBehaviour:
   flowerPot: {fileID: 776637382}
   treePrefab: {fileID: 4792331704641498906, guid: 88fed723c2e32cc48a338a903601de5a,
     type: 3}
+  updatePeriod: 1
   onUpdateChanged: {fileID: 11400000, guid: 8c2fc548eccca8842be742f969584789, type: 2}
 --- !u!4 &999606545
 Transform:

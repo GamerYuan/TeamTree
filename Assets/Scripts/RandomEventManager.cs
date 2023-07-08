@@ -34,7 +34,6 @@ public class RandomEventManager : MonoBehaviour
         }
         firstLaunch = true;
         DontDestroyOnLoad(this);
-        Debug.Log(File.ReadAllText($"{Application.streamingAssetsPath}/tutData.json"));
         TutorialDataArray tutDataArray = JsonUtility.FromJson<TutorialDataArray>(File.ReadAllText($"{Application.streamingAssetsPath}/tutData.json"));
         tutData = tutDataArray.tutData;
         tutorialText = tutorialCanvas.transform.GetChild(0).GetChild(0).gameObject;
@@ -99,13 +98,9 @@ public class RandomEventManager : MonoBehaviour
             Debug.Log(currTut);
             if (tutorialCanvas == null)
             {
-                Debug.Log("point0");
                 tutorialCanvas = GameObject.Find("TutorialCanvas");
-                Debug.Log("point1");
                 tutorialText = tutorialCanvas.transform.GetChild(0).GetChild(0).gameObject;
-                Debug.Log("point2");
                 tutorialButton = tutorialCanvas.transform.GetChild(0).GetChild(1).gameObject;
-                Debug.Log("point3");
             }
             tutIndex = index;
             tutorialText.GetComponent<TMP_Text>().text = currTut.tutorialText;
@@ -118,15 +113,17 @@ public class RandomEventManager : MonoBehaviour
     {
         tutDone[tutIndex] = true;
         tutDoneCache = true;
+        tutorialTriggered = false;
     }
 
     private void CompleteTutorial()
     {
-        tutorialTriggered = false;
+        tutDoneCache = false;
     }
 
     private void ButtonClick(string sceneName)
     {
+        DataSerializer.instance.SaveData();
         StageManagerBehaviour.instance.LoadStage(sceneName);
         tutorialCanvas.SetActive(false);
     }
@@ -195,5 +192,13 @@ public class RandomEventManager : MonoBehaviour
         {
             CompleteTutorial();
         }
+    }
+
+    public void ResetTutProgress()
+    {
+        tutorialTriggered = false;
+        tutDone = new bool[triggerCount.Count];
+        tutDoneCache = false;
+        Debug.Log("Tutorial Progress Reset!");
     }
 }

@@ -15,6 +15,7 @@ public class DataSerializer : MonoBehaviour
     private float coinVal;
     private int updateCount;
     private bool[] tutDone = new bool[0];
+    private long lastLoginEpoch;
     private Bonsai bonsai;
 
     void Awake()
@@ -44,12 +45,14 @@ public class DataSerializer : MonoBehaviour
         coinVal = CoinManager.instance.GetCoins();
         updateCount = StageManagerBehaviour.instance.GetUpdateCount();
         tutDone = RandomEventManager.instance.GetTutDone();
+        lastLoginEpoch = DateTimeOffset.Now.ToUnixTimeSeconds();
         Debug.Log("File Saved");
         data.currentString = currentString;
         data.waterVal = waterVal;
         data.coinVal = coinVal;
         data.updateCount = updateCount;
         data.tutDone = tutDone;
+        data.lastLoginEpoch = lastLoginEpoch;
         string jsonString = JsonUtility.ToJson(data);
         byte[] soup = DataEncrypter.Encrypt(jsonString);
         File.WriteAllBytes(filePath, soup);
@@ -72,11 +75,13 @@ public class DataSerializer : MonoBehaviour
             coinVal = data.coinVal;
             updateCount = data.updateCount;
             tutDone = data.tutDone;
+            lastLoginEpoch = data.lastLoginEpoch;
             bonsai.LoadString(currentString);
             FlowerPotBehaviour.instance.SetWater(waterVal);
             CoinManager.instance.SetCoins(coinVal);
             RandomEventManager.instance.SetTutDone(tutDone);
             StageManagerBehaviour.instance.SetUpdateCount(updateCount);
+            StageManagerBehaviour.instance.SetUpdateIteration(lastLoginEpoch);
             Debug.Log($"Save File Loaded!");
         } 
         else
@@ -146,9 +151,10 @@ public struct DataProgress
     public float coinVal;
     public int updateCount;
     public bool[] tutDone;
+    public long lastLoginEpoch;
     public override string ToString()
     {
-        return currentString + " " + waterVal.ToString() + coinVal.ToString() + updateCount.ToString() + tutDone.ToString();
+        return currentString + " " + waterVal.ToString() + coinVal.ToString() + updateCount.ToString() + tutDone.ToString() + lastLoginEpoch;
     }
 }
 
