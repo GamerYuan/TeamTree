@@ -95,17 +95,18 @@ public class RandomEventManager : MonoBehaviour
         TutorialDataClass currTut = tutData[index];
         if (currTut != null)
         {
-            Debug.Log(currTut);
             if (tutorialCanvas == null)
             {
-                tutorialCanvas = GameObject.Find("TutorialCanvas");
+                tutorialCanvas = Resources.FindObjectsOfTypeAll<GameObject>().First(x => x.name == "TutorialCanvas");
                 tutorialText = tutorialCanvas.transform.GetChild(0).GetChild(0).gameObject;
                 tutorialButton = tutorialCanvas.transform.GetChild(0).GetChild(1).gameObject;
             }
             tutIndex = index;
             tutorialText.GetComponent<TMP_Text>().text = currTut.tutorialText;
             tutorialCanvas.SetActive(true);
+            tutorialButton.GetComponent<Button>().onClick.RemoveAllListeners();
             tutorialButton.GetComponent<Button>().onClick.AddListener(() => ButtonClick(currTut.tutorialStageName));
+            tutorialButton.transform.GetChild(0).GetComponent<TMP_Text>().text = "Go to stage";
         }
     }
 
@@ -118,6 +119,10 @@ public class RandomEventManager : MonoBehaviour
 
     private void CompleteTutorial()
     {
+        if (tutIndex == 0)
+        {
+            MinigameTutorial();
+        }
         tutDoneCache = false;
     }
 
@@ -135,6 +140,11 @@ public class RandomEventManager : MonoBehaviour
             minigamePanel = Resources.FindObjectsOfTypeAll<GameObject>().First(x => x.name == "Minigame Panel");
         }
         minigamePanel.transform.GetChild(gameVal).gameObject.SetActive(true);
+        if (gameVal == 0)
+        {
+            GameObject minigameButton = Resources.FindObjectsOfTypeAll<GameObject>().First(x => x.name == "Minigame");
+            minigameButton.SetActive(true);
+        }
         // enable the minigame
     }
 
@@ -143,13 +153,34 @@ public class RandomEventManager : MonoBehaviour
         if (minigamePanel == null)
         {
             minigamePanel = Resources.FindObjectsOfTypeAll<GameObject>().First(x => x.name == "Minigame Panel");
-            Debug.Log(minigamePanel);
         }
         for (int i = 0; i < minigamePanel.transform.childCount; i++)
         {
             minigamePanel.transform.GetChild(i).gameObject.SetActive(false);
         }
+        GameObject minigameButton = Resources.FindObjectsOfTypeAll<GameObject>().First(x => x.name == "Minigame");
+        minigameButton.SetActive(false);
         // disable minigames
+    }
+
+    private void MinigameTutorial()
+    {
+        if (tutorialCanvas == null)
+        {
+            tutorialCanvas = Resources.FindObjectsOfTypeAll<GameObject>().First(x => x.name == "TutorialCanvas");
+            tutorialText = tutorialCanvas.transform.GetChild(0).GetChild(0).gameObject;
+            tutorialButton = tutorialCanvas.transform.GetChild(0).GetChild(1).gameObject;
+        }
+        tutorialText.GetComponent<TMP_Text>().text = "Minigames has been unlocked! You can play Minigames to earn coins that can be used to water your bonsai! More minigames can be unlocked as you encounter them in the future.";
+        tutorialCanvas.SetActive(true);
+        tutorialButton.GetComponent<Button>().onClick.RemoveAllListeners();
+        tutorialButton.GetComponent<Button>().onClick.AddListener(MinigameTutorialButtonClick);
+        tutorialButton.transform.GetChild(0).GetComponent<TMP_Text>().text = "Got It!";
+    }
+
+    private void MinigameTutorialButtonClick()
+    {
+        tutorialCanvas.SetActive(false);
     }
 
     private int Check(int A)

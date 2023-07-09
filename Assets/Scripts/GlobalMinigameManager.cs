@@ -57,7 +57,6 @@ public class GlobalMinigameManager : MonoBehaviour
         scoreText.text = "";
         panel.SetActive(true);
         finalText.text = $"Time's Up!\nFinal Score: {score}";
-        Debug.Log(CoinManager.instance.CalculateCoins(score, scoreMultiplier));
         CoinManager.instance.AddCoins(CoinManager.instance.CalculateCoins(score, scoreMultiplier));
         StartCoroutine(ReturnTimer());
     }

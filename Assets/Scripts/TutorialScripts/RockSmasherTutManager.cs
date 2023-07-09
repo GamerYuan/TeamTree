@@ -5,6 +5,7 @@ using UnityEngine;
 public class RockSmasherTutManager : RockSmasherManager
 {
     [SerializeField] private int count;
+    [SerializeField] private List<GameObject> enableList;
     private void Start()
     {
         timerText.text = "";
@@ -15,6 +16,9 @@ public class RockSmasherTutManager : RockSmasherManager
     {
         grabberBehaviour.StartStage();
         hookBehaviour.StartStage();
+        foreach (GameObject gameObject in enableList) {
+            gameObject.SetActive(true);
+        }
     }
 
     public void OnRockDestroyed(Component sender, object data)

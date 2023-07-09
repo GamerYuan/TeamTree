@@ -1,14 +1,19 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using System.Linq;
 
 public class CoinManager : MonoBehaviour 
 {
     protected static float currentCoins;
-    private float coinsToAdd;
+    private int coinsToAdd;
     public static CoinManager instance;
     private bool firstLaunch;
+    private GameObject tutorialCanvas;
 
     [Header("Events")]
     [SerializeField] private GameEvent onCoinChanged;
@@ -29,7 +34,7 @@ public class CoinManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    public void AddCoins(float val)
+    public void AddCoins(int val)
     {
         currentCoins += val;
         coinsToAdd = val;
@@ -78,6 +83,27 @@ public class CoinManager : MonoBehaviour
         {
             onCoinChanged.Raise(this, currentCoins);
             onCoinCanUse.Raise(this, currentCoins > 0);
+            if (coinsToAdd > 0)
+            {
+                ShowCoins();
+            }
         }
+    }
+
+    private void ShowCoins()
+    {
+        tutorialCanvas = Resources.FindObjectsOfTypeAll<GameObject>().First(x => x.name == "TutorialCanvas");
+        GameObject tutorialText = tutorialCanvas.transform.GetChild(0).GetChild(0).gameObject;
+        GameObject tutorialButton = tutorialCanvas.transform.GetChild(0).GetChild(1).gameObject;
+        tutorialText.GetComponent<TMP_Text>().text = $"Congratulations! You have earned {coinsToAdd} coins!";
+        tutorialCanvas.SetActive(true);
+        tutorialButton.GetComponent<Button>().onClick.RemoveAllListeners();
+        tutorialButton.GetComponent<Button>().onClick.AddListener(ButtonClick);
+        tutorialButton.transform.GetChild(0).GetComponent<TMP_Text>().text = "Hooray!";
+    }
+
+    private void ButtonClick()
+    {
+        tutorialCanvas.SetActive(false);
     }
 }
