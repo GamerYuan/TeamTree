@@ -7104,7 +7104,7 @@ MonoBehaviour:
   maxZoom: -35
   minZoom: -5
   baseZoom: -10
-  zoomAmp: 0.01
+  zoomAmp: 1
 --- !u!4 &1862842564
 Transform:
   m_ObjectHideFlags: 0

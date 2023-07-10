@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class CameraPan : MonoBehaviour
@@ -9,10 +10,13 @@ public class CameraPan : MonoBehaviour
     [SerializeField] private float maxZoom, minZoom, baseZoom, zoomAmp;
     private Vector3 startPos;
     private float currZoom;
+    private Vector3 orbitCenter, moveStart;
+    private bool isMove;
 
     void Start()
     {
         currZoom = baseZoom;
+        orbitCenter = Vector3.zero;
     }
 
     // Update is called once per frame
@@ -20,6 +24,10 @@ public class CameraPan : MonoBehaviour
     {
         if (!StageManagerBehaviour.isPaused)
         {
+            if (Input.touchCount == 0)
+            {
+                isMove = false;
+            }
             if (Input.GetAxis("Mouse ScrollWheel") != 0)
             {
                 Zoom(Input.GetAxis("Mouse ScrollWheel"));
@@ -29,15 +37,28 @@ public class CameraPan : MonoBehaviour
                 Touch touchZero = Input.GetTouch(0);
                 Touch touchOne = Input.GetTouch(1);
 
-                Vector2 touchZeroDelta = touchZero.position - touchZero.deltaPosition;
-                Vector2 touchOneDelta = touchOne.position - touchOne.deltaPosition;
+                if (Mathf.Abs(touchZero.position.y - touchOne.position.y) <= 100)
+                {
+                    moveStart = GetWorldPoint(touchZero.position - touchZero.deltaPosition);
 
-                float deltaMag = (touchZeroDelta - touchOneDelta).magnitude;
-                float currMag = (touchZero.position - touchOne.position).magnitude;
+                    if (touchZero.phase == TouchPhase.Moved)
+                    {
+                        isMove = true;
+                        CamMove(touchZero.position);
+                    }
+                }
+                else if (!isMove)
+                {
+                    Vector2 touchZeroDelta = touchZero.position - touchZero.deltaPosition;
+                    Vector2 touchOneDelta = touchOne.position - touchOne.deltaPosition;
 
-                float diff = currMag - deltaMag;
+                    float deltaMag = (touchZeroDelta - touchOneDelta).magnitude;
+                    float currMag = (touchZero.position - touchOne.position).magnitude;
 
-                Zoom(diff * zoomAmp);
+                    float diff = currMag - deltaMag;
+
+                    Zoom(diff * zoomAmp * Time.deltaTime);
+                }                
             }
             else
             {
@@ -49,6 +70,14 @@ public class CameraPan : MonoBehaviour
                 {
                     CamPan();
                 }
+                if (Input.GetMouseButtonDown(1))
+                {
+                    moveStart = GetWorldPoint(Input.mousePosition);
+                }
+                if (Input.GetMouseButton(1))
+                {
+                    CamMove(Input.mousePosition);
+                }
             }
         }
     }
@@ -59,7 +88,7 @@ public class CameraPan : MonoBehaviour
         {
             Vector3 direction = startPos - cam.ScreenToViewportPoint(Input.mousePosition);
 
-            cam.transform.position = new Vector3();
+            cam.transform.position = orbitCenter;
             if ((cam.transform.rotation * Quaternion.Euler(new Vector3(direction.y * 180, 0, 0))).eulerAngles.x < 80)
             {
                 cam.transform.Rotate(new Vector3(1, 0, 0), direction.y * 180);
@@ -79,5 +108,26 @@ public class CameraPan : MonoBehaviour
             cam.transform.Translate(0, 0, increment);
             currZoom += increment;
         }
+    }
+
+    private void CamMove(Vector3 pos)
+    {
+        if (Input.GetAxis("Mouse Y") != 0 || Input.GetAxis("Mouse X") != 0)
+        {
+            Vector3 diff = (moveStart - GetWorldPoint(pos));
+            Vector3 move = diff * Time.deltaTime * 100;
+            orbitCenter += move;
+            cam.transform.position += move;
+            moveStart = GetWorldPoint(pos);
+        }   
+    }
+
+    private Vector3 GetWorldPoint(Vector3 pos)
+    {
+        Ray mousePos = cam.ScreenPointToRay(pos);
+        Plane plane = new Plane(Vector3.Normalize(cam.transform.position), orbitCenter);
+        float distance;
+        plane.Raycast(mousePos, out distance);
+        return mousePos.GetPoint(distance);
     }
 }
