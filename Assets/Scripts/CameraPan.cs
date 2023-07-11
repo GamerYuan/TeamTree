@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class CameraPan : MonoBehaviour
@@ -12,11 +11,13 @@ public class CameraPan : MonoBehaviour
     private float currZoom;
     private Vector3 orbitCenter, moveStart;
     private bool isMove;
+    private float fingerDist;
 
     void Start()
     {
         currZoom = baseZoom;
         orbitCenter = Vector3.zero;
+        fingerDist = Screen.currentResolution.height / 24f;
     }
 
     // Update is called once per frame
@@ -37,7 +38,7 @@ public class CameraPan : MonoBehaviour
                 Touch touchZero = Input.GetTouch(0);
                 Touch touchOne = Input.GetTouch(1);
 
-                if (Mathf.Abs(touchZero.position.y - touchOne.position.y) <= 100)
+                if (Mathf.Abs(touchZero.position.y - touchOne.position.y) <= fingerDist)
                 {
                     moveStart = GetWorldPoint(touchZero.position - touchZero.deltaPosition);
 
