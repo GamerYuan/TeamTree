@@ -7,7 +7,7 @@ using UnityEngine;
 public class CameraPan : MonoBehaviour
 {
     [SerializeField] private Camera cam;
-    [SerializeField] private float maxZoom, minZoom, baseZoom, zoomAmp;
+    [SerializeField] private float maxZoom, minZoom, baseZoom, zoomAmp, moveBox;
     private Vector3 startPos;
     private float currZoom;
     private Vector3 orbitCenter, moveStart;
@@ -116,9 +116,12 @@ public class CameraPan : MonoBehaviour
         {
             Vector3 diff = (moveStart - GetWorldPoint(pos));
             Vector3 move = diff * Time.deltaTime * 100;
-            orbitCenter += move;
-            cam.transform.position += move;
-            moveStart = GetWorldPoint(pos);
+            if (BoundaryCheck(orbitCenter + move))
+            {
+                orbitCenter += move;
+                cam.transform.position += move;
+                moveStart = GetWorldPoint(pos);
+            }
         }   
     }
 
@@ -129,5 +132,10 @@ public class CameraPan : MonoBehaviour
         float distance;
         plane.Raycast(mousePos, out distance);
         return mousePos.GetPoint(distance);
+    }
+
+    private bool BoundaryCheck(Vector3 pos)
+    {
+        return Mathf.Abs(pos.x) <= moveBox && Mathf.Abs(pos.y) <= moveBox && Mathf.Abs(pos.z) <= moveBox;
     }
 }

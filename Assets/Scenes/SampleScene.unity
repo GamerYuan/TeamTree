@@ -7105,6 +7105,7 @@ MonoBehaviour:
   minZoom: -5
   baseZoom: -10
   zoomAmp: 1
+  moveBox: 5
 --- !u!4 &1862842564
 Transform:
   m_ObjectHideFlags: 0
