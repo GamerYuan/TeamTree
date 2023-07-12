@@ -17,7 +17,7 @@ public class CameraPan : MonoBehaviour
     {
         currZoom = baseZoom;
         orbitCenter = Vector3.zero;
-        fingerDist = Screen.currentResolution.height / 24f;
+        fingerDist = Screen.currentResolution.height / 15f;
     }
 
     // Update is called once per frame
