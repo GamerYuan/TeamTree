@@ -14,6 +14,9 @@ public class FlowerPotBehaviour : MonoBehaviour
 
     private bool startWater, canWater;
 
+    [Header("Events")]
+    [SerializeField] private GameEvent waterValChange;
+
     // Start is called before the first frame update
     void Awake()
     {
@@ -23,7 +26,6 @@ public class FlowerPotBehaviour : MonoBehaviour
     void Start()
     {
         StartCoroutine(WaterCall());
-        //StartCoroutine(WaterCountdown());
     }
 
     // Update is called once per frame
@@ -56,6 +58,7 @@ public class FlowerPotBehaviour : MonoBehaviour
             water += 5 * Time.deltaTime;
             CoinManager.instance.RemoveCoins(1 * Time.deltaTime);
         }
+        waterValChange.Raise(this, water);
     }
 
     public void DecreaseWater(float num)
@@ -68,6 +71,7 @@ public class FlowerPotBehaviour : MonoBehaviour
         {
             water = minWater;
         }
+        waterValChange.Raise(this, water);
     }
 
     public float GetWater()
@@ -77,6 +81,7 @@ public class FlowerPotBehaviour : MonoBehaviour
     public void SetWater(float waterVal)
     {
         water = waterVal;
+        waterValChange.Raise(this, water);
     }
 
     private IEnumerator WaterCall()
@@ -85,15 +90,6 @@ public class FlowerPotBehaviour : MonoBehaviour
         {
             Debug.Log($"Current Water Level is: {water}/{maxWater}");
             yield return new WaitForSeconds(2f);
-        }
-    }
-    
-    private IEnumerator WaterCountdown()
-    {
-        while (true)
-        {
-            yield return new WaitForSeconds(5f);
-            DecreaseWater(1);
         }
     }
 
