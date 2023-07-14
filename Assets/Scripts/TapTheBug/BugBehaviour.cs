@@ -15,6 +15,10 @@ public class BugBehaviour : MonoBehaviour
     private float velX, velZ;
 
     protected Rigidbody rb;
+
+    [Header("Events")]
+    [SerializeField] private GameEvent gameEvent;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -47,7 +51,7 @@ public class BugBehaviour : MonoBehaviour
 
     protected virtual void Death()
     {
-        Destroy(gameObject);
+        gameEvent.Raise(this, score);
     }
 
     protected IEnumerator Move()

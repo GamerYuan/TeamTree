@@ -4,10 +4,10 @@ using UnityEngine;
 public class RockSmasherManager : GlobalMinigameManager
 {
     [SerializeField] private List<GameObject> obstacleList;
-    [SerializeField] private int obstacleCount;
+    [SerializeField] protected int obstacleCount;
     [SerializeField] private LayerMask obstacleLayer;
-    [SerializeField] private HookBehaviour hookBehaviour;
-    [SerializeField] private GrabberBehaviour grabberBehaviour;
+    [SerializeField] protected HookBehaviour hookBehaviour;
+    [SerializeField] protected GrabberBehaviour grabberBehaviour;
 
     private int wormCount;
 
@@ -15,7 +15,7 @@ public class RockSmasherManager : GlobalMinigameManager
     {
         base.Awake();
         int i = 0;
-        wormCount = obstacleCount / 8;
+        wormCount = Mathf.CeilToInt((float) obstacleCount / 8);
         Debug.Log(wormCount);
         while (i < obstacleCount - wormCount)
         {
@@ -38,10 +38,16 @@ public class RockSmasherManager : GlobalMinigameManager
         }
     }
 
+    void Start()
+    {
+        hookBehaviour.StartStage();
+        grabberBehaviour.StartStage();
+    }
+
     private bool SpawnObstacle(int obstacleType)
     {
-        float randY = Random.Range(-6f, 5.5f);
-        float randX = Random.Range(-3.2f, 3.2f);
+        float randY = Random.Range(-5.5f, 5f);
+        float randX = Random.Range(-3.0f, 3.0f);
         float randRot = Random.Range(-180f, 180f);
         float randScale = Random.Range(0.95f, 1.05f);
         GameObject obstacle = Instantiate(obstacleList[obstacleType], new Vector3(randX, randY, 0), Quaternion.Euler(0, 0, randRot));

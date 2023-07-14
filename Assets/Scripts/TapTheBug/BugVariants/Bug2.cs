@@ -23,5 +23,6 @@ public class Bug2 : BugBehaviour
         flySpeed = Random.Range(0.5f, 2f);
         Destroy(gameObject, Random.Range(2f, 5f));
         StopCoroutine(moveCoroutine);
+        base.Death();
     }
 }

@@ -10,17 +10,17 @@ public class GameEventListener : MonoBehaviour
 
     public CustomGameEvent response;
 
-    private void OnEnable()
+    protected virtual void OnEnable()
     {
         gameEvent.RegisterListener(this);
     }
 
-    private void OnDisable()
+    protected virtual void OnDisable()
     {
         gameEvent.UnregisterListener(this);
     }
-
-    public void OnEventRaised(Component sender, object data)
+     
+    public virtual void OnEventRaised(Component sender, object data)
     {
         response.Invoke(sender, data);
     }

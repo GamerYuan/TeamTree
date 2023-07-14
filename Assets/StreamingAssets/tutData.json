@@ -1,0 +1,12 @@
+{    
+    "tutData" : [
+        {
+            "tutorialText": "Water is taking a while to drain from the flower pot. It might cause the root to rot! Remove rocks from the soil to improve drainage.",
+            "tutorialStageName": "RockSmasherTut"
+        }, 
+        {
+            "tutorialText": "Oh no! The leaves are being infiltrated by pesky bugs that will damage the bonsai! Get rid of them!",
+            "tutorialStageName": "TapTheBugTut"
+        }
+    ]
+}

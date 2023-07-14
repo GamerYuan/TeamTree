@@ -8,12 +8,12 @@ public class HookBehaviour : MonoBehaviour
     //private Rigidbody rb;
     private bool isShoot, canShoot, isEnd;
     private Coroutine shootCountdown;
-    void Start()
+    void Awake()
     {
         //rb = GetComponent<Rigidbody>();
         isShoot = false;
-        canShoot = true;
-        isEnd = false;
+        canShoot = false;
+        isEnd = true;
     }
 
     // Update is called once per frame
@@ -86,5 +86,12 @@ public class HookBehaviour : MonoBehaviour
     public void EndStage()
     {
         isEnd = true;
+    }
+
+    public void StartStage()
+    {
+        canShoot = true;
+        isShoot = false;
+        isEnd = false;
     }
 }

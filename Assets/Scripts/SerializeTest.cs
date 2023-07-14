@@ -24,10 +24,10 @@ public class SerializeTest : MonoBehaviour
         //dataSerializer.SaveData();
     }
 
-    public void LoadData()
-    {
-        dataSerializer.LoadData();
-    }
+    //public void LoadData()
+    //{
+    //    dataSerializer.LoadData();
+    //}
 
     private string RandomString(int length)
     {

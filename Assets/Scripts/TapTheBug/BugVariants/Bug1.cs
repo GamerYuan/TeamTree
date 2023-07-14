@@ -30,6 +30,7 @@ public class Bug1 : BugBehaviour
         head.GetComponent<Rigidbody>().AddForce(new Vector3(Random.Range(0.5f, 1f) * xDir, 0, Random.Range(0.5f, 1f) * zDir), ForceMode.Impulse);
         Destroy(body, 3);
         Destroy(head, 3);
+        base.Death();
     }
 
     private void GenerateSplatter()
