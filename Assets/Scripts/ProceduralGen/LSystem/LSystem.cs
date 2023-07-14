@@ -1,5 +1,4 @@
 using NCalc;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -15,15 +14,26 @@ public class LSystem : ScriptableObject
     //Current state of the L-System.
     private Word word = Word.Of(new List<Unit>() { });
 
-    public List<Unit> GetUnits() { return word.GetUnits(); }
+    public List<Unit> GetUnits()
+    {
+        Word nextWord = this.word;
+        foreach (RuleSet ruleSet in geometricRules)
+        {
+            nextWord = nextWord.ApplyRules(ruleSet);
+        }
+        return nextWord.GetUnits();
+    }
 
     //RuleSet for L-System.
     public RuleSet[] ruleSets;
 
+    //Rules to interpret higher-level symbols as turtle instructions.
+    public RuleSet[] geometricRules;
+
     public void InitAxiom()
     {
         word = Word.Parse(axiomString);
-        Debug.Log(this.word);   
+        Debug.Log(this.word);
     }
 
     //Updates the current List of Units by applying the Rules in the RuleSet
@@ -61,6 +71,18 @@ public class LSystem : ScriptableObject
                     stack.Pop();
                     return stack;
                 };
+            case "{":
+                return (x, stack) =>
+                {
+                    stack.Push(x);
+                    return stack;
+                };
+            case "}":
+                return (x, stack) =>
+                {
+                    stack.Pop();
+                    return stack;
+                };
             default:
                 return (x, stack) =>
                 {
@@ -72,9 +94,24 @@ public class LSystem : ScriptableObject
         }
     }
 
+    public void RemoveUnitSubtree(Unit unit)
+    {
+        foreach (Unit rightunit in word.GetRightContext(unit, new string[] { }))
+        {
+            RemoveUnitSubtree(rightunit);
+        }
+        word.RemoveUnit(unit);
+        CleanEmptyBrackets();
+    }
+
+    private void CleanEmptyBrackets()
+    {
+        word.CleanEmptyBrackets();
+    }
+
     public void ModifyUnit(string name, int paramIndex, float newValue)
     {
-        foreach(Unit unit in GetUnits())
+        foreach (Unit unit in GetUnits())
         {
             if (unit.name == name)
             {

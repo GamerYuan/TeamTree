@@ -1,7 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -29,9 +27,7 @@ public class RuleSet : ScriptableObject
     private List<StringFloatPair> ruleStrings = new List<StringFloatPair>();
 
     // List of Rules parsed from Strings.
-    public List<Rule> rules => ruleStrings.ConvertAll<Rule>(x => Rule.ParseRule(x.String, x.Value));
-   
-    public Dictionary<string, bool> ruleCheck => rules.ToDictionary(key => key.Name, value => true);
+    public List<Rule> rules => ruleStrings.ConvertAll<Rule>(x => Rule.ParseRule(replaceConstants(x.String), x.Value));
 
     private string replaceConstants(string str)
     {
@@ -49,21 +45,36 @@ public class RuleSet : ScriptableObject
 
         foreach (Rule rule in rules)
         {
-            if (rule.Accepts(unit, word.GetLeftContext(unit, Ignore.ToArray()), word.GetRightContext(unit, Ignore.ToArray())))
+            if (rule.type == Rule.RuleType.BasicRule || rule.type == Rule.RuleType.ParametricRule)
+            {
+                if (rule.Accepts(unit))
+                    matchingRules.Add(rule);
+            }
+            else if (rule.Accepts(unit, word.GetLeftContext(unit, Ignore.ToArray()), word.GetRightContext(unit, Ignore.ToArray())))
             {
                 matchingRules.Add(rule);
             }
         }
-        if (matchingRules.Count > 0)
-            return matchingRules[0].GetOutput(unit, word.GetLeftContext(unit, Ignore.ToArray()), word.GetRightContext(unit, Ignore.ToArray()));
-        else if (matchingRules.Count > 1)
+        if (matchingRules.Count == 1)
+            if (matchingRules[0].type == Rule.RuleType.BasicRule || matchingRules[0].type == Rule.RuleType.ParametricRule)
+                return matchingRules[0].GetOutput(unit);
+            else
+            {
+                return matchingRules[0].GetOutput(unit, word.GetLeftContext(unit, Ignore.ToArray()), word.GetRightContext(unit, Ignore.ToArray()));
+            }
+        else if (matchingRules.Count > 0)
         {
-            float random = Random.Range(0, 1);
-            for(int i = 0; i < matchingRules.Count; i++) 
-            { 
+            float random = Random.Range(0f, 1f);
+            for (int i = 0; i < matchingRules.Count; i++)
+            {
                 random -= matchingRules[i].Weight;
-                if (random < 0)
-                    return matchingRules[i].GetOutput(unit, word.GetLeftContext(unit, Ignore.ToArray()), word.GetRightContext(unit, Ignore.ToArray()));
+                if (random <= 0)
+                    if (matchingRules[i].type == Rule.RuleType.BasicRule || matchingRules[i].type == Rule.RuleType.ParametricRule)
+                        return matchingRules[i].GetOutput(unit);
+                    else
+                    {
+                        return matchingRules[i].GetOutput(unit, word.GetLeftContext(unit, Ignore.ToArray()), word.GetRightContext(unit, Ignore.ToArray()));
+                    }
             }
             return Word.Of(new List<Unit>() { unit });
         }

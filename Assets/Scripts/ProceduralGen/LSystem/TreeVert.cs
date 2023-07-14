@@ -1,6 +1,4 @@
-using System.Collections;
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 
 //Encapsulates a vertex in the Tree
@@ -13,6 +11,7 @@ public class TreeVert
 
     public static int LENGTH = 0;
     public static int THICKNESS = 1;
+    public static int COLOR = 2;
 
 
     public int id;
@@ -26,20 +25,29 @@ public class TreeVert
 
     public TreeVert MoveForward(float magnitude)
     {
-        return new TreeVert(point.moveForward(magnitude), id, parameters);
+        return new TreeVert(point.MoveForward(magnitude), id, parameters);
     }
 
     public TreeVert Inflate(float magnitude)
     {
-        float[] newparameters = new float[Math.Max(2,parameters.Length)];
+        float[] newparameters = new float[Math.Max(2, parameters.Length)];
         Array.Copy(parameters, newparameters, parameters.Length);
-        newparameters[1] *= magnitude;
+        newparameters[TreeVert.THICKNESS] *= magnitude;
+
         return new TreeVert(point, id, newparameters);
     }
 
     public TreeVert SetParams(float[] parameters)
     {
         return new TreeVert(point, id, parameters);
+    }
+
+    public TreeVert IncrementColorIndex()
+    {
+        float[] newparameters = new float[Math.Max(2, parameters.Length)];
+        Array.Copy(parameters, newparameters, parameters.Length);
+        newparameters[COLOR]++;
+        return new TreeVert(point, id, newparameters);
     }
 
     public float GetParam(int i)
@@ -54,9 +62,25 @@ public class TreeVert
         }
     }
 
+    public TreeVert SetRotation(Quaternion rotation)
+    {
+        OrientedPoint newPoint = new OrientedPoint(point.pos, rotation);
+        return new TreeVert(newPoint, id, parameters);
+    }
+
     public TreeVert Rotate(Quaternion rotation)
     {
-        return new TreeVert(point.rotate(rotation), id, parameters);
+        return new TreeVert(point.Rotate(rotation), id, parameters);
+    }
+
+    public TreeVert RotateTo(Vector3 direction, float magnitude)
+    {
+        OrientedPoint newPoint;
+        if (magnitude > 0)
+            newPoint = new OrientedPoint(point.pos, Quaternion.RotateTowards(point.rot, Quaternion.Euler(direction), magnitude));
+        else
+            newPoint = new OrientedPoint(point.pos, Quaternion.RotateTowards(point.rot, Quaternion.Euler(direction), magnitude));
+        return new TreeVert(newPoint, id, parameters);
     }
 
     override

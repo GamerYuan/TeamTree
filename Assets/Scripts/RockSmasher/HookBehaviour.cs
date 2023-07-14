@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class HookBehaviour : MonoBehaviour
@@ -30,7 +28,7 @@ public class HookBehaviour : MonoBehaviour
         {
             Shoot();
         }
-        if (!isShoot && transform.localPosition.y < -0.4f) 
+        if (!isShoot && transform.localPosition.y < -0.4f)
         {
             PullBack();
         }
@@ -42,7 +40,7 @@ public class HookBehaviour : MonoBehaviour
         {
             StartCoroutine(ShootCooldown());
         }
-        if (shootCountdown!= null)
+        if (shootCountdown != null)
         {
             StopCoroutine(shootCountdown);
         }
@@ -53,7 +51,7 @@ public class HookBehaviour : MonoBehaviour
     {
         transform.localPosition -= new Vector3(0, shootSpeed * Time.deltaTime, 0);
     }
-    
+
     private void PullBack()
     {
         transform.localPosition += new Vector3(0, pullBackSpeed * Time.deltaTime, 0);
@@ -79,7 +77,7 @@ public class HookBehaviour : MonoBehaviour
         yield return new WaitForSeconds(5f);
         DisableShoot();
     }
-    
+
     private IEnumerator ShootCooldown()
     {
         yield return new WaitForSeconds(shootCooldown);

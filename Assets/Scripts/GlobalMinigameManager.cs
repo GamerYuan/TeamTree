@@ -48,7 +48,7 @@ public class GlobalMinigameManager : MonoBehaviour
         endStage = true;
         foreach (GameObject go in disableList)
         {
-            if (go != null) 
+            if (go != null)
             {
                 go.SetActive(false);
             }

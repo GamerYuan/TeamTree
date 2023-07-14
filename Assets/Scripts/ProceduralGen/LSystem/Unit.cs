@@ -1,12 +1,8 @@
 using NCalc;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Reflection;
-using System.Threading;
-using UnityEngine;
-using Debug = UnityEngine.Debug;
+using Random = UnityEngine.Random;
 
 /*
  * Encapsulates a single alphabet in an L-System sentence.
@@ -62,7 +58,7 @@ public class Unit
     public static Unit Parse(string unitString)
     {
         string[] unitComponents = new string[2];
-        unitComponents[0] = unitString.Substring(0, Math.Max(unitString.IndexOf("("),1));
+        unitComponents[0] = unitString.Substring(0, Math.Max(unitString.IndexOf("("), 1));
         if (unitString.Contains("("))
             unitComponents[1] = unitString.Substring(unitString.IndexOf("(") + 1, unitString.LastIndexOf(")") - 2);
         else
@@ -72,7 +68,7 @@ public class Unit
         int bracketdepth = 0;
         string parameter = "";
         List<string> parameters = new List<string>();
-        for(int i = 0; i < unitComponents[1].Length; i++)
+        for (int i = 0; i < unitComponents[1].Length; i++)
         {
             if (unitComponents[1][i] == '(')
             {
@@ -92,12 +88,13 @@ public class Unit
             else
                 parameter += unitComponents[1][i];
         }
-        if(parameter != "")
+        if (parameter != "")
             parameters.Add(parameter);
         Expression[] expressions = new Expression[parameters.Count];
         for (int i = 0; i < parameters.Count; i++)
-        { 
+        {
             expressions[i] = new Expression(parameters[i]);
+            expressions[i].EvaluateFunction += NCalcExtensionFunctions;
         }
         return new Unit(name, expressions);
     }
@@ -115,9 +112,28 @@ public class Unit
     // Assign numeric values to expression parameters in this unit
     public void SetParameters(Dictionary<string, object> paramMap)
     {
-        foreach (Expression unitParameter in unitParameters)
+        for (int i = 0; i < unitParameters.Length; i++)
         {
-            unitParameter.Parameters = paramMap;
+            unitParameters[i].Parameters = paramMap;
+            unitParameters[i] = new Expression(Convert.ToSingle(unitParameters[i].Evaluate()).ToString());
+        }
+    }
+
+    // Add Random function to Expression
+    private static void NCalcExtensionFunctions(string name, FunctionArgs functionArgs)
+    {
+        if (name == "Random")
+        {
+            if (functionArgs.Parameters.Count() != 2)
+            {
+                throw new Exception("Bad random range");
+            }
+            else
+            {
+                functionArgs.Result = Random.Range(
+                    Convert.ToSingle(functionArgs.Parameters[0].Evaluate()),
+                    Convert.ToSingle(functionArgs.Parameters[1].Evaluate()));
+            }
         }
     }
 

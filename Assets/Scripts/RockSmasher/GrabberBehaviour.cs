@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class GrabberBehaviour : MonoBehaviour
@@ -54,7 +53,7 @@ public class GrabberBehaviour : MonoBehaviour
         float rotationDeg = pingPongVal - rotation;
         transform.rotation = Quaternion.Euler(0, 0, rotationDeg);
     }
-    
+
     private IEnumerator CooldownCount()
     {
         isCooldown = true;

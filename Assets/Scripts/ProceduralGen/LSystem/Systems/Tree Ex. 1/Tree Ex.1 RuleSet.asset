@@ -15,7 +15,7 @@ MonoBehaviour:
   Constants: []
   Ignore: []
   ruleStrings:
-  - String: p = i+[p+f]--//[--l]i[++l]-[pf]++pf
+  - String: "p \u2192 i + [ p +k] -- // [ --l] i [++ l ] - [ p k ]++ p k"
     Value: 1
   - String: i=Fs[//&&l][//^^l]Fs
     Value: 1
@@ -23,9 +23,9 @@ MonoBehaviour:
     Value: 1
   - String: l = ['{+f-ff-f+|+f-ff-f}]
     Value: 1
-  - String: f=[&&&P'/w////w////w////w////w]
+  - String: k=[&&&P'/w////w////w////w////w]
     Value: 1
   - String: P=FF
     Value: 1
-  - String: w=['^F][{&&&&-f+f|-f+f}]
+  - String: w=['^F]['{&&&&-f+f|-f+f}]
     Value: 1

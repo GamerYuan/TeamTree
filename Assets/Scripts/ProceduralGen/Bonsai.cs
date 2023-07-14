@@ -1,20 +1,17 @@
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using UnityEditor;
-using Unity.VisualScripting;
-using static MathNet.Symbolics.VisualExpression;
-using UnityEngine.UIElements;
 
 public class Bonsai : MonoBehaviour
 {
     //L-System to use to generate this tree.
     public LSystem lsystem;
-
+    private Camera mainCamera;
     public Mesh2d crossSection;
 
     private Mesh mesh;
     private MeshFilter meshFilter;
+    private MeshCollider meshCollider;
 
     //Converts Units to Tree Geometry
     private TreeGeometry treeGeometry = new TreeGeometry();
@@ -27,15 +24,19 @@ public class Bonsai : MonoBehaviour
     public float period;
     private float t = 0;
 
+    public bool ScissorsMode = true;
+
 
     List<TreeVert> treeVertices = new List<TreeVert>();
     List<int> treeEdges = new List<int>();
 
     private void Awake()
     {
+        mainCamera = Camera.main;
         mesh = new Mesh();
         meshFilter = GetComponent<MeshFilter>();
-        //lsystem.InitAxiom();
+        meshCollider = GetComponent<MeshCollider>();
+        lsystem.InitAxiom();
         treeGeometry.SetConstants(constants);
     }
 
@@ -43,17 +44,45 @@ public class Bonsai : MonoBehaviour
     {
         t += Time.deltaTime / period;
         if (t > 1) t = 0;
+        if (Input.GetMouseButtonDown(0))
+        {
+            Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                MeshCollider meshCollider = hit.collider as MeshCollider;
+                if (meshCollider != null && meshCollider.sharedMesh != null)
+                {
+                    int triangle = hit.triangleIndex;
+                    Unit contactUnit = treeGeometry.FindEdge(triangle);
+                    Debug.Log("Unit clicked: " + contactUnit + "triangle: " + triangle);
+                    lsystem.RemoveUnitSubtree(contactUnit);
+
+                    GenerateSkeleton();
+                    GenerateMesh();
+                    treeVertices = treeGeometry.getTreeVertices();
+                    treeEdges = treeGeometry.getTreeEdges();
+                }
+            }
+        }
     }
 
     private void GenerateSkeleton()
     {
-        treeGeometry.CalcTreeSkeleton(upwards, new float[] {0,0.05f}, lsystem.GetUnits());
+        treeGeometry.CalcTreeSkeleton(upwards, new float[] { 0, constants.Thickness, 0 }, lsystem.GetUnits().Where(x => constants.ISGEOMETRY.ContainsKey(x.name)).ToList());
     }
 
     private void GenerateMesh()
     {
         mesh = treeGeometry.GenerateSurfaceMesh(crossSection);
         meshFilter.sharedMesh = mesh;
+        meshCollider.sharedMesh = treeGeometry.GetBranchMesh();
+    }
+
+    public void ToggleScissors()
+    {
+        ScissorsMode = !ScissorsMode;
     }
 
     public void TreeUpdate()
@@ -111,14 +140,14 @@ public class Bonsai : MonoBehaviour
         TreeVert[] verts = treeVertices.ToArray();
         int[] edges = treeEdges.ToArray();
         Gizmos.color = Color.blue;
-        foreach(TreeVert treeVert in verts)
+        foreach (TreeVert treeVert in verts)
         {
             Vector3 vertpos = LocalToWorldPos(treeVert.point.pos);
             Quaternion vertrot = LocalToWorldRot(treeVert.point.rot);
             Gizmos.DrawSphere(vertpos, treeVert.GetParam(3) / 100);
         }
-            Gizmos.color = Color.white;
-        for (int i = 0; i < edges.Length - 1; i+= 2)
+        Gizmos.color = Color.white;
+        for (int i = 0; i < edges.Length - 1; i += 2)
         {
             Vector3 vert1pos = LocalToWorldPos(verts[edges[i]].point.pos);
             Vector3 vert2pos = LocalToWorldPos(verts[edges[i + 1]].point.pos);

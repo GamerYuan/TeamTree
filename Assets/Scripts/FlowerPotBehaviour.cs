@@ -1,7 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using TMPro;
 using UnityEngine;
 
 public class FlowerPotBehaviour : MonoBehaviour
@@ -63,7 +60,7 @@ public class FlowerPotBehaviour : MonoBehaviour
         if (water - num >= minWater)
         {
             water -= num;
-        } 
+        }
         else
         {
             water = minWater;
@@ -87,7 +84,7 @@ public class FlowerPotBehaviour : MonoBehaviour
             yield return new WaitForSeconds(2f);
         }
     }
-    
+
     private IEnumerator WaterCountdown()
     {
         while (true)
@@ -101,7 +98,7 @@ public class FlowerPotBehaviour : MonoBehaviour
     {
         if (data is bool)
         {
-            canWater = (bool) data;
+            canWater = (bool)data;
         }
     }
 }

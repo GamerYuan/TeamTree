@@ -28,15 +28,15 @@ public class SpawnerBehaviour : MonoBehaviour
 
     private IEnumerator SpawnBugs()
     {
-        
-        while(true)
+
+        while (true)
         {
             int randBug;
             float randNum = Random.Range(0f, 1f);
             if (randNum < 0.7)
             {
                 randBug = 0;
-            } 
+            }
             else
             {
                 randBug = 1;

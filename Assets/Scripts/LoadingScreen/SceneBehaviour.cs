@@ -1,6 +1,4 @@
-using System;
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -20,11 +18,11 @@ public class SceneBehaviour : MonoBehaviour
     private IEnumerator LoadSceneAsync()
     {
         AsyncOperation operation;
-        
+
         if (Application.CanStreamedLevelBeLoaded(SceneToLoad.sceneToLoad))
         {
             operation = SceneManager.LoadSceneAsync(SceneToLoad.sceneToLoad);
-        } 
+        }
         else
         {
             Debug.LogError($"No valid scene by name: {SceneToLoad.sceneToLoad} found!");

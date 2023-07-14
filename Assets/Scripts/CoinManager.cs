@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class CoinManager : MonoBehaviour 
+public class CoinManager : MonoBehaviour
 {
     protected float currentCoins;
     private float cachedCoins;
@@ -12,7 +10,7 @@ public class CoinManager : MonoBehaviour
     [Header("Events")]
     [SerializeField] private GameEvent onCoinChanged;
     [SerializeField] private GameEvent onCoinCanUse;
-        
+
     void Awake()
     {
         if (instance != null && instance != this)
@@ -43,7 +41,8 @@ public class CoinManager : MonoBehaviour
         if (currentCoins - val <= 0.02f)
         {
             onCoinCanUse.Raise(this, false);
-        } else
+        }
+        else
         {
             currentCoins -= val;
             onCoinChanged.Raise(this, currentCoins);

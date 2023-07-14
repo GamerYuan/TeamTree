@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.IO;
 using System.Security.Cryptography;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class DataSerializer : MonoBehaviour
@@ -62,7 +61,7 @@ public class DataSerializer : MonoBehaviour
             FlowerPotBehaviour.instance.SetWater(waterVal);
             CoinManager.instance.SetCoins(coinVal);
             Debug.Log($"Save File Loaded!");
-        } 
+        }
         else
         {
             Debug.Log("No save file is found! Loading default values");
@@ -140,7 +139,7 @@ public class DataSerializer : MonoBehaviour
         if (pause)
         {
             SaveData();
-        } 
+        }
         else
         {
             LoadData();

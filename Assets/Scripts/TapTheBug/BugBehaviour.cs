@@ -1,6 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class BugBehaviour : MonoBehaviour
@@ -54,7 +52,7 @@ public class BugBehaviour : MonoBehaviour
 
     protected IEnumerator Move()
     {
-        while(true)
+        while (true)
         {
             float randNum = Random.Range(0f, 1f);
             int randXDirection = Random.Range(0, 2);

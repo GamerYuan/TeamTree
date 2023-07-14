@@ -1,6 +1,3 @@
-using Microsoft.Win32.SafeHandles;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 //Encapsulates a Vector3 Position and Quaternion Rotation
@@ -38,14 +35,22 @@ public class OrientedPoint
     {
         return this.pos.Equals(o.pos) && this.rot.Equals(o.rot);
     }
-    public OrientedPoint moveForward(float magnitude)
+    public OrientedPoint MoveForward(float magnitude)
     {
         return new OrientedPoint(pos + (rot * Vector3.forward * magnitude), rot);
     }
 
-    public OrientedPoint rotate(Quaternion rotation)
+    public OrientedPoint Rotate(Quaternion rotation)
     {
         return new OrientedPoint(pos, rot * rotation);
+    }
+
+    public OrientedPoint RollToZero()
+    {
+        Vector3 euler = rot.eulerAngles;
+        euler.z = 0;
+        Quaternion rotation = Quaternion.Euler(euler);
+        return new OrientedPoint(pos, rotation);
     }
 
     public static OrientedPoint Lerp(OrientedPoint o1, OrientedPoint o2, float t)

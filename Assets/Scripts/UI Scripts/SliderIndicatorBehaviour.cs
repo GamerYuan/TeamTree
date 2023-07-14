@@ -1,6 +1,4 @@
 using MathNet.Numerics;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -15,7 +13,7 @@ public class SliderIndicatorBehaviour : MonoBehaviour
     }
     public void ChangeIndicator(Slider slider)
     {
-        decimal dec = (decimal) slider.value;
+        decimal dec = (decimal)slider.value;
         tmpText.text = dec.Round(2).ToString();
     }
 }

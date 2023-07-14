@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MaterialFadeChanger : MonoBehaviour
@@ -17,6 +15,6 @@ public class MaterialFadeChanger : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        meshRenderer.material.color = Color.Lerp(startColor, endColor, (10 - transform.parent.position.y)/10);
+        meshRenderer.material.color = Color.Lerp(startColor, endColor, (10 - transform.parent.position.y) / 10);
     }
 }

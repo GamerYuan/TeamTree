@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -21,7 +19,8 @@ public class CoinText : MonoBehaviour
 
     public void UpdateCoin(Component sender, object data)
     {
-        if (data is float) { 
+        if (data is float)
+        {
             SetCoin((float)data);
         }
     }

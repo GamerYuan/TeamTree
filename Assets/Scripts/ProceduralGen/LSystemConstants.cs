@@ -1,7 +1,5 @@
 using System;
-using System.Runtime.InteropServices.WindowsRuntime;
-using System.Text;
-using UnityEditor;
+using System.Collections.Generic;
 using UnityEngine;
 
 /*
@@ -10,6 +8,28 @@ using UnityEngine;
 [CreateAssetMenu]
 public class LSystemConstants : ScriptableObject
 {
+
+    public Dictionary<string, bool> ISGEOMETRY = new Dictionary<string, bool>()
+    {
+            { "B", true },
+            { "f", true },
+            { "F", true },
+            { "+", true },
+            { "-", true },
+            { "&", true },
+            { "^", true },
+            { "/", true },
+            { "\\", true },
+            { "|", true },
+            { "!", true },
+            { "'", true },
+            { "$", true },
+            { "[", true },
+            { "]", true },
+            { "{", true },
+            { "}", true }
+    };
+
     //Length of a Segment 
     [Range(0.1f, 5f)]
     public float SegmentLength = 1f;
@@ -17,46 +37,61 @@ public class LSystemConstants : ScriptableObject
     //Angle of Rotation
     [Range(1f, 180f)]
     public float Rotation = 60f;
+
+    [Range(0.001f, 0.05f)]
+    public float Thickness = 0.001f;
+
+    [SerializeField]
+    List<Color> colors = new List<Color>();
+
+    public Color GetColor(int i)
+    {
+        return colors[i];
+    }
+
     //Alphabet Geometric Transformations for L-System
     public Transformation<TreeVert> GetTransformation(Unit u)
     {
-        switch(u.name)
+        switch (u.name)
         {
             case "B":
-                return x => x.SetParams(u.GetParams())
-                             .Rotate(Quaternion.Euler(0f, u.GetParamOrDefault(2), 0f))
-                             .MoveForward(u.GetParamOrDefault(0));
+                return x => x.MoveForward(SegmentLength * u.GetParamOrDefault(0));
             case "F":
                 return x => x.MoveForward(SegmentLength * u.GetParamOrDefault(0));
             case "f":
                 return x => x.MoveForward(SegmentLength * u.GetParamOrDefault(0));
-            case "G":
-                return x => x.MoveForward(SegmentLength * u.GetParamOrDefault(0)).Inflate(u.GetParamOrDefault(1));
             case "+":
-                return x => x.Rotate(Quaternion.Euler(0f, Rotation, 0f));
+                return x => x.Rotate(Quaternion.Euler(0f, u.GetParamOrDefault(0), 0f));
             case "-":
-                return x => x.Rotate(Quaternion.Euler(0f, -Rotation, 0f));
+                return x => x.Rotate(Quaternion.Euler(0f, -u.GetParamOrDefault(0), 0f));
             case "&":
-                return x => x.Rotate(Quaternion.Euler(Rotation, 0f, 0f));
+                return x => x.Rotate(Quaternion.Euler(u.GetParamOrDefault(0), 0f, 0f));
             case "^":
-                return x => x.Rotate(Quaternion.Euler(-Rotation, 0f, 0f));
+                return x => x.Rotate(Quaternion.Euler(-u.GetParamOrDefault(0), 0f, 0f));
             case "/":
-                return x => x.Rotate(Quaternion.Euler(0f, 0f, Rotation));
+                return x => x.Rotate(Quaternion.Euler(0f, 0f, u.GetParamOrDefault(0)));
             case "\\":
-                return x => x.Rotate(Quaternion.Euler(0f, 0f, -Rotation));
+                return x => x.Rotate(Quaternion.Euler(0f, 0f, -u.GetParamOrDefault(0)));
             case "|":
                 return x => x.Rotate(Quaternion.Euler(0f, 180f, 0f));
             case "!":
-                return x => x.Inflate(0.707f);
+                return x => x.Inflate(u.GetParamOrDefault(0));
+            case "$":
+                return x => x.RotateTo(Vector3.up, u.GetParamOrDefault(0));
+            case "'":
+                return x => x.IncrementColorIndex();
             default:
                 return x => x;
         }
     }
 
+
     public bool AddsNode(Unit u)
     {
         switch (u.name)
         {
+            case "B":
+                return true;
             case "F":
                 return true;
             case "f":
@@ -70,12 +105,14 @@ public class LSystemConstants : ScriptableObject
     {
         switch (name)
         {
+            case "B":
+                return new float[] { SegmentLength };
             case "f":
                 return new float[] { SegmentLength };
             case "F":
-                return new float[] { SegmentLength, 0.05f };
+                return new float[] { SegmentLength };
             case "G":
-                return new float[] { SegmentLength, 0.02f };
+                return new float[] { SegmentLength };
             case "+":
                 return new float[] { Rotation };
             case "-":
@@ -90,8 +127,10 @@ public class LSystemConstants : ScriptableObject
                 return new float[] { Rotation };
             case "|":
                 return new float[] { 180f };
+            case "!":
+                return new float[] { 0.707f };
             default:
                 return new float[] { 0f, 0f };
         }
-    } 
+    }
 }

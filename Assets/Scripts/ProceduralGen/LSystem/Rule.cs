@@ -1,15 +1,9 @@
+using NCalc;
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
-using NCalc;
-using System.Runtime.CompilerServices;
-using Unity.Profiling.LowLevel.Unsafe;
-using UnityEditor;
-using System.Linq;
-using System.Threading;
-using System.Net;
 
 /*
 * Encapsulates a Production Rule for an L-System.
@@ -17,7 +11,7 @@ using System.Net;
 [CreateAssetMenu]
 public class Rule : ScriptableObject
 {
-    private enum RuleType
+    public enum RuleType
     {
         BasicRule,
         ParametricRule,
@@ -45,6 +39,8 @@ public class Rule : ScriptableObject
     public float Weight => Convert.ToSingle(weight.Evaluate());
 
     public string Name => predString;
+
+    public RuleType type;
 
     //Condition 
     private Expression condition;
@@ -97,7 +93,20 @@ public class Rule : ScriptableObject
         }
         return Convert.ToBoolean(substitutedCondition.Evaluate());
     }
+    public bool Accepts(Unit unit)
+    {
+        if (unit.GetName() != predString)
+            return false;
 
+        if (predParamNames.Length != unit.GetParams().Length)
+            return false;
+
+        Dictionary<string, float> paramMap = new Dictionary<string, float>();
+        for (int i = 0; i < predParamNames.Length; i++)
+            paramMap.Add(predParamNames[i], unit.GetParamOrDefault(i));
+
+        return SubstituteConditionParams(paramMap);
+    }
 
     // tests whether this rule applies to a given unit
     public bool Accepts(Unit unit, Unit leftContext, Unit[] rightContext)
@@ -132,7 +141,7 @@ public class Rule : ScriptableObject
                     if (SubstituteConditionParams(paramMap.Concat(rightParams).ToDictionary(x => x.Key, x => x.Value)))
                         return true;
                 }
-         
+
             }
             return false;
         }
@@ -232,7 +241,7 @@ public class Rule : ScriptableObject
                 condition = new Expression(stringCondition);
         }
 
-            switch (ruleType)
+        switch (ruleType)
         {
             case RuleType.BasicRule:
                 {
@@ -241,6 +250,7 @@ public class Rule : ScriptableObject
 
                     rule.predString = predecessor;
                     rule.outputWord = Word.Parse(successor);
+                    rule.type = ruleType;
                     return rule;
                 }
 
@@ -256,6 +266,7 @@ public class Rule : ScriptableObject
                     rule.condition = condition;
                     rule.outputWord = Word.Parse(successor);
                     rule.predParamNames = predparameters;
+                    rule.type = ruleType;
                     return rule;
                 }
             case RuleType.LeftContextRule:
@@ -277,6 +288,7 @@ public class Rule : ScriptableObject
                     rule.outputWord = Word.Parse(successor);
                     rule.predParamNames = predparameters;
                     rule.leftParamNames = leftparameters;
+                    rule.type = ruleType;
                     return rule;
                 }
             case RuleType.RightContextRule:
@@ -298,6 +310,7 @@ public class Rule : ScriptableObject
                     rule.outputWord = Word.Parse(successor);
                     rule.predParamNames = predparameters;
                     rule.rightParamNames = rightparameters;
+                    rule.type = ruleType;
                     return rule;
                 }
 
@@ -326,6 +339,7 @@ public class Rule : ScriptableObject
                     rule.predParamNames = predparameters;
                     rule.leftParamNames = leftparameters;
                     rule.rightParamNames = rightparameters;
+                    rule.type = ruleType;
 
                     return rule;
                 }
@@ -334,7 +348,21 @@ public class Rule : ScriptableObject
         }
     }
 
+    public Word GetOutput(Unit unit)
+    {
+        Dictionary<string, float> paramMap = new Dictionary<string, float>();
+        for (int i = 0; i < predParamNames.Length; i++)
+            paramMap.Add(predParamNames[i], unit.GetParamOrDefault(i));
 
+
+        Dictionary<string, object> objectParamMap = new Dictionary<string, object>();
+        foreach (KeyValuePair<string, float> kvp in paramMap)
+        {
+            objectParamMap.Add(kvp.Key, kvp.Value);
+        }
+        outputWord.SetParameters(objectParamMap);
+        return outputWord;
+    }
 
     // returns new replacement List of Units.
     public Word GetOutput(Unit unit, Unit leftContext, Unit[] rightContexts)
@@ -354,11 +382,11 @@ public class Rule : ScriptableObject
                 for (int i = 0; i < rightParamNames.Length; i++)
                 {
                     rightParamMap.Add(rightParamNames[i], rightContext.GetParamOrDefault(i));
-                }   
+                }
 
                 if (SubstituteConditionParams(rightParamMap))
                 {
-                    foreach(string rightparam in rightParamNames)
+                    foreach (string rightparam in rightParamNames)
                     {
                         if (paramMap.ContainsKey(rightparam))
                             paramMap[rightparam] += rightParamMap[rightparam];

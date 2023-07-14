@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Video;
 
@@ -20,7 +19,7 @@ public class LoadingAnimManager : MonoBehaviour
     public IEnumerator StepFrames(int frames, float t)
     {
         float tpf = t / frames;
-        while(frames > 0)
+        while (frames > 0)
         {
             player.StepForward();
             --frames;

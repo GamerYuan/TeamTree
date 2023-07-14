@@ -1,14 +1,12 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Linq.Expressions;
 using UnityEngine;
-using UnityEngine.Rendering;
 
 public class Word
 {
     //List of units in this word
     private List<Unit> units = new List<Unit>();
+
 
     public List<Unit> GetUnits() { return units; }
     public int GetNumberOfUnits() { return units.Count; }
@@ -20,17 +18,11 @@ public class Word
 
     public Word ApplyRules(RuleSet rules)
     {
-        Word newWord = Word.Of(new List<Unit>(){ });
+        Word newWord = Word.Of(new List<Unit>() { });
         foreach (Unit unit in units)
         {
-            if (rules.ruleCheck.ContainsKey(unit.name))
-            {
-                Word nextWord = rules.ApplyMatchingRule(unit, this);
-                newWord.AddWord(nextWord);
-            } else
-            {
-                newWord.units.Add(unit);
-            }
+            Word nextWord = rules.ApplyMatchingRule(unit, this);
+            newWord.AddWord(nextWord);
         }
         return newWord;
     }
@@ -38,6 +30,11 @@ public class Word
     private void AddWord(Word word)
     {
         this.units.AddRange(word.units);
+    }
+
+    public void RemoveUnit(Unit unit)
+    {
+        units.Remove(unit);
     }
 
     public static Word Of(List<Unit> units)
@@ -70,10 +67,20 @@ public class Word
     public Unit[] GetRightContext(Unit unit, string[] ignore)
     {
         List<Unit> rightContexts = new List<Unit>();
+        int index = units.IndexOf(unit);
+        if (index < units.Count - 1)
+        {
+            Unit nextUnit = units[index + 1];
+            if (!ignore.Contains(nextUnit.GetName()) && !nextUnit.IsLeftBracket() && !nextUnit.IsRightBracket())
+            {
+                rightContexts.Add(nextUnit);
+                return rightContexts.ToArray();
+            }
+        }
         int bracketDepth = 0;
         Stack<int> distance = new Stack<int>();
         distance.Push(0);
-        for (int unitIndex = units.IndexOf(unit) + 1; unitIndex < units.Count; unitIndex++)
+        for (int unitIndex = index + 1; unitIndex < units.Count; unitIndex++)
         {
             Unit nextUnit = units[unitIndex];
             if (bracketDepth < 0)
@@ -91,10 +98,27 @@ public class Word
             else if (distance.Peek() == 0 && !ignore.Contains(nextUnit.GetName()))
             {
                 rightContexts.Add(nextUnit);
-                distance.Push(distance.Pop() + 1);
+                if (bracketDepth == 0)
+                    break;
+                distance.Push(1);
             }
         }
         return rightContexts.ToArray();
+    }
+
+    public void CleanEmptyBrackets()
+    {
+        for (int i = 1; i < units.Count; i++)
+        {
+            Unit currunit = units[i - 1];
+            Unit nextUnit = units[i];
+            if (currunit.IsLeftBracket() && nextUnit.IsRightBracket())
+            {
+                units.Remove(currunit);
+                units.Remove(nextUnit);
+                i = Mathf.Max(1, i - 1);
+            }
+        }
     }
 
     public static Word Parse(string word)
@@ -114,7 +138,7 @@ public class Word
             else if (word[i] == ')')
             {
                 bracketDepth--;
-                if(bracketDepth == 0)
+                if (bracketDepth == 0)
                     nextFlag = true;
                 currUnitString += word[i].ToString();
             }

@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -57,7 +55,7 @@ public class TreeChanger : MonoBehaviour
         {
             customTreeTemplate.SetActive(true);
             CallCustomTreeUI();
-        } 
+        }
         else
         {
             ChangeTree(treeType);

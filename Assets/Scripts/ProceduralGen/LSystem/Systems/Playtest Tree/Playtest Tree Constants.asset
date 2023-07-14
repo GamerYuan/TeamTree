@@ -13,4 +13,7 @@ MonoBehaviour:
   m_Name: Playtest Tree Constants
   m_EditorClassIdentifier: 
   SegmentLength: 1
-  Rotation: 60
+  Rotation: 58.7
+  Thickness: 0.0081
+  colors:
+  - {r: 0.6886792, g: 0.62695795, b: 0.62695795, a: 0}

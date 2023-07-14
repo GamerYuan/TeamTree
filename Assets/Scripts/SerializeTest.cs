@@ -1,8 +1,3 @@
-using JetBrains.Annotations;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using UnityEngine;
 
@@ -25,7 +20,7 @@ public class SerializeTest : MonoBehaviour
         string randStr = RandomString(randNum);
         float randFloat = Random.Range(0f, 100f);
         dataSerializer.SetData(randStr, randFloat);
-        Debug.Log(randStr+ " " + randFloat);
+        Debug.Log(randStr + " " + randFloat);
         //dataSerializer.SaveData();
     }
 

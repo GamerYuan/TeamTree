@@ -1,11 +1,10 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class StageManagerBehaviour : MonoBehaviour
 {
     public static bool isPaused;
-    
+
     [SerializeField] private GameObject minigameMenu, baseCanvas, flowerPot, treePrefab;
     private LoadingScreenTrigger loadScreenTrigger;
     private GameObject currTree;
@@ -14,7 +13,7 @@ public class StageManagerBehaviour : MonoBehaviour
         //currTree = GameObject.FindGameObjectWithTag("Tree");
         StartCoroutine(WaterTree());
         isPaused = false;
-        loadScreenTrigger= GetComponent<LoadingScreenTrigger>();
+        loadScreenTrigger = GetComponent<LoadingScreenTrigger>();
     }
 
     public static void StopTime()
