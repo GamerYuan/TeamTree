@@ -8,8 +8,7 @@ using UnityEngine;
 /*
 * Encapsulates a Production Rule for an L-System.
 */
-[CreateAssetMenu]
-public class Rule : ScriptableObject
+public class Rule 
 {
     public enum RuleType
     {
@@ -20,13 +19,22 @@ public class Rule : ScriptableObject
         FullContextRule,
         StochasticRule
     }
+
+    [SerializeField]
+    private string RuleName;
+
+    [SerializeField]
+    private string RuleString;
+
+    [SerializeField]
+    private string Chance;
     // String of Unit to accept as input.
-    private string predString = null;
+    private char predString = char.MinValue;
 
     // contextual Unit strings to accept
-    private string leftString = null;
+    private char leftString = char.MinValue;
 
-    private string rightString = null;
+    private char rightString = char.MinValue;
     // List of parameters
     private string[] leftParamNames = new string[] { };
 
@@ -34,13 +42,15 @@ public class Rule : ScriptableObject
 
     private string[] rightParamNames = new string[] { };
 
-    private Expression weight = new Expression("1");
+    private Expression weight => new Expression(Chance);
 
     public float Weight => Convert.ToSingle(weight.Evaluate());
 
-    public string Name => predString;
+    public char Name => predString;
 
-    public RuleType type;
+    private RuleType type;
+
+    public RuleType Type => type;
 
     //Condition 
     private Expression condition;
@@ -96,15 +106,18 @@ public class Rule : ScriptableObject
     public bool Accepts(Unit unit)
     {
         if (unit.GetName() != predString)
+        {
             return false;
+        }
 
         if (predParamNames.Length != unit.GetParams().Length)
+        {
             return false;
+        }
 
         Dictionary<string, float> paramMap = new Dictionary<string, float>();
         for (int i = 0; i < predParamNames.Length; i++)
             paramMap.Add(predParamNames[i], unit.GetParamOrDefault(i));
-
         return SubstituteConditionParams(paramMap);
     }
 
@@ -114,13 +127,13 @@ public class Rule : ScriptableObject
         if (unit.GetName() != predString)
             return false;
 
-        if (leftString != null && leftContext.GetName() != leftString)
+        if (leftString != char.MinValue && leftContext.GetName() != leftString)
             return false;
 
         if (predParamNames.Length != unit.GetParams().Length)
             return false;
 
-        if (leftString != null && leftParamNames.Length != leftContext.GetParams().Length)
+        if (leftString != char.MinValue && leftParamNames.Length != leftContext.GetParams().Length)
             return false;
 
         Dictionary<string, float> paramMap = new Dictionary<string, float>();
@@ -129,7 +142,7 @@ public class Rule : ScriptableObject
         for (int i = 0; i < leftParamNames.Length; i++)
             paramMap.Add(leftParamNames[i], leftContext.GetParamOrDefault(i));
 
-        if (rightString != null)
+        if (rightString != char.MinValue)
         {
             foreach (Unit right in rightContext)
             {
@@ -158,7 +171,7 @@ public class Rule : ScriptableObject
     public static Rule ParseRule(string ruleString, float weight)
     {
         Rule rule = ParseRule(ruleString);
-        rule.weight = new Expression(weight.ToString());
+        rule.Chance = weight.ToString();
         return rule;
     }
 
@@ -168,7 +181,7 @@ public class Rule : ScriptableObject
         ruleString = ruleString.Replace((char)8743, '^');
         ruleString = ruleString.Replace((char)8594, '=');
 
-        Rule rule = (Rule)CreateInstance("Rule");
+        Rule rule = new Rule();
 
         RuleType ruleType;
 
@@ -248,7 +261,7 @@ public class Rule : ScriptableObject
                     predecessor = ReplaceWhitespace(predecessor, "");
                     successor = ReplaceWhitespace(successor, "");
 
-                    rule.predString = predecessor;
+                    rule.predString = predecessor[0];
                     rule.outputWord = Word.Parse(successor);
                     rule.type = ruleType;
                     return rule;
@@ -256,13 +269,13 @@ public class Rule : ScriptableObject
 
             case RuleType.ParametricRule:
                 {
-                    predparams = predecessor.Split(new char[] { ',', '(', ')', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                    predparams = predecessor.Split(new char[] { ',', '(', ')',' '}, StringSplitOptions.RemoveEmptyEntries);
                     predecessor = predparams[0];
 
                     string[] predparameters = new string[predparams.Length - 1];
                     Array.Copy(predparams, 1, predparameters, 0, predparams.Length - 1);
 
-                    rule.predString = predecessor;
+                    rule.predString = predecessor[0];
                     rule.condition = condition;
                     rule.outputWord = Word.Parse(successor);
                     rule.predParamNames = predparameters;
@@ -282,8 +295,8 @@ public class Rule : ScriptableObject
                     Array.Copy(predparams, 1, predparameters, 0, predparams.Length - 1);
                     Array.Copy(leftparams, 1, leftparameters, 0, leftparams.Length - 1);
 
-                    rule.predString = predecessor;
-                    rule.leftString = predecessorleft;
+                    rule.predString = predecessor[0];
+                    rule.leftString = predecessorleft[0];
                     rule.condition = condition;
                     rule.outputWord = Word.Parse(successor);
                     rule.predParamNames = predparameters;
@@ -304,8 +317,8 @@ public class Rule : ScriptableObject
                     Array.Copy(predparams, 1, predparameters, 0, predparams.Length - 1);
                     Array.Copy(rightparams, 1, rightparameters, 0, rightparams.Length - 1);
 
-                    rule.predString = predecessor;
-                    rule.rightString = predecessorright;
+                    rule.predString = predecessor[0];
+                    rule.rightString = predecessorright[0];
                     rule.condition = condition;
                     rule.outputWord = Word.Parse(successor);
                     rule.predParamNames = predparameters;
@@ -331,9 +344,9 @@ public class Rule : ScriptableObject
                     Array.Copy(leftparams, 1, leftparameters, 0, leftparams.Length - 1);
                     Array.Copy(rightparams, 1, rightparameters, 0, rightparams.Length - 1);
 
-                    rule.predString = predecessor;
-                    rule.leftString = predecessorleft;
-                    rule.rightString = predecessorright;
+                    rule.predString = predecessor[0];
+                    rule.leftString = predecessorleft[0];
+                    rule.rightString = predecessorright[0];
                     rule.condition = condition;
                     rule.outputWord = Word.Parse(successor);
                     rule.predParamNames = predparameters;
@@ -352,16 +365,19 @@ public class Rule : ScriptableObject
     {
         Dictionary<string, float> paramMap = new Dictionary<string, float>();
         for (int i = 0; i < predParamNames.Length; i++)
+        {
             paramMap.Add(predParamNames[i], unit.GetParamOrDefault(i));
-
+        }
 
         Dictionary<string, object> objectParamMap = new Dictionary<string, object>();
         foreach (KeyValuePair<string, float> kvp in paramMap)
         {
             objectParamMap.Add(kvp.Key, kvp.Value);
         }
-        outputWord.SetParameters(objectParamMap);
-        return outputWord;
+
+        Word output = outputWord.Clone();
+        output.SetParameters(objectParamMap);
+        return output;
     }
 
     // returns new replacement List of Units.
@@ -402,7 +418,14 @@ public class Rule : ScriptableObject
         {
             objectParamMap.Add(kvp.Key, kvp.Value);
         }
-        outputWord.SetParameters(objectParamMap);
-        return outputWord;
+        Word output = outputWord.Clone();
+        output.SetParameters(objectParamMap);
+        return output;
+    }
+
+    override
+    public string ToString()
+    {
+        return predString.ToString();
     }
 }

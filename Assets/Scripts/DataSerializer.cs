@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.IO;
-using System.Security.Cryptography;
 using UnityEngine;
 
 public class DataSerializer : MonoBehaviour

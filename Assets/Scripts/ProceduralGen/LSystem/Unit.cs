@@ -1,6 +1,7 @@
 using NCalc;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Tracing;
 using System.Linq;
 using Random = UnityEngine.Random;
 
@@ -9,24 +10,36 @@ using Random = UnityEngine.Random;
  */
 public class Unit
 {
-    public static Unit EMPTY_UNIT = new Unit("EMPTY_UNIT", new Expression[] { });
+    public static Unit EMPTY_UNIT = new Unit(char.MinValue, new Expression[] { });
 
     // a character that represents this unit.
-    public string name;
+    public char name;
 
     // Parameters of this unit.
     public Expression[] unitParameters = { };
     public float[] defaultParameters;
+    private float[] evaluatedParameters = { };
 
-    public Unit(string name)
+    public Unit(char name)
     {
         this.name = name;
     }
 
-    public Unit(string name, Expression[] parameters)
+    public Unit(char name, Expression[] parameters)
     {
         this.name = name;
         this.unitParameters = parameters;
+        this.evaluatedParameters = new float[parameters.Length];
+        for(int i = 0; i < evaluatedParameters.Length; i++)
+        {
+            this.evaluatedParameters[i] = float.MinValue;
+        }
+    }
+
+    public Unit Clone()
+    {
+        Unit clone = new Unit(name, (Expression[])unitParameters.Clone());
+        return clone;
     }
 
     //Assign Default values to each parameter
@@ -51,7 +64,11 @@ public class Unit
         {
             return defaultParameters[index];
         }
-        return Convert.ToSingle(unitParameters[index].Evaluate());
+        else if (evaluatedParameters[index] == float.MinValue)
+        {
+            evaluatedParameters[index] = Convert.ToSingle(unitParameters[index].Evaluate());
+        }
+        return evaluatedParameters[index];
     }
 
     //Convert a string of form "A(1,2,3,..)" to a Unit
@@ -64,7 +81,7 @@ public class Unit
         else
             unitComponents[1] = "";
 
-        string name = unitComponents[0];
+        char name = unitComponents[0][0];
         int bracketdepth = 0;
         string parameter = "";
         List<string> parameters = new List<string>();
@@ -115,7 +132,9 @@ public class Unit
         for (int i = 0; i < unitParameters.Length; i++)
         {
             unitParameters[i].Parameters = paramMap;
-            unitParameters[i] = new Expression(Convert.ToSingle(unitParameters[i].Evaluate()).ToString());
+            float value = Convert.ToSingle(unitParameters[i].Evaluate());
+            unitParameters[i] = new Expression(value.ToString());
+            evaluatedParameters[i] = value;
         }
     }
 
@@ -139,12 +158,12 @@ public class Unit
 
     public bool IsLeftBracket()
     {
-        return name == "[" || name == "{";
+        return name == '['  || name == '{';
     }
 
     public bool IsRightBracket()
     {
-        return name == "]" || name == "}";
+        return name == ']' || name == '}';
     }
 
     override
@@ -159,7 +178,7 @@ public class Unit
             return this.name.ToString();
     }
 
-    internal string GetName()
+    internal char GetName()
     {
         return name;
     }

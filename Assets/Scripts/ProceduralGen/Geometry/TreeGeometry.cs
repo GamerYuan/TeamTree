@@ -51,11 +51,11 @@ public class TreeGeometry
             StackMod<TreeVert> stackMod = LSystem.GetStackMod<TreeVert>(currUnit);
             TreeVert nextVert = transformation.Invoke(currVert);
 
-            if (currUnit.name == "{")
+            if (currUnit.name == '{')
             {
                 isPolygon = true;
             }
-            else if (currUnit.name == "}" && polygonVerts.Count > 0)
+            else if (currUnit.name == '}' && polygonVerts.Count > 0)
             {
                 treePolygons.Add(polygonVerts.ConvertAll(x => x.Clone()));
                 polygonVerts.Clear();

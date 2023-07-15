@@ -5,7 +5,7 @@ using UnityEngine;
 public class Word
 {
     //List of units in this word
-    private List<Unit> units = new List<Unit>();
+    private readonly List<Unit> units = new List<Unit>();
 
 
     public List<Unit> GetUnits() { return units; }
@@ -18,18 +18,17 @@ public class Word
 
     public Word ApplyRules(RuleSet rules)
     {
-        Word newWord = Word.Of(new List<Unit>() { });
-        foreach (Unit unit in units)
+        List<Unit> newWord = new List<Unit>();
+            foreach (Unit unit in units)
         {
-            Word nextWord = rules.ApplyMatchingRule(unit, this);
-            newWord.AddWord(nextWord);
+            newWord.AddRange(rules.ApplyMatchingRule(unit, this).units);
         }
-        return newWord;
+        return Word.Of(newWord);
     }
 
-    private void AddWord(Word word)
+    public Word Clone()
     {
-        this.units.AddRange(word.units);
+        return Word.Of(units.ConvertAll<Unit>(x => x.Clone()));
     }
 
     public void RemoveUnit(Unit unit)
@@ -42,10 +41,10 @@ public class Word
         return new Word(units);
     }
 
-    public Unit GetLeftContext(Unit unit, string[] ignore)
+    public Unit GetLeftContext(int index, Unit unit, char[] ignore)
     {
         int bracketDepth = 0;
-        for (int unitIndex = units.IndexOf(unit) - 1; unitIndex > -1; unitIndex--)
+        for (int unitIndex = index - 1; unitIndex > -1; unitIndex--)
         {
             if (units[unitIndex].IsRightBracket())
             {
@@ -64,10 +63,19 @@ public class Word
         return Unit.EMPTY_UNIT;
     }
 
-    public Unit[] GetRightContext(Unit unit, string[] ignore)
+    public int FindUnit(Unit unit)
+    {
+        for(int i = 0; i < units.Count; i++)
+        {
+            if (units[i].Equals(unit))
+                return i;
+        }
+        return -1;
+    }
+
+    public Unit[] GetRightContext(int index, Unit unit, char[] ignore)
     {
         List<Unit> rightContexts = new List<Unit>();
-        int index = units.IndexOf(unit);
         if (index < units.Count - 1)
         {
             Unit nextUnit = units[index + 1];
@@ -164,7 +172,9 @@ public class Word
         foreach (Unit unit in units)
         {
             unit.SetParameters(paramMap);
+            
         }
+
     }
 
     override

@@ -13,7 +13,5 @@ MonoBehaviour:
   m_Name: Basic Geometric Rule SQet
   m_EditorClassIdentifier: 
   Constants: []
-  Ignore: []
-  ruleStrings:
-  - String: 'L(x) : * = {-(22.5)f(x)+(22.5)f(x)+(22.5)f(x)-(22.5)|-(22.5)f(x)+(22.5)f(x)+(22.5)f(x)}'
-    Value: 1
+  Ignore: 
+  ruleStrings: []

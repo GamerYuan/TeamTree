@@ -56,7 +56,7 @@ public class CameraPan : MonoBehaviour
                     float diff = currMag - deltaMag;
 
                     Zoom(diff * zoomAmp * Time.deltaTime);
-                }                
+                }
             }
             else
             {
@@ -120,7 +120,7 @@ public class CameraPan : MonoBehaviour
                 cam.transform.position += move;
                 moveStart = GetWorldPoint(pos);
             }
-        }   
+        }
     }
 
     private Vector3 GetWorldPoint(Vector3 pos)

@@ -9,25 +9,25 @@ using UnityEngine;
 public class LSystemConstants : ScriptableObject
 {
 
-    public Dictionary<string, bool> ISGEOMETRY = new Dictionary<string, bool>()
+    public Dictionary<char, bool> ISGEOMETRY = new Dictionary<char, bool>()
     {
-            { "B", true },
-            { "f", true },
-            { "F", true },
-            { "+", true },
-            { "-", true },
-            { "&", true },
-            { "^", true },
-            { "/", true },
-            { "\\", true },
-            { "|", true },
-            { "!", true },
-            { "'", true },
-            { "$", true },
-            { "[", true },
-            { "]", true },
-            { "{", true },
-            { "}", true }
+            { 'B', true },
+            { 'f', true },
+            { 'F', true },
+            { '+', true },
+            { '-', true },
+            { '&', true },
+            { '^', true },
+            { '/', true },
+            { '\\', true },
+            { '|', true },
+            { '!', true },
+            { '\'', true },
+            { '$', true },
+            { '[', true },
+            { ']', true },
+            { '{', true },
+            { '}', true }
     };
 
     //Length of a Segment 
@@ -54,31 +54,31 @@ public class LSystemConstants : ScriptableObject
     {
         switch (u.name)
         {
-            case "B":
+            case 'B':
                 return x => x.MoveForward(SegmentLength * u.GetParamOrDefault(0));
-            case "F":
+            case 'F':
                 return x => x.MoveForward(SegmentLength * u.GetParamOrDefault(0));
-            case "f":
+            case 'f':
                 return x => x.MoveForward(SegmentLength * u.GetParamOrDefault(0));
-            case "+":
+            case '+':
                 return x => x.Rotate(Quaternion.Euler(0f, u.GetParamOrDefault(0), 0f));
-            case "-":
+            case '-':
                 return x => x.Rotate(Quaternion.Euler(0f, -u.GetParamOrDefault(0), 0f));
-            case "&":
+            case '&':
                 return x => x.Rotate(Quaternion.Euler(u.GetParamOrDefault(0), 0f, 0f));
-            case "^":
+            case '^':
                 return x => x.Rotate(Quaternion.Euler(-u.GetParamOrDefault(0), 0f, 0f));
-            case "/":
+            case '/':
                 return x => x.Rotate(Quaternion.Euler(0f, 0f, u.GetParamOrDefault(0)));
-            case "\\":
+            case '\\':
                 return x => x.Rotate(Quaternion.Euler(0f, 0f, -u.GetParamOrDefault(0)));
-            case "|":
+            case '|':
                 return x => x.Rotate(Quaternion.Euler(0f, 180f, 0f));
-            case "!":
+            case '!':
                 return x => x.Inflate(u.GetParamOrDefault(0));
-            case "$":
+            case '$':
                 return x => x.RotateTo(Vector3.up, u.GetParamOrDefault(0));
-            case "'":
+            case '\'':
                 return x => x.IncrementColorIndex();
             default:
                 return x => x;
@@ -90,44 +90,44 @@ public class LSystemConstants : ScriptableObject
     {
         switch (u.name)
         {
-            case "B":
+            case 'B':
                 return true;
-            case "F":
+            case 'F':
                 return true;
-            case "f":
+            case 'f':
                 return true;
             default:
                 return false;
         }
     }
 
-    public float[] GetDefaultParams(string name)
+    public float[] GetDefaultParams(char name)
     {
         switch (name)
         {
-            case "B":
+            case 'B':
                 return new float[] { SegmentLength };
-            case "f":
+            case 'f':
                 return new float[] { SegmentLength };
-            case "F":
+            case 'F':
                 return new float[] { SegmentLength };
-            case "G":
+            case 'G':
                 return new float[] { SegmentLength };
-            case "+":
+            case '+':
                 return new float[] { Rotation };
-            case "-":
+            case '-':
                 return new float[] { Rotation };
-            case "&":
+            case '&':
                 return new float[] { Rotation };
-            case "^":
+            case '^':
                 return new float[] { Rotation };
-            case "/":
+            case '/':
                 return new float[] { Rotation };
-            case "\\":
+            case '\\':
                 return new float[] { Rotation };
-            case "|":
+            case '|':
                 return new float[] { 180f };
-            case "!":
+            case '!':
                 return new float[] { 0.707f };
             default:
                 return new float[] { 0f, 0f };

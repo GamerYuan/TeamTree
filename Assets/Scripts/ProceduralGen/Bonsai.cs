@@ -36,8 +36,13 @@ public class Bonsai : MonoBehaviour
         mesh = new Mesh();
         meshFilter = GetComponent<MeshFilter>();
         meshCollider = GetComponent<MeshCollider>();
-        lsystem.InitAxiom();
+        lsystem.InitSystem();
         treeGeometry.SetConstants(constants);
+    }
+
+    private void Start()
+    {
+        lsystem.InitSystem();
     }
 
     private void Update()
@@ -88,7 +93,6 @@ public class Bonsai : MonoBehaviour
     public void TreeUpdate()
     {
         mesh.Clear();
-        WaterTree(0.1f);
         lsystem.ApplyRules();
         GenerateSkeleton();
         GenerateMesh();
@@ -99,7 +103,7 @@ public class Bonsai : MonoBehaviour
     public void InitTree()
     {
         Awake();
-        lsystem.InitAxiom();
+        lsystem.InitSystem();
         GenerateSkeleton();
         GenerateMesh();
     }
@@ -119,7 +123,7 @@ public class Bonsai : MonoBehaviour
 
     public void WaterTree(float f)
     {
-        lsystem.ModifyUnit("R", 0, f);
+        lsystem.ModifyUnit('R', 0, f);
     }
 
 

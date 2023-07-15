@@ -13,9 +13,9 @@ MonoBehaviour:
   m_Name: Basic RuleSet
   m_EditorClassIdentifier: 
   Constants: []
-  Ignore: []
+  Ignore: 
   ruleStrings:
-  - String: B = F/(90)[&(60)b]$(5)B
+  - String: 'L(a) : * = L(a + 1)'
     Value: 1
-  - String: b = 'L(1)
+  - String: 'B(a) : * = B(a + 1)'
     Value: 1

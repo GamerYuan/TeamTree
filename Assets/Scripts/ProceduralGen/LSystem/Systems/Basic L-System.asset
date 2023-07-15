@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52e6c5eac999f3946ab96d425ea0d6da, type: 3}
   m_Name: Basic L-System
   m_EditorClassIdentifier: 
-  axiomString: '&(90)/(90)F$(10)F$(10)F$(10)F$(10)F$(10)F$(10)F$(10)F'
+  axiomString: B(0)B(3)
   ruleSets:
   - {fileID: 11400000, guid: b8c7bc43ae2a9304ca284bb5bb5ad8bc, type: 2}
   geometricRules:

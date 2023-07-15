@@ -15,7 +15,7 @@ public class RockSmasherManager : GlobalMinigameManager
     {
         base.Awake();
         int i = 0;
-        wormCount = Mathf.CeilToInt((float) obstacleCount / 8);
+        wormCount = Mathf.CeilToInt((float)obstacleCount / 8);
         Debug.Log(wormCount);
         while (i < obstacleCount - wormCount)
         {

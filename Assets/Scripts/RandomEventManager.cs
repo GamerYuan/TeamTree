@@ -1,7 +1,5 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel.Design;
 using System.IO;
 using System.Linq;
 using TMPro;
@@ -15,7 +13,7 @@ public class RandomEventManager : MonoBehaviour
 
     [SerializeField] private List<int> triggerCount = new List<int>();
     [SerializeField] private GameObject minigamePanel, tutorialCanvas;
-    
+
     private bool[] tutDone;
     private TutorialDataClass[] tutData;
     private GameObject tutorialText, tutorialButton;
@@ -27,7 +25,7 @@ public class RandomEventManager : MonoBehaviour
         if (instance != null && instance != this)
         {
             Destroy(this);
-        } 
+        }
         else
         {
             instance = this;
@@ -54,7 +52,7 @@ public class RandomEventManager : MonoBehaviour
             firstLaunch = false;
         }
     }
-    
+
     public bool[] GetTutDone()
     {
         return tutDone;

@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -16,7 +15,8 @@ public class RockSmasherTutManager : RockSmasherManager
     {
         grabberBehaviour.StartStage();
         hookBehaviour.StartStage();
-        foreach (GameObject gameObject in enableList) {
+        foreach (GameObject gameObject in enableList)
+        {
             gameObject.SetActive(true);
         }
     }

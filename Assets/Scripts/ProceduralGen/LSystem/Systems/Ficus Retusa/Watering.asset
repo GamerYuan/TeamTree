@@ -13,14 +13,7 @@ MonoBehaviour:
   m_Name: Watering
   m_EditorClassIdentifier: 
   Constants: []
-  Ignore:
-  - '!'
-  - +
-  - '-'
-  - '&'
-  - ''''
-  - /
-  - $
+  Ignore: 2b002d002f005c005e002600240027002100
   ruleStrings:
   - String: 'R(w) < B(a,b,c) : c < w = B(a,b,c + w/2) '
     Value: 1

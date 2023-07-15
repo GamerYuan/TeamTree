@@ -15,7 +15,7 @@ MonoBehaviour:
   Constants: []
   Ignore: []
   ruleStrings:
-  - String: " A \u2192 [&FL!A]/////[&FL!A]///////[&FL!A]"
+  - String: "A \u2192 [&FL!A]/////[&FL!A]///////[&FL!A]"
     Value: 1
   - String: "F \u2192 S ///// F"
     Value: 1

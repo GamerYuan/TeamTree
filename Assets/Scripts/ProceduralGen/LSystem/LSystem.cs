@@ -1,5 +1,6 @@
 using NCalc;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 /*
@@ -36,6 +37,24 @@ public class LSystem : ScriptableObject
         Debug.Log(this.word);
     }
 
+    public void InitRules()
+    {
+        foreach (RuleSet ruleSet in ruleSets)
+        {
+            ruleSet.InitRules();
+        }
+        foreach (RuleSet ruleSet in geometricRules)
+        {
+            ruleSet.InitRules();
+        }
+    }
+
+    public void InitSystem()
+    {
+        InitAxiom();
+        InitRules();
+    }
+
     //Updates the current List of Units by applying the Rules in the RuleSet
     public void ApplyRules()
     {
@@ -59,25 +78,25 @@ public class LSystem : ScriptableObject
     {
         switch (u.name)
         {
-            case "[":
+            case '[':
                 return (x, stack) =>
                 {
                     stack.Push(x);
                     return stack;
                 };
-            case "]":
+            case ']':
                 return (x, stack) =>
                 {
                     stack.Pop();
                     return stack;
                 };
-            case "{":
+            case '{':
                 return (x, stack) =>
                 {
                     stack.Push(x);
                     return stack;
                 };
-            case "}":
+            case '}':
                 return (x, stack) =>
                 {
                     stack.Pop();
@@ -96,7 +115,7 @@ public class LSystem : ScriptableObject
 
     public void RemoveUnitSubtree(Unit unit)
     {
-        foreach (Unit rightunit in word.GetRightContext(unit, new string[] { }))
+        foreach (Unit rightunit in word.GetRightContext(word.GetUnits().IndexOf(unit), unit, new char[] { }))
         {
             RemoveUnitSubtree(rightunit);
         }
@@ -109,7 +128,7 @@ public class LSystem : ScriptableObject
         word.CleanEmptyBrackets();
     }
 
-    public void ModifyUnit(string name, int paramIndex, float newValue)
+    public void ModifyUnit(char name, int paramIndex, float newValue)
     {
         foreach (Unit unit in GetUnits())
         {
