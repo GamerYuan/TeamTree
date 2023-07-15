@@ -80,10 +80,9 @@ public class DataSerializer : MonoBehaviour
             Debug.Log("TutDone: " + tutDone.ToString());
             lastLoginEpoch = data.lastLoginEpoch;
             bonsai.LoadString(currentString);
-            Debug.Log("Set Tut method not called yet");
             FlowerPotBehaviour.instance.SetWater(waterVal);
             StartCoroutine(RandomEventManager.instance.SetTutDone(tutDone));
-            Debug.Log("Set Tut Done method called");
+            CoinManager.instance.SetCoins(coinVal);
             StageManagerBehaviour.instance.SetUpdateCount(updateCount);
             StageManagerBehaviour.instance.SetUpdateIteration(lastLoginEpoch);
             Debug.Log($"Save File Loaded!");
