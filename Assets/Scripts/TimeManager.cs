@@ -19,6 +19,7 @@ public class TimeManager : MonoBehaviour
             instance = this;
         }
         DontDestroyOnLoad(this);
+        Application.targetFrameRate = 60;
         loginEpochTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
     }
 }

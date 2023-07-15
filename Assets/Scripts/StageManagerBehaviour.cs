@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using UnityEngine;
 public class StageManagerBehaviour : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class StageManagerBehaviour : MonoBehaviour
     [SerializeField] private float updatePeriod;
     private LoadingScreenTrigger loadScreenTrigger;
     private GameObject currTree;
+    private bool canLoad;
     [Header("Events")]
     [SerializeField] private GameEvent onUpdateChanged;
     [SerializeField] private GameEvent onTrimStart;
@@ -64,7 +66,7 @@ public class StageManagerBehaviour : MonoBehaviour
         currTree.GetComponent<Bonsai>().InitTree();
         updateCount = 0;
         RandomEventManager.instance.ResetTutProgress();
-        onUpdateChanged.Raise(this, updateCount);
+        StartCoroutine(RaiseUpdateChange());
         Debug.Log("Update Count = " + updateCount);
     }
     public void UpdateTree()
@@ -76,13 +78,13 @@ public class StageManagerBehaviour : MonoBehaviour
         WaterTree();
         currTree.GetComponent<Bonsai>().TreeUpdate();
         updateCount += 1;
-        onUpdateChanged.Raise(this, updateCount);
+        StartCoroutine(RaiseUpdateChange());
         Debug.Log("Update Count = " + updateCount);
     }
     public void SetUpdateCount(int updateCount)
     {
         this.updateCount = updateCount;
-        onUpdateChanged.Raise(this, updateCount);
+        StartCoroutine(RaiseUpdateChange());
     }
     public int GetUpdateCount() { return updateCount; }
     public void SetUpdateIteration(long lastLoginEpoch)
@@ -132,5 +134,23 @@ public class StageManagerBehaviour : MonoBehaviour
         currTree.GetComponent<Bonsai>().ToggleScissors();
         StartTime();
         onTrimStart.Raise(this, true);
+    }
+
+    private IEnumerator RaiseUpdateChange()
+    {
+        while (!canLoad)
+        {
+            yield return new WaitForSeconds(0.2f);
+        }
+        onUpdateChanged.Raise(this, updateCount);
+    }
+
+    public void ChangeLoadState(Component sender, object data)
+    {
+        if (sender is RandomEventManager)
+        {
+            canLoad = (bool)data;
+            Debug.Log("canLoad:" + canLoad);
+        }
     }
 }

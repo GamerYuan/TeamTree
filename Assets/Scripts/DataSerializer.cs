@@ -1,6 +1,9 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using System.IO;
+using System.Threading;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class DataSerializer : MonoBehaviour
@@ -74,11 +77,13 @@ public class DataSerializer : MonoBehaviour
             coinVal = data.coinVal;
             updateCount = data.updateCount;
             tutDone = data.tutDone;
+            Debug.Log("TutDone: " + tutDone.ToString());
             lastLoginEpoch = data.lastLoginEpoch;
             bonsai.LoadString(currentString);
+            Debug.Log("Set Tut method not called yet");
             FlowerPotBehaviour.instance.SetWater(waterVal);
-            CoinManager.instance.SetCoins(coinVal);
-            RandomEventManager.instance.SetTutDone(tutDone);
+            StartCoroutine(RandomEventManager.instance.SetTutDone(tutDone));
+            Debug.Log("Set Tut Done method called");
             StageManagerBehaviour.instance.SetUpdateCount(updateCount);
             StageManagerBehaviour.instance.SetUpdateIteration(lastLoginEpoch);
             Debug.Log($"Save File Loaded!");
@@ -99,7 +104,7 @@ public class DataSerializer : MonoBehaviour
             FlowerPotBehaviour.instance.SetWater(waterVal);
             CoinManager.instance.SetCoins(coinVal);
             StageManagerBehaviour.instance.SetUpdateCount(updateCount);
-            RandomEventManager.instance.SetTutDone(tutDone);
+            StartCoroutine(RandomEventManager.instance.SetTutDone(tutDone));
         }
     }
 
@@ -125,8 +130,9 @@ public class DataSerializer : MonoBehaviour
     {
         SaveData();
     }
-    void OnEnable()
+    async void OnEnable()
     {
+        await Task.Run(() => LoadDataAsync());
         LoadData();
         StartCoroutine(SaveDataRoutine());
     }
@@ -138,6 +144,15 @@ public class DataSerializer : MonoBehaviour
             yield return new WaitForSeconds(10f);
             Debug.Log("10s Autosave!");
             SaveData();
+        }
+    }
+
+    private async void LoadDataAsync()
+    {
+        while (RandomEventManager.instance == null || StageManagerBehaviour.instance == null || FlowerPotBehaviour.instance == null)
+        {
+            Debug.Log("Scripts not loaded, retrying...");
+            await Task.Delay(TimeSpan.FromSeconds(0.5f));
         }
     }
 }
