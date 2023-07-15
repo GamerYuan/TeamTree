@@ -71,8 +71,10 @@ public class RandomEventManager : MonoBehaviour
                 default:
                     int minigameIndex = Check((int)data);
                     Debug.Log($"Trigger {minigameIndex} met");
-                    for (int i = 0; i <= minigameIndex; i++)
+                    Debug.Log(tutorialTriggered);
+                    for (int i = 0; i < minigameIndex + 1; i++)
                     {
+                        Debug.Log($"Check tutorial {i}");
                         if (tutDone[i])
                         {
                             EnableGame(i);
@@ -89,6 +91,7 @@ public class RandomEventManager : MonoBehaviour
 
     private void StartTutorial(int index)
     {
+        Debug.Log("Start Tutorial");
         tutorialTriggered = true;
         TutorialDataClass currTut = tutData[index];
         if (currTut != null)
@@ -110,6 +113,7 @@ public class RandomEventManager : MonoBehaviour
 
     public void TutorialDone()
     {
+        Debug.Log("Tut Done");
         tutDone[tutIndex] = true;
         tutDoneCache = true;
         tutorialTriggered = false;
@@ -133,6 +137,7 @@ public class RandomEventManager : MonoBehaviour
 
     private void EnableGame(int gameVal)
     {
+        Debug.Log($"Enable {gameVal}");
         if (minigamePanel == null)
         {
             minigamePanel = Resources.FindObjectsOfTypeAll<GameObject>().First(x => x.name == "Minigame Panel");
@@ -163,6 +168,7 @@ public class RandomEventManager : MonoBehaviour
 
     private void MinigameTutorial()
     {
+
         if (tutorialCanvas == null)
         {
             tutorialCanvas = Resources.FindObjectsOfTypeAll<GameObject>().First(x => x.name == "TutorialCanvas");

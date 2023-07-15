@@ -93,6 +93,8 @@ public class TreeGeometry
 
 
         verts.Add(treeVertices[0].point.pos);
+
+        normals.Add(treeVertices[0].point.rot * Vector3.up);
         colors.Add(constants.GetColor(Convert.ToInt16(treeVertices[0].GetParam(TreeVert.COLOR))));
 
         for (int i = 1; i < treeVertices.Count - 1; i++)
@@ -109,6 +111,8 @@ public class TreeGeometry
             triangles.Add(i);
         }
         verts.Add(treeVertices[treeVertices.Count - 1].point.pos);
+
+        normals.Add(treeVertices[treeVertices.Count - 1].point.rot * Vector3.up);
         colors.Add(constants.GetColor(Convert.ToInt16(treeVertices[treeVertices.Count - 1].GetParam(TreeVert.COLOR))));
 
 

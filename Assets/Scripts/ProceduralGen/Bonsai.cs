@@ -24,7 +24,7 @@ public class Bonsai : MonoBehaviour
     public float period;
     private float t = 0;
 
-    public bool ScissorsMode = true;
+    private bool ScissorsMode;
 
 
     List<TreeVert> treeVertices = new List<TreeVert>();
@@ -38,6 +38,7 @@ public class Bonsai : MonoBehaviour
         meshCollider = GetComponent<MeshCollider>();
         lsystem.InitSystem();
         treeGeometry.SetConstants(constants);
+        ScissorsMode = false;
     }
 
     private void Start()
@@ -49,7 +50,7 @@ public class Bonsai : MonoBehaviour
     {
         t += Time.deltaTime / period;
         if (t > 1) t = 0;
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && ScissorsMode)
         {
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -103,6 +104,7 @@ public class Bonsai : MonoBehaviour
     public void InitTree()
     {
         Awake();
+        lsystem.LoadString(lsystem.axiomString);
         lsystem.InitSystem();
         GenerateSkeleton();
         GenerateMesh();
@@ -116,6 +118,7 @@ public class Bonsai : MonoBehaviour
     public void LoadString(string str)
     {
         Awake();
+        mesh.Clear();
         lsystem.LoadString(str);
         GenerateSkeleton();
         GenerateMesh();

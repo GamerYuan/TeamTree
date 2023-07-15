@@ -39,11 +39,12 @@ public class DataSerializer : MonoBehaviour
             bonsai = GameObject.FindGameObjectWithTag("Tree").GetComponent<Bonsai>();
         }
         currentString = bonsai.GetTreeString();
+        Debug.Log(currentString);
         waterVal = FlowerPotBehaviour.instance.GetWater();
         coinVal = CoinManager.instance.GetCoins();
         updateCount = StageManagerBehaviour.instance.GetUpdateCount();
         tutDone = RandomEventManager.instance.GetTutDone();
-        lastLoginEpoch = DateTimeOffset.Now.ToUnixTimeSeconds();
+        lastLoginEpoch = TimeManager.instance.loginEpochTime;
         Debug.Log("File Saved");
         data.currentString = currentString;
         data.waterVal = waterVal;

@@ -377,7 +377,7 @@ PrefabInstance:
         type: 3}
       propertyPath: lsystem
       value: 
-      objectReference: {fileID: 11400000, guid: 2db7dedda76619d49a209d6aef10c6ef,
+      objectReference: {fileID: 11400000, guid: 867ff856660b4c74280904f541ee3db1,
         type: 2}
     - target: {fileID: 4792331704641498910, guid: 88fed723c2e32cc48a338a903601de5a,
         type: 3}
@@ -879,6 +879,7 @@ MonoBehaviour:
   water: 5
   maxWater: 100
   minWater: 0
+  onWaterChange: {fileID: 0}
 --- !u!65 &1320453291
 BoxCollider:
   m_ObjectHideFlags: 0

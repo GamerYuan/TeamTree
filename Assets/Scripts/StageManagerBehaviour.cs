@@ -13,6 +13,7 @@ public class StageManagerBehaviour : MonoBehaviour
     private GameObject currTree;
     [Header("Events")]
     [SerializeField] private GameEvent onUpdateChanged;
+    [SerializeField] private GameEvent onTrimStart;
     void Awake()
     {
         if (instance != null && instance != this)
@@ -86,8 +87,8 @@ public class StageManagerBehaviour : MonoBehaviour
     public int GetUpdateCount() { return updateCount; }
     public void SetUpdateIteration(long lastLoginEpoch)
     {
-        DateTime currTime = DateTime.Now;
-        double timeDiff = currTime.Subtract(DateTimeOffset.FromUnixTimeSeconds(lastLoginEpoch).LocalDateTime).TotalMinutes;
+        DateTime currTime = DateTime.UtcNow;
+        double timeDiff = currTime.Subtract(DateTimeOffset.FromUnixTimeSeconds(lastLoginEpoch).UtcDateTime).TotalMinutes;
         int updateIteration = (int)Math.Floor(timeDiff / updatePeriod);
         Debug.Log($"Time diff from last login: {timeDiff}, update {updateIteration} times");
         for (int i = 0; i < updateIteration; i++)
@@ -109,5 +110,27 @@ public class StageManagerBehaviour : MonoBehaviour
             }
             currTree.GetComponent<Bonsai>().WaterTree(decAmount * 0.90f);
         }
+    }
+
+    public void StartTrim()
+    {
+        if (currTree == null)
+        {
+            currTree = GameObject.FindGameObjectWithTag("Tree");
+        }
+        currTree.GetComponent<Bonsai>().ToggleScissors();
+        StopTime();
+        onTrimStart.Raise(this, false);
+    }
+
+    public void EndTrim()
+    {
+        if (currTree == null)
+        {
+            currTree = GameObject.FindGameObjectWithTag("Tree");
+        }
+        currTree.GetComponent<Bonsai>().ToggleScissors();
+        StartTime();
+        onTrimStart.Raise(this, true);
     }
 }

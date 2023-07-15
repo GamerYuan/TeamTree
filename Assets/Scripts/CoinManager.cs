@@ -1,11 +1,16 @@
+using System.Linq;
+using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class CoinManager : MonoBehaviour
 {
-    protected float currentCoins;
-    private float cachedCoins;
+    protected static float currentCoins;
+    private int coinsToAdd;
     public static CoinManager instance;
+    private bool firstLaunch;
+    private GameObject tutorialCanvas;
 
     [Header("Events")]
     [SerializeField] private GameEvent onCoinChanged;
@@ -21,16 +26,18 @@ public class CoinManager : MonoBehaviour
         {
             instance = this;
         }
+        firstLaunch = true;
         SceneManager.sceneLoaded += ChangedActiveScene;
         DontDestroyOnLoad(gameObject);
     }
 
-    public void AddCoins(float val)
+    public void AddCoins(int val)
     {
-        cachedCoins = currentCoins + val;
-        Debug.Log($"Add Coins: {cachedCoins}");
-        onCoinChanged.Raise(this, cachedCoins);
-        if (currentCoins <= 0 && cachedCoins > 0)
+        currentCoins += val;
+        coinsToAdd = val;
+        Debug.Log($"Add Coins: {coinsToAdd}");
+        onCoinChanged.Raise(this, currentCoins);
+        if (currentCoins <= 0.02)
         {
             onCoinCanUse.Raise(this, false);
         }
@@ -59,24 +66,42 @@ public class CoinManager : MonoBehaviour
     }
     public void SetCoins(float val)
     {
-        currentCoins = val;
-        onCoinChanged.Raise(this, currentCoins);
-        onCoinCanUse.Raise(this, currentCoins > 0);
+        if (firstLaunch)
+        {
+            currentCoins = val;
+            onCoinChanged.Raise(this, currentCoins);
+            onCoinCanUse.Raise(this, currentCoins > 0);
+            firstLaunch = false;
+        }
     }
 
     private void ChangedActiveScene(Scene scene, LoadSceneMode mode)
     {
         if (scene.name.Equals("SampleScene"))
         {
-            if (cachedCoins != 0)
+            onCoinChanged.Raise(this, currentCoins);
+            onCoinCanUse.Raise(this, currentCoins > 0);
+            if (coinsToAdd > 0)
             {
-                currentCoins = cachedCoins;
-            }
-            if (currentCoins != 0)
-            {
-                onCoinChanged.Raise(this, currentCoins);
-                onCoinCanUse.Raise(this, currentCoins > 0);
+                ShowCoins();
             }
         }
+    }
+
+    private void ShowCoins()
+    {
+        tutorialCanvas = Resources.FindObjectsOfTypeAll<GameObject>().First(x => x.name == "TutorialCanvas");
+        GameObject tutorialText = tutorialCanvas.transform.GetChild(0).GetChild(0).gameObject;
+        GameObject tutorialButton = tutorialCanvas.transform.GetChild(0).GetChild(1).gameObject;
+        tutorialText.GetComponent<TMP_Text>().text = $"Congratulations! You have earned {coinsToAdd} coins!";
+        tutorialCanvas.SetActive(true);
+        tutorialButton.GetComponent<Button>().onClick.RemoveAllListeners();
+        tutorialButton.GetComponent<Button>().onClick.AddListener(ButtonClick);
+        tutorialButton.transform.GetChild(0).GetComponent<TMP_Text>().text = "Hooray!";
+    }
+
+    private void ButtonClick()
+    {
+        tutorialCanvas.SetActive(false);
     }
 }
