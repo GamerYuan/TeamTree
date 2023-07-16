@@ -33,7 +33,7 @@ public class DataSerializer : MonoBehaviour
         bonsai = GameObject.FindGameObjectWithTag("Tree").GetComponent<Bonsai>();
     }
 
-    public void SaveData()
+    public async void SaveData()
     {
         string filePath = Application.persistentDataPath + fileName;
         DataProgress data = new DataProgress();
@@ -56,7 +56,7 @@ public class DataSerializer : MonoBehaviour
         data.tutDone = tutDone;
         data.lastLoginEpoch = lastLoginEpoch;
         string jsonString = JsonUtility.ToJson(data);
-        byte[] soup = DataEncrypter.Encrypt(jsonString);
+        byte[] soup = await DataEncrypter.Encrypt(jsonString);
         File.WriteAllBytes(filePath, soup);
     }
 
@@ -127,12 +127,11 @@ public class DataSerializer : MonoBehaviour
 
     void OnApplicationQuit()
     {
-        SaveData();
+        Task.Run(() => SaveData());
     }
     async void OnEnable()
     {
         await Task.Run(() => LoadDataAsync());
-        LoadData();
         StartCoroutine(SaveDataRoutine());
     }
 
@@ -142,7 +141,7 @@ public class DataSerializer : MonoBehaviour
         {
             yield return new WaitForSeconds(10f);
             Debug.Log("10s Autosave!");
-            SaveData();
+            Task.Run(() => SaveData());
         }
     }
 
@@ -151,7 +150,7 @@ public class DataSerializer : MonoBehaviour
         while (RandomEventManager.instance == null || StageManagerBehaviour.instance == null || FlowerPotBehaviour.instance == null)
         {
             Debug.Log("Scripts not loaded, retrying...");
-            await Task.Delay(TimeSpan.FromSeconds(0.5f));
+            await Task.Delay(TimeSpan.FromSeconds(0.2f));
         }
     }
 }

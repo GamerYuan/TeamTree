@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -22,6 +23,7 @@ public class RandomEventManager : MonoBehaviour
     private int tutIndex;
     private string filePath = $"{Application.streamingAssetsPath}/tutData.json";
     private string jsonString;
+    private Coroutine rechecking;
 
     [Header("Events")]
     [SerializeField] private GameEvent onTutorialLoaded;
@@ -39,10 +41,9 @@ public class RandomEventManager : MonoBehaviour
         firstLaunch = true;
         Debug.Log("Random Event Manager Awoken");
         DontDestroyOnLoad(this);
-        
+        SceneManager.sceneLoaded += ChangedActiveScene;
         tutorialText = tutorialCanvas.transform.GetChild(0).GetChild(0).gameObject;
         tutorialButton = tutorialCanvas.transform.GetChild(0).GetChild(1).gameObject;
-        SceneManager.sceneLoaded += ChangedActiveScene;
     }
 
     void Start()
@@ -62,12 +63,12 @@ public class RandomEventManager : MonoBehaviour
         }
     }
 
-    public System.Collections.IEnumerator SetTutDone(bool[] tutSave)
+    public IEnumerator SetTutDone(bool[] tutSave)
     {
         while (!tutLoaded)
         {
             Debug.Log("Tutorial not loaded, retrying...");
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.2f);
         }
 
         if (firstLaunch)
@@ -101,6 +102,11 @@ public class RandomEventManager : MonoBehaviour
                     int minigameIndex = Check((int)data);
                     Debug.Log($"Trigger {minigameIndex} met");
                     Debug.Log(tutorialTriggered);
+                    if ((tutDone == null || tutDone.Length == 0))
+                    {
+                        if (rechecking == null) rechecking = StartCoroutine(RecheckEvent((int) data));
+                        break;
+                    }
                     for (int i = 0; i < minigameIndex + 1; i++)
                     {
                         Debug.Log($"Check tutorial {i}");
@@ -155,7 +161,6 @@ public class RandomEventManager : MonoBehaviour
             MinigameTutorial();
         }
         tutDoneCache = false;
-        onTutorialLoaded.Raise(this, true);
     }
 
     private void ButtonClick(string sceneName)
@@ -267,7 +272,7 @@ public class RandomEventManager : MonoBehaviour
         Debug.Log("Tutorial Progress Reset!");
     }
 
-    private System.Collections.IEnumerator GetTutData()
+    private IEnumerator GetTutData()
     {
         using (UnityWebRequest webRequest = UnityWebRequest.Get(filePath))
         {
@@ -290,5 +295,12 @@ public class RandomEventManager : MonoBehaviour
                     break;
             }
         }
+    }
+
+    private IEnumerator RecheckEvent(int data)
+    {
+        yield return new WaitForSeconds(0.2f);
+        CheckEvent(this, data);
+        rechecking = null;
     }
 }

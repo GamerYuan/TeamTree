@@ -135,6 +135,7 @@ public class TreeGeometry
         surfaceMesh = new Mesh();
         branchMesh = new Mesh();
         surfaceMesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
+        branchMesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
 
         int segments = segmentsPerEdge + 1;
         CombineInstance[] combineBranch = new CombineInstance[treeEdges.Count / 2];
@@ -176,6 +177,7 @@ public class TreeGeometry
         Color c1, Color c2)
     {
         Mesh prism = new Mesh();
+        prism.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
         List<Vector3> verts = new List<Vector3>();
         List<Vector3> normals = new List<Vector3>();
         List<Color> colors = new List<Color>();
