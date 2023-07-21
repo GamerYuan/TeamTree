@@ -183,7 +183,8 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 0
-  gameEvent: {fileID: 11400000, guid: 253f0030bcc7af94c9581da97c9b0a05, type: 2}
+  onBugDeath: {fileID: 11400000, guid: 253f0030bcc7af94c9581da97c9b0a05, type: 2}
+  onBugKill: {fileID: 11400000, guid: 41204f5896beb3347845f35991e29ca2, type: 2}
 --- !u!65 &1495255456
 BoxCollider:
   m_ObjectHideFlags: 0

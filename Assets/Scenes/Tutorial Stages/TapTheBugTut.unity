@@ -1847,6 +1847,7 @@ GameObject:
   - component: {fileID: 2008269678}
   - component: {fileID: 2008269679}
   - component: {fileID: 2008269680}
+  - component: {fileID: 2008269681}
   m_Layer: 0
   m_Name: Minigame Manager
   m_TagString: Untagged
@@ -1922,8 +1923,8 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 2008269679}
-        m_TargetAssemblyTypeName: GlobalMinigameManager, Assembly-CSharp
-        m_MethodName: AddScore
+        m_TargetAssemblyTypeName: TapTheBugTutorialManager, Assembly-CSharp
+        m_MethodName: OnBugDie
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -1933,9 +1934,25 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &2008269681
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2008269675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b6e244e4e6e134f92b142c3b091dd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: 41204f5896beb3347845f35991e29ca2, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
       - m_Target: {fileID: 2008269679}
-        m_TargetAssemblyTypeName: TapTheBugTutorialManager, Assembly-CSharp
-        m_MethodName: OnBugDie
+        m_TargetAssemblyTypeName: GlobalMinigameManager, Assembly-CSharp
+        m_MethodName: AddScore
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

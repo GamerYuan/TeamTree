@@ -17,7 +17,8 @@ public class BugBehaviour : MonoBehaviour
     protected Rigidbody rb;
 
     [Header("Events")]
-    [SerializeField] private GameEvent gameEvent;
+    [SerializeField] private GameEvent onBugDeath;
+    [SerializeField] private GameEvent onBugKill;
 
     void Start()
     {
@@ -30,6 +31,7 @@ public class BugBehaviour : MonoBehaviour
     {
         if (!isMoving)
         {
+            onBugKill.Raise(this, score);
             Death();
         }
     }
@@ -50,7 +52,7 @@ public class BugBehaviour : MonoBehaviour
 
     protected virtual void Death()
     {
-        gameEvent.Raise(this, score);
+        onBugDeath.Raise(this, score);
     }
 
     protected IEnumerator Move()
