@@ -92,6 +92,7 @@ public class TreeGeometry
         List<Color> colors = new List<Color>();
 
 
+        normals.Add(treeVertices[0].point.rot * Vector3.up);
         verts.Add(treeVertices[0].point.pos);
         colors.Add(constants.GetColor(Convert.ToInt16(treeVertices[0].GetParam(TreeVert.COLOR))));
 
@@ -110,7 +111,7 @@ public class TreeGeometry
         }
         verts.Add(treeVertices[treeVertices.Count - 1].point.pos);
         colors.Add(constants.GetColor(Convert.ToInt16(treeVertices[treeVertices.Count - 1].GetParam(TreeVert.COLOR))));
-
+        normals.Add(treeVertices[treeVertices.Count - 1].point.rot * Vector3.up);
 
         polygon.SetVertices(verts);
         polygon.SetNormals(normals);

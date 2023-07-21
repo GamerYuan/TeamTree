@@ -15,11 +15,27 @@ MonoBehaviour:
   Constants: []
   Ignore: 2b002d002f005c005e002600240027002100
   ruleStrings:
-  - String: 'R(w) < B(a,b,c) : c < w = B(a,b,c + w/2) '
+  - String: 'R(w) : w > 100 = R(20)'
     Value: 1
-  - String: 'B(a,c) < B(A,B,C) : C < c = B(A,B,C + c / 2)'
+  - String: 'R(w) < B(A, W) > B(s, e) : * = B(A, (w + e) / 2)'
     Value: 1
-  - String: 'B(a,w) < B(A, W) : W < w = B(A, W + w / 2)'
+  - String: 'R(w) < B(A, W) > B(s, d, e) : * = B(A, (w + e) / 2)'
     Value: 1
-  - String: 'B(a,w) < L(A, B, W) : W < w = L(A, B, W + w / 2)'
+  - String: 'R(w) > B(A,B,W) : * = R((w + W) / 2)'
+    Value: 1
+  - String: 'R(w) > B(A, W) : * =  R((w + W) / 2)'
+    Value: 1
+  - String: 'B(a,w) < B(A, W) > B(s, e) : * = B(A, (w + e) / 2)'
+    Value: 1
+  - String: 'B(a,w) < B(A, W) > B(s, d, e) : * = B(A, (w + e) / 2)'
+    Value: 1
+  - String: 'B(a,w) < B(A,B,W) > b(s, e): W < w = B(A,B,(w + e) / 2)'
+    Value: 1
+  - String: 'B(a,w) < B(A,B,W) > L(s,d,e) : W < w = B(A,B,(w + e) / 2)'
+    Value: 1
+  - String: 'B(a,b,w) < L(A, B, W) : W < w = L(A, B, (w + W) / 2)'
+    Value: 1
+  - String: 'B(a,b,w) < b(A,W) : W < w = b(A, (w + W) / 2)'
+    Value: 1
+  - String: 'L(a,b,w) : * = L(a,b,w / 2)'
     Value: 1

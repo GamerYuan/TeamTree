@@ -148,7 +148,7 @@ public class Bonsai : MonoBehaviour
         {
             Vector3 vertpos = LocalToWorldPos(treeVert.point.pos);
             Quaternion vertrot = LocalToWorldRot(treeVert.point.rot);
-            Gizmos.DrawSphere(vertpos, treeVert.GetParam(3) / 100);
+            Gizmos.DrawSphere(vertpos, treeVert.GetParam(3) / 10);
         }
         Gizmos.color = Color.white;
         for (int i = 0; i < edges.Length - 1; i += 2)

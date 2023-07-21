@@ -19,9 +19,10 @@ public class Word
     public Word ApplyRules(RuleSet rules)
     {
         List<Unit> newWord = new List<Unit>();
-            foreach (Unit unit in units)
+        for (int i = 0; i < units.Count; i++)
         {
-            newWord.AddRange(rules.ApplyMatchingRule(unit, this).units);
+            Unit unit = units[i];
+            newWord.AddRange(rules.ApplyMatchingRule(unit, this, i).units);
         }
         return Word.Of(newWord);
     }
@@ -65,12 +66,7 @@ public class Word
 
     public int FindUnit(Unit unit)
     {
-        for(int i = 0; i < units.Count; i++)
-        {
-            if (units[i].Equals(unit))
-                return i;
-        }
-        return -1;
+        return units.IndexOf(unit);
     }
 
     public Unit[] GetRightContext(int index, Unit unit, char[] ignore)
