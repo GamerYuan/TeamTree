@@ -28,8 +28,8 @@ public class TapTheBugTutorialManager : GlobalMinigameManager
         }
         if (count <= 0)
         {
-            StopStage();
             RandomEventManager.instance.TutorialDone();
+            StopStage();
         }
     }
 
