@@ -87,12 +87,6 @@ public class StageManagerBehaviour : MonoBehaviour
         RaiseUpdateChange();
         Debug.Log("Update Count = " + updateCount);
     }
-    //public void SetUpdateCount(int updateCount)
-    //{
-    //    this.updateCount = updateCount;
-    //    RaiseUpdateChange();
-    //}
-    //public int GetUpdateCount() { return updateCount; }
     public void SetUpdateIteration(long lastLoginEpoch)
     {
         DateTime currTime = DateTime.UtcNow;

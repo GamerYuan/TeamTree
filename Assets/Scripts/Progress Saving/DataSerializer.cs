@@ -9,6 +9,7 @@ using UnityEngine;
 public class DataSerializer : MonoBehaviour
 {
     private static string fileName = "/SaveData.dat";
+    private static string filePath;
     public static DataSerializer instance;
 
     void Awake()
@@ -21,6 +22,7 @@ public class DataSerializer : MonoBehaviour
         {
             instance = this;
         }
+        filePath = Application.persistentDataPath + fileName;
     }
 
     public void SaveGameAsync()
@@ -31,16 +33,14 @@ public class DataSerializer : MonoBehaviour
     private async void SaveGame()
     {
         Debug.Log("Saving File...");
-        string filePath = Application.persistentDataPath + fileName;
         DataProgress data = SaveData.GetDataProgress();
         string jsonString = JsonUtility.ToJson(data);
         byte[] soup = await DataEncrypter.Encrypt(jsonString);
-        File.WriteAllBytes(filePath, soup);
+        await File.WriteAllBytesAsync(filePath, soup);
     }
 
     private void LoadData()
     {
-        string filePath = Application.persistentDataPath + fileName;
         if (File.Exists(filePath))
         {
             byte[] soup = File.ReadAllBytes(filePath);
