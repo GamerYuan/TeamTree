@@ -34,7 +34,6 @@ public static class SaveData
             tutDone = tutDone,
             lastLoginEpoch = loginEpochTime,
         };
-        Debug.Log(currData);
     }
 
     public static void LoadSavedValue(DataProgress dataProgress)
@@ -46,7 +45,6 @@ public static class SaveData
         updateCount = currData.updateCount;
         tutDone = currData.tutDone;
         loginEpochTime = currData.lastLoginEpoch;
-        Debug.Log(currData);
     }
 
     public static DataProgress GetDataProgress()
@@ -60,7 +58,6 @@ public static class SaveData
             tutDone = tutDone,
             lastLoginEpoch = loginEpochTime,
         };
-        Debug.Log(currData);
         return currData;
     }
 

@@ -24,11 +24,6 @@ public class TimeManager : MonoBehaviour
         loginEpochTime = SaveData.loginEpochTime;
     }
 
-    //public void SetUpdateTime(long time)
-    //{
-    //    loginEpochTime = time;
-    //}
-
     public void ChangeUpdateTime(Component sender, object data)
     {
         if (sender is StageManagerBehaviour)
