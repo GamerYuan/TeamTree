@@ -21,18 +21,18 @@ MonoBehaviour:
     Value: 0.6
   Ignore: 
   ruleStrings:
-  - String: 'B(x, a, w) : x < max_length && w > 0.1 = B(x + 0.1, a, w) '
+  - String: 'B(x, a, w) : x < max_length && w > 0 = B(x + 0.1, a, w) '
     Value: 1
-  - String: 'B(x, a, w) : x >= max_length && w > 0.1 = B(x,w)/(branch_deg)[&(40)!(0.707)b(a
-      + 1, 0)]$(10)!(0.8)B(0.2, a, 0)'
+  - String: 'B(x, a, w) : x >= max_length && w > 0 = B(x,w)/(branch_deg)[&(40)!(0.707)b(a
+      + 1, w)]$(10)!(0.8)B(0.2, a, 0)'
     Value: 1
-  - String: 'b(x, w) : x < 5 = B(0, x, w)''&(30)L(0.2/ x, Random(0,3), w)'
+  - String: 'b(x, w) : x < 5 && w > 0 = B(0, x, w)''&(30)L(0.2/ x, Random(0,3), w)'
     Value: 0.8
   - String: 'L(a, b, w) : a < max_leaf = L(a + 0.1, b, w)'
     Value: 1
   - String: '!(a,b) : * = !(a + 0.005, b)'
     Value: 1
-  - String: 'b(x , w) : x < 5 = B(0, x, w)''&(30)K(0.1)'
+  - String: 'b(x , w) : x < 5 && w > 0 = B(0, x, w)''&(30)K(0.1)'
     Value: 0.05
-  - String: 'B(x, a ,w) : * = t'
+  - String: 'B(x, a ,w) : * = B(x)t'
     Value: 0.05

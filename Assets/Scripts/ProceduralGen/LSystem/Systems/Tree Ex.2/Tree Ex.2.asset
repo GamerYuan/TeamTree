@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52e6c5eac999f3946ab96d425ea0d6da, type: 3}
   m_Name: Tree Ex.2
   m_EditorClassIdentifier: 
-  axiomString: '!(0.1)A'
+  axiomString: '!(0.4)A'
   ruleSets:
   - {fileID: 11400000, guid: c85add286bc84f540a8a542949d256ac, type: 2}
   geometricRules: []
