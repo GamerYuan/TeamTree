@@ -2,10 +2,15 @@ using UnityEngine;
 
 public class GoodWorm : ObstacleBehaviour
 {
+    [Header("Subclass")]
+    [SerializeField] private float punishmentRatio;
+
+    [Header("Events")]
+    [SerializeField] private GameEvent onPunishment;
     protected override void OnHit()
     {
         base.OnHit();
-        GlobalMinigameManager.AddScore(score);
+        onPunishment.Raise(this, punishmentRatio);
         transform.localScale *= 0.9f;
         float randX = Random.Range(-0.2f, 0.2f);
         float randY = Random.Range(-0.2f, 0.2f);

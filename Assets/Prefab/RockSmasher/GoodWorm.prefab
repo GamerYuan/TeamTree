@@ -111,6 +111,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdb77cb9e3beffc49aa7c1c240c78596, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  score: -10
+  score: 0
   hitCount: 5
   gameEvent: {fileID: 11400000, guid: cf1a09b83dc16344d985688980b50c8f, type: 2}
+  punishmentRatio: 0.5
+  onPunishment: {fileID: 11400000, guid: 9c413a5dbcd808a448cf8ea95db469f8, type: 2}

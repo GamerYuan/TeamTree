@@ -8,38 +8,31 @@ public class GlobalMinigameManager : MonoBehaviour
 {
     // Start is called before the first frame update
     [SerializeField] private float timer;
-    [SerializeField] protected TMP_Text timerText, scoreTextHelper, finalText, returnText;
     [SerializeField] private List<GameObject> disableList;
-    [SerializeField] private GameObject panel;
-    [SerializeField] private int scoreMultiplier;
-    private static TMP_Text scoreText;
-    private static int score;
+    [SerializeField] private int scoreMultiplier;    private static int score;
     private static bool endStage;
     private LoadingScreenTrigger loadingScreenTrigger;
+    private Coroutine timerCoroutine;
 
+    [Header("Events")]
+    [SerializeField] private GameEvent onScoreChange;
+    [SerializeField] private GameEvent onTimerChange, onStageEnd, onReturnTimerChange;
 
     protected virtual void Awake()
     {
         score = 0;
         loadingScreenTrigger = GetComponent<LoadingScreenTrigger>();
-        scoreText = scoreTextHelper;
-        timerText.text = $"Time: {timer}";
-        scoreText.text = $"Score: {score}";
         endStage = false;
+        StartStage();
     }
 
     // Update is called once per frame
-    protected virtual void Update()
+
+    protected void StartStage()
     {
-        if (!endStage)
+        if (timer > 0)
         {
-            timer -= Time.deltaTime;
-            timerText.text = $"Time: {timer.Round(0)}";
-            if (timer <= 0)
-            {
-                timer = 0;
-                StopStage();
-            }
+            timerCoroutine = StartCoroutine(Timer());
         }
     }
 
@@ -53,19 +46,30 @@ public class GlobalMinigameManager : MonoBehaviour
                 go.SetActive(false);
             }
         }
-        timerText.text = "";
-        scoreText.text = "";
-        panel.SetActive(true);
-        finalText.text = $"Time's Up!\nFinal Score: {score}";
+        onStageEnd.Raise(this, score);
+        if (timerCoroutine != null)
+        {
+            StopCoroutine(timerCoroutine);
+        }
         CoinManager.instance.AddCoins(CoinManager.instance.CalculateCoins(score, scoreMultiplier));
         StartCoroutine(ReturnTimer());
     }
-    public static void AddScore(int num)
+    public void AddScore(Component sender, object data)
     {
-        if (!endStage)
+        if (!endStage && data is int)
         {
-            score += num;
-            scoreText.text = $"Score: {score}";
+            score += (int) data;
+            onScoreChange.Raise(this, score);
+        }
+    }
+
+    public void Punishment(Component sender, object data)
+    {
+        Debug.Log("Punishment");
+        if (data is float)
+        {
+            score = Mathf.RoundToInt(score * (float)data);
+            onScoreChange.Raise(this, score);
         }
     }
 
@@ -74,10 +78,24 @@ public class GlobalMinigameManager : MonoBehaviour
         int i = 5;
         while (i > 0)
         {
+            onReturnTimerChange.Raise(this, i);
             yield return new WaitForSeconds(1f);
-            i--;
-            returnText.text = $"Returning in {i}...";
+            --i;
         }
         loadingScreenTrigger.LoadLoadingScreen("SampleScene");
+    }
+
+    private IEnumerator Timer()
+    {
+        while(!endStage)
+        {
+            onTimerChange.Raise(this, timer);
+            yield return new WaitForSeconds(1f);
+            --timer;
+            if (timer == 0)
+            {
+                StopStage();
+            }
+        }
     }
 }

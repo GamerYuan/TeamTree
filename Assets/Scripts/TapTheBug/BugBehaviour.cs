@@ -30,7 +30,6 @@ public class BugBehaviour : MonoBehaviour
     {
         if (!isMoving)
         {
-            GlobalMinigameManager.AddScore(score);
             Death();
         }
     }

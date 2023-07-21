@@ -85,6 +85,7 @@ public class DataSerializer : MonoBehaviour
             CoinManager.instance.SetCoins(coinVal);
             StageManagerBehaviour.instance.SetUpdateCount(updateCount);
             StageManagerBehaviour.instance.SetUpdateIteration(lastLoginEpoch);
+            TimeManager.instance.SetUpdateTime(lastLoginEpoch);
             Debug.Log($"Save File Loaded!");
         }
         else
@@ -103,6 +104,7 @@ public class DataSerializer : MonoBehaviour
             FlowerPotBehaviour.instance.SetWater(waterVal);
             CoinManager.instance.SetCoins(coinVal);
             StageManagerBehaviour.instance.SetUpdateCount(updateCount);
+            TimeManager.instance.SetUpdateTime(DateTimeOffset.UtcNow.ToUnixTimeSeconds());
             StartCoroutine(RandomEventManager.instance.SetTutDone(tutDone));
         }
     }
@@ -127,11 +129,11 @@ public class DataSerializer : MonoBehaviour
 
     void OnApplicationQuit()
     {
-        Task.Run(() => SaveData());
+        SaveData();
     }
-    async void OnEnable()
+    void OnEnable()
     {
-        await Task.Run(() => LoadDataAsync());
+        LoadData();
         StartCoroutine(SaveDataRoutine());
     }
 
@@ -145,13 +147,14 @@ public class DataSerializer : MonoBehaviour
         }
     }
 
-    private async void LoadDataAsync()
+    private void LoadDataTimer()
     {
         while (RandomEventManager.instance == null || StageManagerBehaviour.instance == null || FlowerPotBehaviour.instance == null)
         {
             Debug.Log("Scripts not loaded, retrying...");
-            await Task.Delay(TimeSpan.FromSeconds(0.2f));
+            Task.Delay(TimeSpan.FromSeconds(0.2f));
         }
+        LoadData();
     }
 }
 

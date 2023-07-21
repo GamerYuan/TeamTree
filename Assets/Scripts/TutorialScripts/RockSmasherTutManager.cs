@@ -7,12 +7,12 @@ public class RockSmasherTutManager : RockSmasherManager
     [SerializeField] private List<GameObject> enableList;
     private void Start()
     {
-        timerText.text = "";
         grabberBehaviour.DisableSpin();
     }
 
     public void OnTutorialStart()
     {
+        StartStage();
         grabberBehaviour.StartStage();
         hookBehaviour.StartStage();
         foreach (GameObject gameObject in enableList)
@@ -33,11 +33,6 @@ public class RockSmasherTutManager : RockSmasherManager
             RandomEventManager.instance.TutorialDone();
             StopStage();
         }
-    }
-
-    protected override void Update()
-    {
-        // do nothing
     }
 
 }

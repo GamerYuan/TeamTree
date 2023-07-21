@@ -1399,6 +1399,171 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 1503055225}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &1755894193
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1755894199}
+  - component: {fileID: 1755894198}
+  - component: {fileID: 1755894197}
+  - component: {fileID: 1755894196}
+  - component: {fileID: 1755894195}
+  - component: {fileID: 1755894194}
+  m_Layer: 0
+  m_Name: UIManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1755894194
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1755894193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b6e244e4e6e134f92b142c3b091dd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: b4ebf54a9fb20a443be495a95ebefcdb, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1755894198}
+        m_TargetAssemblyTypeName: MinigameUIManager, Assembly-CSharp
+        m_MethodName: ReturnTimerChange
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1755894195
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1755894193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b6e244e4e6e134f92b142c3b091dd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: cf7926d6d2ba75e41b354d46d40bd52d, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1755894198}
+        m_TargetAssemblyTypeName: MinigameUIManager, Assembly-CSharp
+        m_MethodName: StopStage
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1755894196
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1755894193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b6e244e4e6e134f92b142c3b091dd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: 9739306a472db774a8bcba058f39f088, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1755894198}
+        m_TargetAssemblyTypeName: MinigameUIManager, Assembly-CSharp
+        m_MethodName: TimerChange
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1755894197
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1755894193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b6e244e4e6e134f92b142c3b091dd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: 9cbc96774811eec4e927846d218d9af2, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1755894198}
+        m_TargetAssemblyTypeName: MinigameUIManager, Assembly-CSharp
+        m_MethodName: ScoreChange
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &1755894198
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1755894193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bd7135a3a6b71df428e36b8413ecc2f5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  scoreText: {fileID: 2047025781}
+  timerText: {fileID: 90091614}
+  returnText: {fileID: 515482181}
+  returnTimer: {fileID: 1219312833}
+  returnPanel: {fileID: 1247668414}
+--- !u!4 &1755894199
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1755894193}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.4, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 14
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1804034012
 GameObject:
   m_ObjectHideFlags: 0
@@ -1504,6 +1669,7 @@ GameObject:
   - component: {fileID: 2008269676}
   - component: {fileID: 2008269677}
   - component: {fileID: 2008269678}
+  - component: {fileID: 2008269679}
   m_Layer: 0
   m_Name: Minigame Manager
   m_TagString: Untagged
@@ -1539,17 +1705,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   timer: 30
-  timerText: {fileID: 90091614}
-  scoreTextHelper: {fileID: 2047025781}
-  finalText: {fileID: 515482181}
-  returnText: {fileID: 1219312833}
   disableList:
   - {fileID: 414494983}
   - {fileID: 1282690547}
   - {fileID: 1751594925}
   - {fileID: 179860536}
-  panel: {fileID: 1247668414}
   scoreMultiplier: 300
+  onScoreChange: {fileID: 11400000, guid: 9cbc96774811eec4e927846d218d9af2, type: 2}
+  onTimerChange: {fileID: 11400000, guid: 9739306a472db774a8bcba058f39f088, type: 2}
+  onStageEnd: {fileID: 11400000, guid: cf7926d6d2ba75e41b354d46d40bd52d, type: 2}
+  onReturnTimerChange: {fileID: 11400000, guid: b4ebf54a9fb20a443be495a95ebefcdb,
+    type: 2}
 --- !u!114 &2008269678
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1562,6 +1728,34 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 40a9bec2008c1354f9441ff32baf6201, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2008269679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2008269675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b6e244e4e6e134f92b142c3b091dd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: 253f0030bcc7af94c9581da97c9b0a05, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 2008269677}
+        m_TargetAssemblyTypeName: GlobalMinigameManager, Assembly-CSharp
+        m_MethodName: AddScore
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &2047025779
 GameObject:
   m_ObjectHideFlags: 0

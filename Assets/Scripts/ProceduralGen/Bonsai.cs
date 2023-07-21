@@ -38,14 +38,14 @@ public class Bonsai : MonoBehaviour
         mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
         meshFilter = GetComponent<MeshFilter>();
         meshCollider = GetComponent<MeshCollider>();
-        lsystem.InitSystem();
+        //lsystem.InitSystem();
         treeGeometry.SetConstants(constants);
         ScissorsMode = false;
     }
 
     private void Start()
     {
-        lsystem.InitSystem();
+        //lsystem.InitSystem();
     }
 
     private void Update()

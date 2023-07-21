@@ -8,7 +8,6 @@ public class ObstacleBehaviour : MonoBehaviour
     [SerializeField] private GameEvent gameEvent;
     private void Death()
     {
-        GlobalMinigameManager.AddScore(score);
         Destroy(gameObject);
         gameEvent.Raise(this, score);
     }

@@ -6,13 +6,9 @@ public class TapTheBugTutorialManager : GlobalMinigameManager
     [SerializeField] private List<GameObject> bugs;
     [SerializeField] private int count;
 
-    private void Start()
-    {
-        timerText.text = "";
-    }
-
     public void OnTutorialStart()
     {
+        StartStage();
         for (int i = 0; i < count - 1; i++)
         {
             Instantiate(bugs[0], new Vector3(Random.Range(-2f, 2f), 10, Random.Range(-2f, 2f)), Quaternion.identity);
@@ -31,10 +27,5 @@ public class TapTheBugTutorialManager : GlobalMinigameManager
             RandomEventManager.instance.TutorialDone();
             StopStage();
         }
-    }
-
-    protected override void Update()
-    {
-        // do nothing
     }
 }
