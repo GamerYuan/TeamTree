@@ -61,6 +61,7 @@ public class RandomEventManager : MonoBehaviour
             tutLoaded = true;
             onTutorialLoaded.Raise(this, true);
         }
+        StartCoroutine(SetTutDone(SaveData.tutDone));
     }
 
     public IEnumerator SetTutDone(bool[] tutSave)
@@ -68,7 +69,7 @@ public class RandomEventManager : MonoBehaviour
         while (!tutLoaded)
         {
             Debug.Log("Tutorial not loaded, retrying...");
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(0.1f);
         }
 
         if (firstLaunch)
@@ -81,13 +82,13 @@ public class RandomEventManager : MonoBehaviour
             }
             firstLaunch = false;
         }
+        SaveData.SetTutDone(tutDone);
     }
 
     public bool[] GetTutDone()
     {
         return tutDone;
     }
-
 
     public void CheckEvent(Component sender, object data)
     {
@@ -102,7 +103,7 @@ public class RandomEventManager : MonoBehaviour
                     int minigameIndex = Check((int)data);
                     Debug.Log($"Trigger {minigameIndex} met");
                     Debug.Log(tutorialTriggered);
-                    if ((tutDone == null || tutDone.Length == 0))
+                    if (tutDone == null || tutDone.Length == 0)
                     {
                         if (rechecking == null) rechecking = StartCoroutine(RecheckEvent((int) data));
                         break;
@@ -161,11 +162,12 @@ public class RandomEventManager : MonoBehaviour
             MinigameTutorial();
         }
         tutDoneCache = false;
+        SaveData.SetTutDone(tutDone);
     }
 
     private void ButtonClick(string sceneName)
     {
-        DataSerializer.instance.SaveData();
+        DataSerializer.instance.SaveGameAsync();
         StageManagerBehaviour.instance.LoadStage(sceneName);
         tutorialCanvas.SetActive(false);
     }

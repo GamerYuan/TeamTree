@@ -1549,7 +1549,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 999606547}
         m_TargetAssemblyTypeName: DataSerializer, Assembly-CSharp
-        m_MethodName: SaveData
+        m_MethodName: SaveGameAsync
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

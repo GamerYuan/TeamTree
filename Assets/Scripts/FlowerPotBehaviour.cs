@@ -19,10 +19,14 @@ public class FlowerPotBehaviour : MonoBehaviour
     {
         instance = this;
         canWater = true;
+        
     }
     void Start()
     {
+        water = SaveData.waterVal;
+
         StartCoroutine(WaterCall());
+        onWaterChange.Raise(this, water);
         //StartCoroutine(WaterCountdown());
     }
 
@@ -57,6 +61,7 @@ public class FlowerPotBehaviour : MonoBehaviour
             CoinManager.instance.RemoveCoins(1 * Time.deltaTime);
             onWaterChange.Raise(this, water);
         }
+        SaveData.SetWater(water);
     }
 
     public void DecreaseWater(float num)
@@ -69,17 +74,13 @@ public class FlowerPotBehaviour : MonoBehaviour
         {
             water = minWater;
         }
+        SaveData.SetWater(water);
         onWaterChange.Raise(this, water);
     }
 
     public float GetWater()
     {
         return water;
-    }
-    public void SetWater(float waterVal)
-    {
-        water = waterVal;
-        onWaterChange.Raise(this, water);
     }
 
     private IEnumerator WaterCall()

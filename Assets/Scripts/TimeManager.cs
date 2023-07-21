@@ -21,18 +21,20 @@ public class TimeManager : MonoBehaviour
         }
         DontDestroyOnLoad(this);
         Application.targetFrameRate = 60;
+        loginEpochTime = SaveData.loginEpochTime;
     }
 
-    public void SetUpdateTime(long time)
-    {
-        loginEpochTime = time;
-    }
+    //public void SetUpdateTime(long time)
+    //{
+    //    loginEpochTime = time;
+    //}
 
     public void ChangeUpdateTime(Component sender, object data)
     {
         if (sender is StageManagerBehaviour)
         {
             loginEpochTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
+            SaveData.SetLoginEpoch(loginEpochTime);
         }
     }
 }

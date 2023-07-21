@@ -9,7 +9,6 @@ public class CoinManager : MonoBehaviour
     protected static float currentCoins;
     private int coinsToAdd;
     public static CoinManager instance;
-    private bool firstLaunch;
     private GameObject tutorialCanvas;
 
     [Header("Events")]
@@ -26,9 +25,14 @@ public class CoinManager : MonoBehaviour
         {
             instance = this;
         }
-        firstLaunch = true;
         SceneManager.sceneLoaded += ChangedActiveScene;
         DontDestroyOnLoad(gameObject);
+    }
+    void Start()
+    {
+        currentCoins = SaveData.coinVal;
+        onCoinChanged.Raise(this, currentCoins);
+        onCoinCanUse.Raise(this, currentCoins > 0);
     }
 
     public void AddCoins(int val)
@@ -41,6 +45,7 @@ public class CoinManager : MonoBehaviour
         {
             onCoinCanUse.Raise(this, false);
         }
+        SaveData.SetCoin(currentCoins);
     }
 
     public void RemoveCoins(float val)
@@ -54,6 +59,7 @@ public class CoinManager : MonoBehaviour
             currentCoins -= val;
             onCoinChanged.Raise(this, currentCoins);
         }
+        SaveData.SetCoin(currentCoins);
     }
     public int CalculateCoins(int score, int multiplier)
     {
@@ -63,16 +69,6 @@ public class CoinManager : MonoBehaviour
     public float GetCoins()
     {
         return currentCoins;
-    }
-    public void SetCoins(float val)
-    {
-        if (firstLaunch)
-        {
-            currentCoins = val;
-            onCoinChanged.Raise(this, currentCoins);
-            onCoinCanUse.Raise(this, currentCoins > 0);
-            firstLaunch = false;
-        }
     }
 
     private void ChangedActiveScene(Scene scene, LoadSceneMode mode)

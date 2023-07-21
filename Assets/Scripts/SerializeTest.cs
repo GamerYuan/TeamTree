@@ -4,25 +4,25 @@ using UnityEngine;
 public class SerializeTest : MonoBehaviour
 {
     [SerializeField] private DataSerializer dataSerializer;
-    public void Test1()
-    {
-        dataSerializer.SetData("FF", 10f);
-        //dataSerializer.SaveData();
-    }
-    public void Test2()
-    {
-        dataSerializer.SetData("F[+F]F", 50.345f);
-        //dataSerializer.SaveData();
-    }
-    public void Test3()
-    {
-        int randNum = Random.Range(0, 1000);
-        string randStr = RandomString(randNum);
-        float randFloat = Random.Range(0f, 100f);
-        dataSerializer.SetData(randStr, randFloat);
-        Debug.Log(randStr + " " + randFloat);
-        //dataSerializer.SaveData();
-    }
+    //public void Test1()
+    //{
+    //    dataSerializer.SetData("FF", 10f);
+    //    //dataSerializer.SaveData();
+    //}
+    //public void Test2()
+    //{
+    //    dataSerializer.SetData("F[+F]F", 50.345f);
+    //    //dataSerializer.SaveData();
+    //}
+    //public void Test3()
+    //{
+    //    int randNum = Random.Range(0, 1000);
+    //    string randStr = RandomString(randNum);
+    //    float randFloat = Random.Range(0f, 100f);
+    //    dataSerializer.SetData(randStr, randFloat);
+    //    Debug.Log(randStr + " " + randFloat);
+    //    //dataSerializer.SaveData();
+    //}
 
     //public void LoadData()
     //{

@@ -28,7 +28,14 @@ public class StageManagerBehaviour : MonoBehaviour
         //currTree = GameObject.FindGameObjectWithTag("Tree");
         isPaused = false;
         loadScreenTrigger = GetComponent<LoadingScreenTrigger>();
-        updateCount = 0;
+        
+        
+    }
+    void Start()
+    {
+        updateCount = SaveData.updateCount;
+        RaiseUpdateChange();
+        SetUpdateIteration(SaveData.loginEpochTime);
     }
     public static void StopTime()
     {
@@ -80,12 +87,12 @@ public class StageManagerBehaviour : MonoBehaviour
         RaiseUpdateChange();
         Debug.Log("Update Count = " + updateCount);
     }
-    public void SetUpdateCount(int updateCount)
-    {
-        this.updateCount = updateCount;
-        RaiseUpdateChange();
-    }
-    public int GetUpdateCount() { return updateCount; }
+    //public void SetUpdateCount(int updateCount)
+    //{
+    //    this.updateCount = updateCount;
+    //    RaiseUpdateChange();
+    //}
+    //public int GetUpdateCount() { return updateCount; }
     public void SetUpdateIteration(long lastLoginEpoch)
     {
         DateTime currTime = DateTime.UtcNow;
@@ -137,6 +144,7 @@ public class StageManagerBehaviour : MonoBehaviour
 
     private void RaiseUpdateChange()
     {
+        SaveData.SetUpdate(updateCount);
         onUpdateChanged.Raise(this, updateCount);
     }
 
