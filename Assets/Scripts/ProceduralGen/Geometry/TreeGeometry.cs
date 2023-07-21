@@ -93,8 +93,6 @@ public class TreeGeometry
 
 
         verts.Add(treeVertices[0].point.pos);
-
-        normals.Add(treeVertices[0].point.rot * Vector3.up);
         colors.Add(constants.GetColor(Convert.ToInt16(treeVertices[0].GetParam(TreeVert.COLOR))));
 
         for (int i = 1; i < treeVertices.Count - 1; i++)
@@ -111,8 +109,6 @@ public class TreeGeometry
             triangles.Add(i);
         }
         verts.Add(treeVertices[treeVertices.Count - 1].point.pos);
-
-        normals.Add(treeVertices[treeVertices.Count - 1].point.rot * Vector3.up);
         colors.Add(constants.GetColor(Convert.ToInt16(treeVertices[treeVertices.Count - 1].GetParam(TreeVert.COLOR))));
 
 
@@ -135,7 +131,6 @@ public class TreeGeometry
         surfaceMesh = new Mesh();
         branchMesh = new Mesh();
         surfaceMesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
-        branchMesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
 
         int segments = segmentsPerEdge + 1;
         CombineInstance[] combineBranch = new CombineInstance[treeEdges.Count / 2];
@@ -177,7 +172,6 @@ public class TreeGeometry
         Color c1, Color c2)
     {
         Mesh prism = new Mesh();
-        prism.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
         List<Vector3> verts = new List<Vector3>();
         List<Vector3> normals = new List<Vector3>();
         List<Color> colors = new List<Color>();

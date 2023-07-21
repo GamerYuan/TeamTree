@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -7,7 +6,6 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine.Networking;
 
 public class RandomEventManager : MonoBehaviour
 {
@@ -19,14 +17,8 @@ public class RandomEventManager : MonoBehaviour
     private bool[] tutDone;
     private TutorialDataClass[] tutData;
     private GameObject tutorialText, tutorialButton;
-    private bool tutorialTriggered, firstLaunch, tutDoneCache, tutLoaded;
+    private bool tutorialTriggered, firstLaunch, tutDoneCache;
     private int tutIndex;
-    private string filePath = $"{Application.streamingAssetsPath}/tutData.json";
-    private string jsonString;
-    private Coroutine rechecking;
-
-    [Header("Events")]
-    [SerializeField] private GameEvent onTutorialLoaded;
 
     void Awake()
     {
@@ -39,38 +31,16 @@ public class RandomEventManager : MonoBehaviour
             instance = this;
         }
         firstLaunch = true;
-        Debug.Log("Random Event Manager Awoken");
         DontDestroyOnLoad(this);
-        SceneManager.sceneLoaded += ChangedActiveScene;
+        TutorialDataArray tutDataArray = JsonUtility.FromJson<TutorialDataArray>(File.ReadAllText($"{Application.streamingAssetsPath}/tutData.json"));
+        tutData = tutDataArray.tutData;
         tutorialText = tutorialCanvas.transform.GetChild(0).GetChild(0).gameObject;
         tutorialButton = tutorialCanvas.transform.GetChild(0).GetChild(1).gameObject;
+        SceneManager.sceneLoaded += ChangedActiveScene;
     }
 
-    void Start()
+    public void SetTutDone(bool[] tutSave)
     {
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            Debug.Log("Starting Loading Coroutine");
-            StartCoroutine(GetTutData());
-        }
-        else
-        {
-            jsonString = File.ReadAllText(filePath);
-            TutorialDataArray tutDataArray = JsonUtility.FromJson<TutorialDataArray>(jsonString);
-            tutData = tutDataArray.tutData;
-            tutLoaded = true;
-            onTutorialLoaded.Raise(this, true);
-        }
-    }
-
-    public IEnumerator SetTutDone(bool[] tutSave)
-    {
-        while (!tutLoaded)
-        {
-            Debug.Log("Tutorial not loaded, retrying...");
-            yield return new WaitForSeconds(0.2f);
-        }
-
         if (firstLaunch)
         {
             Debug.Log("Set Tut Done");
@@ -101,15 +71,8 @@ public class RandomEventManager : MonoBehaviour
                 default:
                     int minigameIndex = Check((int)data);
                     Debug.Log($"Trigger {minigameIndex} met");
-                    Debug.Log(tutorialTriggered);
-                    if ((tutDone == null || tutDone.Length == 0))
+                    for (int i = 0; i <= minigameIndex; i++)
                     {
-                        if (rechecking == null) rechecking = StartCoroutine(RecheckEvent((int) data));
-                        break;
-                    }
-                    for (int i = 0; i < minigameIndex + 1; i++)
-                    {
-                        Debug.Log($"Check tutorial {i}");
                         if (tutDone[i])
                         {
                             EnableGame(i);
@@ -126,7 +89,6 @@ public class RandomEventManager : MonoBehaviour
 
     private void StartTutorial(int index)
     {
-        Debug.Log("Start Tutorial");
         tutorialTriggered = true;
         TutorialDataClass currTut = tutData[index];
         if (currTut != null)
@@ -148,7 +110,6 @@ public class RandomEventManager : MonoBehaviour
 
     public void TutorialDone()
     {
-        Debug.Log("Tut Done");
         tutDone[tutIndex] = true;
         tutDoneCache = true;
         tutorialTriggered = false;
@@ -172,7 +133,6 @@ public class RandomEventManager : MonoBehaviour
 
     private void EnableGame(int gameVal)
     {
-        Debug.Log($"Enable {gameVal}");
         if (minigamePanel == null)
         {
             minigamePanel = Resources.FindObjectsOfTypeAll<GameObject>().First(x => x.name == "Minigame Panel");
@@ -203,7 +163,6 @@ public class RandomEventManager : MonoBehaviour
 
     private void MinigameTutorial()
     {
-
         if (tutorialCanvas == null)
         {
             tutorialCanvas = Resources.FindObjectsOfTypeAll<GameObject>().First(x => x.name == "TutorialCanvas");
@@ -270,37 +229,5 @@ public class RandomEventManager : MonoBehaviour
         tutDone = new bool[triggerCount.Count];
         tutDoneCache = false;
         Debug.Log("Tutorial Progress Reset!");
-    }
-
-    private IEnumerator GetTutData()
-    {
-        using (UnityWebRequest webRequest = UnityWebRequest.Get(filePath))
-        {
-
-            yield return webRequest.SendWebRequest();
-
-            switch (webRequest.result)
-            {
-                case UnityWebRequest.Result.ConnectionError:
-                    Debug.LogError("Connection Error, can't find");
-                    break;
-                case UnityWebRequest.Result.Success:
-                    Debug.Log("Connection Established");
-                    jsonString = webRequest.downloadHandler.text;
-                    Debug.Log(jsonString);
-                    TutorialDataArray tutDataArray = JsonUtility.FromJson<TutorialDataArray>(jsonString);
-                    tutData = tutDataArray.tutData;
-                    tutLoaded = true;
-                    onTutorialLoaded.Raise(this, true);
-                    break;
-            }
-        }
-    }
-
-    private IEnumerator RecheckEvent(int data)
-    {
-        yield return new WaitForSeconds(0.2f);
-        CheckEvent(this, data);
-        rechecking = null;
     }
 }

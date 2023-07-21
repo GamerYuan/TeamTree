@@ -1,9 +1,6 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class DataSerializer : MonoBehaviour
@@ -33,7 +30,7 @@ public class DataSerializer : MonoBehaviour
         bonsai = GameObject.FindGameObjectWithTag("Tree").GetComponent<Bonsai>();
     }
 
-    public async void SaveData()
+    public void SaveData()
     {
         string filePath = Application.persistentDataPath + fileName;
         DataProgress data = new DataProgress();
@@ -42,12 +39,11 @@ public class DataSerializer : MonoBehaviour
             bonsai = GameObject.FindGameObjectWithTag("Tree").GetComponent<Bonsai>();
         }
         currentString = bonsai.GetTreeString();
-        Debug.Log(currentString);
         waterVal = FlowerPotBehaviour.instance.GetWater();
         coinVal = CoinManager.instance.GetCoins();
         updateCount = StageManagerBehaviour.instance.GetUpdateCount();
         tutDone = RandomEventManager.instance.GetTutDone();
-        lastLoginEpoch = TimeManager.instance.loginEpochTime;
+        lastLoginEpoch = DateTimeOffset.Now.ToUnixTimeSeconds();
         Debug.Log("File Saved");
         data.currentString = currentString;
         data.waterVal = waterVal;
@@ -56,7 +52,7 @@ public class DataSerializer : MonoBehaviour
         data.tutDone = tutDone;
         data.lastLoginEpoch = lastLoginEpoch;
         string jsonString = JsonUtility.ToJson(data);
-        byte[] soup = await DataEncrypter.Encrypt(jsonString);
+        byte[] soup = DataEncrypter.Encrypt(jsonString);
         File.WriteAllBytes(filePath, soup);
     }
 
@@ -77,12 +73,11 @@ public class DataSerializer : MonoBehaviour
             coinVal = data.coinVal;
             updateCount = data.updateCount;
             tutDone = data.tutDone;
-            Debug.Log("TutDone: " + tutDone.ToString());
             lastLoginEpoch = data.lastLoginEpoch;
             bonsai.LoadString(currentString);
             FlowerPotBehaviour.instance.SetWater(waterVal);
-            StartCoroutine(RandomEventManager.instance.SetTutDone(tutDone));
             CoinManager.instance.SetCoins(coinVal);
+            RandomEventManager.instance.SetTutDone(tutDone);
             StageManagerBehaviour.instance.SetUpdateCount(updateCount);
             StageManagerBehaviour.instance.SetUpdateIteration(lastLoginEpoch);
             Debug.Log($"Save File Loaded!");
@@ -103,7 +98,7 @@ public class DataSerializer : MonoBehaviour
             FlowerPotBehaviour.instance.SetWater(waterVal);
             CoinManager.instance.SetCoins(coinVal);
             StageManagerBehaviour.instance.SetUpdateCount(updateCount);
-            StartCoroutine(RandomEventManager.instance.SetTutDone(tutDone));
+            RandomEventManager.instance.SetTutDone(tutDone);
         }
     }
 
@@ -127,11 +122,11 @@ public class DataSerializer : MonoBehaviour
 
     void OnApplicationQuit()
     {
-        Task.Run(() => SaveData());
+        SaveData();
     }
-    async void OnEnable()
+    void OnEnable()
     {
-        await Task.Run(() => LoadDataAsync());
+        LoadData();
         StartCoroutine(SaveDataRoutine());
     }
 
@@ -141,16 +136,7 @@ public class DataSerializer : MonoBehaviour
         {
             yield return new WaitForSeconds(10f);
             Debug.Log("10s Autosave!");
-            Task.Run(() => SaveData());
-        }
-    }
-
-    private async void LoadDataAsync()
-    {
-        while (RandomEventManager.instance == null || StageManagerBehaviour.instance == null || FlowerPotBehaviour.instance == null)
-        {
-            Debug.Log("Scripts not loaded, retrying...");
-            await Task.Delay(TimeSpan.FromSeconds(0.2f));
+            SaveData();
         }
     }
 }

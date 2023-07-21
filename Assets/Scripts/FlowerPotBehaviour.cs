@@ -11,9 +11,6 @@ public class FlowerPotBehaviour : MonoBehaviour
 
     private bool startWater, canWater;
 
-    [Header("Events")]
-    [SerializeField] private GameEvent onWaterChange;
-
     // Start is called before the first frame update
     void Awake()
     {
@@ -55,7 +52,6 @@ public class FlowerPotBehaviour : MonoBehaviour
         {
             water += 5 * Time.deltaTime;
             CoinManager.instance.RemoveCoins(1 * Time.deltaTime);
-            onWaterChange.Raise(this, water);
         }
     }
 
@@ -69,7 +65,6 @@ public class FlowerPotBehaviour : MonoBehaviour
         {
             water = minWater;
         }
-        onWaterChange.Raise(this, water);
     }
 
     public float GetWater()
@@ -79,7 +74,6 @@ public class FlowerPotBehaviour : MonoBehaviour
     public void SetWater(float waterVal)
     {
         water = waterVal;
-        onWaterChange.Raise(this, water);
     }
 
     private IEnumerator WaterCall()

@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using UnityEngine;
 public class StageManagerBehaviour : MonoBehaviour
 {
@@ -14,7 +13,6 @@ public class StageManagerBehaviour : MonoBehaviour
     private GameObject currTree;
     [Header("Events")]
     [SerializeField] private GameEvent onUpdateChanged;
-    [SerializeField] private GameEvent onTrimStart;
     void Awake()
     {
         if (instance != null && instance != this)
@@ -65,7 +63,7 @@ public class StageManagerBehaviour : MonoBehaviour
         currTree.GetComponent<Bonsai>().InitTree();
         updateCount = 0;
         RandomEventManager.instance.ResetTutProgress();
-        RaiseUpdateChange();
+        onUpdateChanged.Raise(this, updateCount);
         Debug.Log("Update Count = " + updateCount);
     }
     public void UpdateTree()
@@ -77,19 +75,19 @@ public class StageManagerBehaviour : MonoBehaviour
         WaterTree();
         currTree.GetComponent<Bonsai>().TreeUpdate();
         updateCount += 1;
-        RaiseUpdateChange();
+        onUpdateChanged.Raise(this, updateCount);
         Debug.Log("Update Count = " + updateCount);
     }
     public void SetUpdateCount(int updateCount)
     {
         this.updateCount = updateCount;
-        RaiseUpdateChange();
+        onUpdateChanged.Raise(this, updateCount);
     }
     public int GetUpdateCount() { return updateCount; }
     public void SetUpdateIteration(long lastLoginEpoch)
     {
-        DateTime currTime = DateTime.UtcNow;
-        double timeDiff = currTime.Subtract(DateTimeOffset.FromUnixTimeSeconds(lastLoginEpoch).UtcDateTime).TotalMinutes;
+        DateTime currTime = DateTime.Now;
+        double timeDiff = currTime.Subtract(DateTimeOffset.FromUnixTimeSeconds(lastLoginEpoch).LocalDateTime).TotalMinutes;
         int updateIteration = (int)Math.Floor(timeDiff / updatePeriod);
         Debug.Log($"Time diff from last login: {timeDiff}, update {updateIteration} times");
         for (int i = 0; i < updateIteration; i++)
@@ -110,46 +108,6 @@ public class StageManagerBehaviour : MonoBehaviour
                 currTree = GameObject.FindGameObjectWithTag("Tree");
             }
             currTree.GetComponent<Bonsai>().WaterTree(decAmount * 0.90f);
-        }
-    }
-
-    public void StartTrim()
-    {
-        if (currTree == null)
-        {
-            currTree = GameObject.FindGameObjectWithTag("Tree");
-        }
-        currTree.GetComponent<Bonsai>().ToggleScissors();
-        StopTime();
-        onTrimStart.Raise(this, false);
-    }
-
-    public void EndTrim()
-    {
-        if (currTree == null)
-        {
-            currTree = GameObject.FindGameObjectWithTag("Tree");
-        }
-        currTree.GetComponent<Bonsai>().ToggleScissors();
-        StartTime();
-        onTrimStart.Raise(this, true);
-    }
-
-    private void RaiseUpdateChange()
-    {
-        onUpdateChanged.Raise(this, updateCount);
-    }
-
-    public void ChangeLoadState(Component sender, object data)
-    {
-        if (data is bool)
-        {
-            Debug.Log("Outside update raise");
-            if ((bool) data)
-            {
-                Debug.Log("Update Raise called");
-                RaiseUpdateChange();
-            }
         }
     }
 }

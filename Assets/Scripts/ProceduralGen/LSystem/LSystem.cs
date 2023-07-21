@@ -33,8 +33,7 @@ public class LSystem : ScriptableObject
 
     public void InitAxiom()
     {
-        if(word.GetUnits().Count == 0) 
-            word = Word.Parse(axiomString);
+        word = Word.Parse(axiomString);
         Debug.Log(this.word);
     }
 
