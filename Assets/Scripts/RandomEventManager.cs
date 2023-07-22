@@ -21,7 +21,7 @@ public class RandomEventManager : MonoBehaviour
     private GameObject tutorialText, tutorialButton;
     private bool tutorialTriggered, firstLaunch, tutDoneCache, tutLoaded;
     private int tutIndex;
-    private string filePath = $"{Application.streamingAssetsPath}/tutData.json";
+    protected string filePath = $"{Application.streamingAssetsPath}/tutData.json";
     private string jsonString;
     private Coroutine rechecking;
 
