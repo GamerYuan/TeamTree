@@ -59,6 +59,10 @@ public class MechanicTutorialManager : TutorialManager
                 Debug.Log($"Checking Mechanic Tutorial {i}");
                 if (tutDone[i])
                 {
+                    if (tutData[i].tutorialStageName == "Trimming")
+                    {
+                        Resources.FindObjectsOfTypeAll<GameObject>().First(x => x.name == "TrimButton").SetActive(true);
+                    }
                     continue;
                 } 
                 else if (!tutorialTriggered) 
@@ -109,7 +113,6 @@ public class MechanicTutorialManager : TutorialManager
     private void TrimClick()
     {
         ButtonClick();
-        Resources.FindObjectsOfTypeAll<GameObject>().First(x => x.name == "TrimButton").SetActive(true);
     }
 
     public override void ResetTutProgress()
