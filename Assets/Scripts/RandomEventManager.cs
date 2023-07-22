@@ -25,8 +25,8 @@ public class RandomEventManager : MonoBehaviour
     private string jsonString;
     private Coroutine rechecking;
 
-    [Header("Events")]
-    [SerializeField] private GameEvent onTutorialLoaded;
+    //[Header("Events")]
+    //[SerializeField] private GameEvent onTutorialLoaded;
 
     void Awake()
     {
@@ -59,7 +59,7 @@ public class RandomEventManager : MonoBehaviour
             TutorialDataArray tutDataArray = JsonUtility.FromJson<TutorialDataArray>(jsonString);
             tutData = tutDataArray.tutData;
             tutLoaded = true;
-            onTutorialLoaded.Raise(this, true);
+            //onTutorialLoaded.Raise(this, true);
         }
         StartCoroutine(SetTutDone(SaveData.tutDone));
     }
@@ -272,6 +272,7 @@ public class RandomEventManager : MonoBehaviour
         tutDone = new bool[triggerCount.Count];
         tutDoneCache = false;
         Debug.Log("Tutorial Progress Reset!");
+        SaveData.SetTutDone(tutDone);
     }
 
     private IEnumerator GetTutData()
@@ -293,7 +294,7 @@ public class RandomEventManager : MonoBehaviour
                     TutorialDataArray tutDataArray = JsonUtility.FromJson<TutorialDataArray>(jsonString);
                     tutData = tutDataArray.tutData;
                     tutLoaded = true;
-                    onTutorialLoaded.Raise(this, true);
+                    //onTutorialLoaded.Raise(this, true);
                     break;
             }
         }

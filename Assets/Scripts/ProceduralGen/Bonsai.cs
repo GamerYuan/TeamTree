@@ -24,8 +24,7 @@ public class Bonsai : MonoBehaviour
     public float period;
     private float t = 0;
 
-    public bool ScissorsMode = true;
-
+    private bool ScissorsMode;
 
     List<TreeVert> treeVertices = new List<TreeVert>();
     List<int> treeEdges = new List<int>();
@@ -50,7 +49,7 @@ public class Bonsai : MonoBehaviour
     {
         t += Time.deltaTime / period;
         if (t > 1) t = 0;
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && ScissorsMode)
         {
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;

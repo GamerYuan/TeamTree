@@ -121,7 +121,7 @@ public class StageManagerBehaviour : MonoBehaviour
             currTree = GameObject.FindGameObjectWithTag("Tree");
         }
         StopTime();
-        onTrimStart.Raise(this, false);
+        onTrimStart.Raise(this, true);
     }
 
     public void EndTrim()
@@ -131,7 +131,7 @@ public class StageManagerBehaviour : MonoBehaviour
             currTree = GameObject.FindGameObjectWithTag("Tree");
         }
         StartTime();
-        onTrimStart.Raise(this, true);
+        onTrimStart.Raise(this, false);
     }
 
     private void RaiseUpdateChange()
