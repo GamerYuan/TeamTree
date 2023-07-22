@@ -2,10 +2,6 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
-<<<<<<< HEAD
-=======
-
->>>>>>> parent of c8d1d88 (Merge branch 'main' into final-fixes)
 public class DataEncrypter
 {
     private static string key = "N7OnL3lf8YasErkERkQAE7+u5R6fspD6QkQZhWhCv/4=";
