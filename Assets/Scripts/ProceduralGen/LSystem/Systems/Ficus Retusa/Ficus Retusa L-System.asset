@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 52e6c5eac999f3946ab96d425ea0d6da, type: 3}
   m_Name: Ficus Retusa L-System
   m_EditorClassIdentifier: 
-  axiomString: '!(1,0)R(100)B(0, 0, 1)'
+  axiomString: '!(1,0)R(10)B(0.1, 1)B(0,0,0)b(0,0)'
   ruleSets:
   - {fileID: 11400000, guid: 154adf499c3f2d941bde815930af2542, type: 2}
   - {fileID: 11400000, guid: bdc7c0036bdca0940aa32108486102e5, type: 2}
-  - {fileID: 11400000, guid: 451fc4dda3c42734a8d6ffe464b997e2, type: 2}
   geometricRules:
   - {fileID: 11400000, guid: 38bc1f205881099429e93201114ee2d2, type: 2}
+  - {fileID: 11400000, guid: fe67763b080634e48ac3c7f783d71722, type: 2}

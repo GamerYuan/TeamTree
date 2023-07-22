@@ -112,7 +112,7 @@ public class CameraPan : MonoBehaviour
     {
         if (Input.GetAxis("Mouse Y") != 0 || Input.GetAxis("Mouse X") != 0)
         {
-            Vector3 diff = moveStart - GetWorldPoint(pos);
+            Vector3 diff = (moveStart - GetWorldPoint(pos));
             Vector3 move = diff * Time.deltaTime * 100;
             if (BoundaryCheck(orbitCenter + move))
             {

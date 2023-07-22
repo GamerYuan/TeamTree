@@ -1,6 +1,7 @@
 using NCalc;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Diagnostics.Tracing;
 using System.Linq;
 using Random = UnityEngine.Random;
@@ -69,6 +70,11 @@ public class Unit
             evaluatedParameters[index] = Convert.ToSingle(unitParameters[index].Evaluate());
         }
         return evaluatedParameters[index];
+    }
+
+    public void MemoizeParam(int index)
+    {
+        evaluatedParameters[index] = Convert.ToSingle(unitParameters[index].Evaluate());
     }
 
     //Convert a string of form "A(1,2,3,..)" to a Unit
@@ -158,12 +164,12 @@ public class Unit
 
     public bool IsLeftBracket()
     {
-        return name == '['  || name == '{';
+        return name.Equals('[')  || name.Equals('{');
     }
 
     public bool IsRightBracket()
     {
-        return name == ']' || name == '}';
+        return name.Equals(']') || name.Equals('}');
     }
 
     override

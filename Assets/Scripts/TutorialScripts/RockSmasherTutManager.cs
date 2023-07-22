@@ -30,8 +30,8 @@ public class RockSmasherTutManager : RockSmasherManager
         }
         if (count <= 0)
         {
-            RandomEventManager.instance.TutorialDone();
             StopStage();
+            RandomEventManager.instance.TutorialDone();
         }
     }
 
