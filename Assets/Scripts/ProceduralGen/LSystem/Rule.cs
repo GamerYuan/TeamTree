@@ -146,7 +146,7 @@ public class Rule
         {
             foreach (Unit right in rightContext)
             {
-                if (right.GetName() == rightString)
+                if (right.GetName() == rightString && rightParamNames.Length == right.GetParams().Length)
                 {
                     Dictionary<string, float> rightParams = new Dictionary<string, float>();
                     for (int i = 0; i < rightParamNames.Length; i++)
@@ -405,7 +405,7 @@ public class Rule
                     foreach (string rightparam in rightParamNames)
                     {
                         if (paramMap.ContainsKey(rightparam))
-                            paramMap[rightparam] += rightParamMap[rightparam];
+                            paramMap[rightparam] = (paramMap[rightparam] + rightParamMap[rightparam]) / 2;
                         else
                             paramMap.Add(rightparam, rightParamMap[rightparam]);
                     }

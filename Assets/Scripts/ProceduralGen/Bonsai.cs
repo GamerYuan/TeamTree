@@ -1,4 +1,3 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -25,7 +24,7 @@ public class Bonsai : MonoBehaviour
     public float period;
     private float t = 0;
 
-    private bool ScissorsMode;
+    public bool ScissorsMode = true;
 
 
     List<TreeVert> treeVertices = new List<TreeVert>();
@@ -35,11 +34,9 @@ public class Bonsai : MonoBehaviour
     {
         mainCamera = Camera.main;
         mesh = new Mesh();
-        mesh.indexFormat = UnityEngine.Rendering.IndexFormat.UInt32;
         meshFilter = GetComponent<MeshFilter>();
         meshCollider = GetComponent<MeshCollider>();
         treeGeometry.SetConstants(constants);
-        ScissorsMode = false;
     }
 
     private void Start()
@@ -53,7 +50,7 @@ public class Bonsai : MonoBehaviour
     {
         t += Time.deltaTime / period;
         if (t > 1) t = 0;
-        if (Input.GetMouseButtonDown(0) && ScissorsMode)
+        if (Input.GetMouseButtonDown(0))
         {
             Ray ray = mainCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit hit;
@@ -89,9 +86,12 @@ public class Bonsai : MonoBehaviour
         meshCollider.sharedMesh = treeGeometry.GetBranchMesh();
     }
 
-    public void ToggleScissors()
+    public void ToggleScissors(Component sender, object data)
     {
-        ScissorsMode = !ScissorsMode;
+        if (data is bool)
+        {
+            ScissorsMode = (bool)data;
+        }
     }
 
     public void TreeUpdate()
@@ -108,7 +108,6 @@ public class Bonsai : MonoBehaviour
     public void InitTree()
     {
         Awake();
-        lsystem.LoadString(lsystem.axiomString);
         lsystem.InitSystem();
         GenerateSkeleton();
         GenerateMesh();
@@ -122,7 +121,6 @@ public class Bonsai : MonoBehaviour
     public void LoadString(string str)
     {
         Awake();
-        mesh.Clear();
         lsystem.LoadString(str);
         GenerateSkeleton();
         GenerateMesh();
@@ -155,7 +153,7 @@ public class Bonsai : MonoBehaviour
         {
             Vector3 vertpos = LocalToWorldPos(treeVert.point.pos);
             Quaternion vertrot = LocalToWorldRot(treeVert.point.rot);
-            Gizmos.DrawSphere(vertpos, treeVert.GetParam(3) / 100);
+            Gizmos.DrawSphere(vertpos, treeVert.GetParam(3) / 10);
         }
         Gizmos.color = Color.white;
         for (int i = 0; i < edges.Length - 1; i += 2)

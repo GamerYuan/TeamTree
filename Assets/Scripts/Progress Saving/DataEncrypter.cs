@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
-
 public class DataEncrypter
 {
     private static string key = "N7OnL3lf8YasErkERkQAE7+u5R6fspD6QkQZhWhCv/4=";

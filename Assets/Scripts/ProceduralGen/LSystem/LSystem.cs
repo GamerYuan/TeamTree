@@ -33,8 +33,7 @@ public class LSystem : ScriptableObject
 
     public void InitAxiom()
     {
-        if(word.GetUnits().Count == 0) 
-            word = Word.Parse(axiomString);
+        word = Word.Parse(axiomString);
         Debug.Log(this.word);
     }
 
@@ -69,7 +68,7 @@ public class LSystem : ScriptableObject
             }
             else
             {
-                Debug.Log(nextWord);
+                //Debug.Log(ruleSet.name + " : " + nextWord);
             }
         }
         this.word = nextWord;
@@ -116,7 +115,7 @@ public class LSystem : ScriptableObject
 
     public void RemoveUnitSubtree(Unit unit)
     {
-        foreach (Unit rightunit in word.GetRightContext(word.GetUnits().IndexOf(unit), unit, new char[] { }))
+        foreach (Unit rightunit in word.GetRightContext(word.FindUnit(unit), unit, new char[] { }))
         {
             RemoveUnitSubtree(rightunit);
         }
@@ -136,6 +135,7 @@ public class LSystem : ScriptableObject
             if (unit.name == name)
             {
                 unit.unitParameters[paramIndex] = new Expression((unit.GetParamOrDefault(paramIndex) + newValue).ToString());
+                unit.MemoizeParam(paramIndex);
                 break;
             }
         }
