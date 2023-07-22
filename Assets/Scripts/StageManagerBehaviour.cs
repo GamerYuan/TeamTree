@@ -120,7 +120,6 @@ public class StageManagerBehaviour : MonoBehaviour
         {
             currTree = GameObject.FindGameObjectWithTag("Tree");
         }
-        currTree.GetComponent<Bonsai>().ToggleScissors();
         StopTime();
         onTrimStart.Raise(this, false);
     }
@@ -131,7 +130,6 @@ public class StageManagerBehaviour : MonoBehaviour
         {
             currTree = GameObject.FindGameObjectWithTag("Tree");
         }
-        currTree.GetComponent<Bonsai>().ToggleScissors();
         StartTime();
         onTrimStart.Raise(this, true);
     }
