@@ -1,13 +1,12 @@
 using System;
 using System.IO;
 using System.Security.Cryptography;
-using System.Threading.Tasks;
 
 public class DataEncrypter
 {
     private static string key = "N7OnL3lf8YasErkERkQAE7+u5R6fspD6QkQZhWhCv/4=";
     private static string iv = "dt9espR+qOm3M5jlfo5uqQ==";
-    public static async Task<byte[]> Encrypt(string original)
+    public static byte[] Encrypt(string original)
     {
         byte[] encrypted;
         using (Aes aes = Aes.Create())
@@ -22,7 +21,7 @@ public class DataEncrypter
                 {
                     using (StreamWriter streamWriter = new StreamWriter(cryptoStream))
                     {
-                        await streamWriter.WriteAsync(original);
+                        streamWriter.Write(original);
                     }
                     encrypted = memoryStream.ToArray();
                 }

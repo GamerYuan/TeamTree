@@ -13,13 +13,19 @@ MonoBehaviour:
   m_Name: Consumption 1
   m_EditorClassIdentifier: 
   Constants: []
-  Ignore: 
+  Ignore: 2b002d002f005c005e002600240027002100
   ruleStrings:
-  - String: 'B(a,w) : * = B(a, w / 2)'
+  - String: 'B(a,w) > B(A, W) : w > W = B(a, W / 2 + w/ 2)'
     Value: 1
-  - String: 'B(a, b, w) : * = B(a, b, w)'
+  - String: 'B(a, w) > B(A,B,W) : w > W  = B(a, W / 2 + w/ 2)'
     Value: 1
-  - String: 'L(a, b, w) : * = L(a, b, w)'
+  - String: 'B(a, w) > b(A, W) : w > W= B(a, W / 2 + w/ 2) '
     Value: 1
-  - String: 'R(w) : * = R(w/2)'
+  - String: 'B(a, w) > L(A, B, W) : w > W = B(a, W / 2 + w/ 2) '
+    Value: 1
+  - String: 'R(w) > B(A, W) : w > W  = R(W / 2 + w/ 2)'
+    Value: 1
+  - String: 'R(w) > B(A,B,W) : w > W  = R(W / 2 + w/ 2)'
+    Value: 1
+  - String: 'L(a,b,w) : *  = L(a, b, w /2)'
     Value: 1

@@ -9,7 +9,7 @@ public class WaterText : MonoBehaviour
         if (value is float)
         {
             float waterVal = (float)value;
-            waterText.text = $"<mark=#4d4d4d88 padding=\"20, 20, 0, 0\">Water: {waterVal:N2}</mark>";
+            waterText.text = $"<mark=#4d4d4d88 padding=\"20, 20, 0, 0\">Water: {waterVal:#.##}</mark>";
         }
     }
 }
