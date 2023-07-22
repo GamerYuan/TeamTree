@@ -45,8 +45,9 @@ public class RuleSet : ScriptableObject
         return output;
     }
 
-    public Word ApplyMatchingRule(Unit unit, Word word, int index)
+    public Word ApplyMatchingRule(Unit unit, Word word)
     {
+        int index = 0;
         List<Rule> matchingRules = new List<Rule>();
         foreach (Rule rule in rules)
         {
@@ -57,6 +58,7 @@ public class RuleSet : ScriptableObject
             }
             else
             {
+                index = word.FindUnit(unit);
                 if (rule.Accepts(unit, word.GetLeftContext(index, unit, Ignore.ToArray()), word.GetRightContext(index, unit, Ignore.ToArray())))
                 {
                     matchingRules.Add(rule);
