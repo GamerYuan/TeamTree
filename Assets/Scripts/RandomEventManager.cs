@@ -7,90 +7,45 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
-using UnityEngine.Networking;
 
-public class RandomEventManager : MonoBehaviour
+public class RandomEventManager : TutorialManager
 {
     public static RandomEventManager instance;
 
-    [SerializeField] private List<int> triggerCount = new List<int>();
-    [SerializeField] private GameObject minigamePanel, tutorialCanvas;
-
-    private bool[] tutDone;
-    private TutorialDataClass[] tutData;
-    private GameObject tutorialText, tutorialButton;
-    private bool tutorialTriggered, firstLaunch, tutDoneCache, tutLoaded;
-    private int tutIndex;
-    protected string filePath = $"{Application.streamingAssetsPath}/tutData.json";
-    private string jsonString;
-    private Coroutine rechecking;
-
-    //[Header("Events")]
-    //[SerializeField] private GameEvent onTutorialLoaded;
+    private bool tutDoneCache;
 
     void Awake()
     {
         if (instance != null && instance != this)
         {
+            Debug.Log(instance);
             Destroy(this);
         }
         else
         {
             instance = this;
         }
+        filePath = $"{Application.streamingAssetsPath}/tutData.json";
         firstLaunch = true;
-        Debug.Log("Random Event Manager Awoken");
         DontDestroyOnLoad(this);
         SceneManager.sceneLoaded += ChangedActiveScene;
         tutorialText = tutorialCanvas.transform.GetChild(0).GetChild(0).gameObject;
         tutorialButton = tutorialCanvas.transform.GetChild(0).GetChild(1).gameObject;
     }
 
-    void Start()
+    protected override void Start()
     {
-        if (Application.platform == RuntimePlatform.Android)
-        {
-            Debug.Log("Starting Loading Coroutine");
-            StartCoroutine(GetTutData());
-        }
-        else
-        {
-            jsonString = File.ReadAllText(filePath);
-            TutorialDataArray tutDataArray = JsonUtility.FromJson<TutorialDataArray>(jsonString);
-            tutData = tutDataArray.tutData;
-            tutLoaded = true;
-            //onTutorialLoaded.Raise(this, true);
-        }
+        base.Start();
         StartCoroutine(SetTutDone(SaveData.tutDone));
     }
 
-    public IEnumerator SetTutDone(bool[] tutSave)
+    protected override IEnumerator SetTutDone(bool[] tutSave)
     {
-        while (!tutLoaded)
-        {
-            Debug.Log("Tutorial not loaded, retrying...");
-            yield return new WaitForSeconds(0.1f);
-        }
-
-        if (firstLaunch)
-        {
-            Debug.Log("Set Tut Done");
-            tutDone = new bool[triggerCount.Count];
-            if (tutSave.Length != 0)
-            {
-                Array.Copy(tutSave, tutDone, tutSave.Length);
-            }
-            firstLaunch = false;
-        }
+        yield return base.SetTutDone(tutSave);
         SaveData.SetTutDone(tutDone);
     }
 
-    public bool[] GetTutDone()
-    {
-        return tutDone;
-    }
-
-    public void CheckEvent(Component sender, object data)
+    public override void CheckEvent(Component sender, object data)
     {
         if (data is int)
         {
@@ -102,7 +57,6 @@ public class RandomEventManager : MonoBehaviour
                 default:
                     int minigameIndex = Check((int)data);
                     Debug.Log($"Trigger {minigameIndex} met");
-                    Debug.Log(tutorialTriggered);
                     if (tutDone == null || tutDone.Length == 0)
                     {
                         if (rechecking == null) rechecking = StartCoroutine(RecheckEvent((int) data));
@@ -224,40 +178,6 @@ public class RandomEventManager : MonoBehaviour
         tutorialCanvas.SetActive(false);
     }
 
-    private int Check(int A)
-    {
-        int index = triggerCount.BinarySearch(A);
-
-        if (index >= 0)
-        {
-            // A is found in the list, return its index
-            return index;
-        }
-        else
-        {
-            // A is not found, binarySearch returns the bitwise complement
-            // of the index of the next larger element, or the length of the list
-            index = ~index;
-
-            if (index == 0)
-            {
-                // A is smaller than all elements in the list
-                return -1; // or throw an exception, depending on your requirement
-            }
-            else if (index == triggerCount.Count)
-            {
-                // A is larger than all elements in the list
-                return index - 1;
-            }
-            else
-            {
-                // A falls between two elements in the list
-                // return the index of the largest smallest element to A
-                return index - 1;
-            }
-        }
-    }
-
     private void ChangedActiveScene(Scene scene, LoadSceneMode mode)
     {
         if (scene.name.Equals("SampleScene") && tutDoneCache)
@@ -266,44 +186,10 @@ public class RandomEventManager : MonoBehaviour
         }
     }
 
-    public void ResetTutProgress()
+    public override void ResetTutProgress()
     {
-        tutorialTriggered = false;
-        tutDone = new bool[triggerCount.Count];
         tutDoneCache = false;
-        Debug.Log("Tutorial Progress Reset!");
+        base.ResetTutProgress();
         SaveData.SetTutDone(tutDone);
-    }
-
-    private IEnumerator GetTutData()
-    {
-        using (UnityWebRequest webRequest = UnityWebRequest.Get(filePath))
-        {
-
-            yield return webRequest.SendWebRequest();
-
-            switch (webRequest.result)
-            {
-                case UnityWebRequest.Result.ConnectionError:
-                    Debug.LogError("Connection Error, can't find");
-                    break;
-                case UnityWebRequest.Result.Success:
-                    Debug.Log("Connection Established");
-                    jsonString = webRequest.downloadHandler.text;
-                    Debug.Log(jsonString);
-                    TutorialDataArray tutDataArray = JsonUtility.FromJson<TutorialDataArray>(jsonString);
-                    tutData = tutDataArray.tutData;
-                    tutLoaded = true;
-                    //onTutorialLoaded.Raise(this, true);
-                    break;
-            }
-        }
-    }
-
-    private IEnumerator RecheckEvent(int data)
-    {
-        yield return new WaitForSeconds(0.2f);
-        CheckEvent(this, data);
-        rechecking = null;
     }
 }

@@ -72,6 +72,7 @@ public class StageManagerBehaviour : MonoBehaviour
         currTree.GetComponent<Bonsai>().InitTree();
         updateCount = 0;
         RandomEventManager.instance.ResetTutProgress();
+        MechanicTutorialManager.instance.ResetTutProgress();
         RaiseUpdateChange();
         Debug.Log("Update Count = " + updateCount);
     }

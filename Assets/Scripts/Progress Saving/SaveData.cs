@@ -14,6 +14,7 @@ public static class SaveData
     public static float coinVal { get; private set; }
     public static int updateCount { get; private set; }
     public static bool[] tutDone { get; private set; }
+    public static bool[] mechanicTutDone { get; private set; }
     public static long loginEpochTime { get; private set; }
     public static void LoadDefaultValue()
     {
@@ -24,6 +25,7 @@ public static class SaveData
         coinVal = 5f;
         updateCount = 0;
         tutDone = new bool[0];
+        mechanicTutDone = new bool[0];
         loginEpochTime = DateTimeOffset.UtcNow.ToUnixTimeSeconds();
         currData = new DataProgress
         {
@@ -32,6 +34,7 @@ public static class SaveData
             coinVal = coinVal,
             updateCount = updateCount,
             tutDone = tutDone,
+            mechanicTutDone = mechanicTutDone,
             lastLoginEpoch = loginEpochTime,
         };
     }
@@ -44,6 +47,7 @@ public static class SaveData
         coinVal = currData.coinVal;
         updateCount = currData.updateCount;
         tutDone = currData.tutDone;
+        mechanicTutDone = currData.mechanicTutDone;
         loginEpochTime = currData.lastLoginEpoch;
     }
 
@@ -56,6 +60,7 @@ public static class SaveData
             coinVal = coinVal,
             updateCount = updateCount,
             tutDone = tutDone,
+            mechanicTutDone = mechanicTutDone,
             lastLoginEpoch = loginEpochTime,
         };
         return currData;
@@ -91,6 +96,11 @@ public static class SaveData
         loginEpochTime = lastLogin;
     }
 
+    public static void SetMechanicTutDone(bool[] tutSave)
+    {
+        mechanicTutDone = tutSave;
+    }
+
 }
 
 [Serializable]
@@ -101,9 +111,10 @@ public struct DataProgress
     public float coinVal;
     public int updateCount;
     public bool[] tutDone;
+    public bool[] mechanicTutDone;
     public long lastLoginEpoch;
     public override string ToString()
     {
-        return $"{currentString}, {waterVal.ToString()}, {coinVal.ToString()}, {updateCount.ToString()}, {tutDone.ToString()}, {lastLoginEpoch}";
+        return $"{currentString}, {waterVal.ToString()}, {coinVal.ToString()}, {updateCount.ToString()}, {tutDone.ToString()}, {mechanicTutDone.ToString()}, {lastLoginEpoch}";
     }
 }

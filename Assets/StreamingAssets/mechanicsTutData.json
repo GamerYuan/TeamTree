@@ -1,0 +1,12 @@
+{    
+    "tutData" : [
+        {
+            "tutorialText": "Welcome to Tiny Tree Tending! In Tiny Tree Tending, your only goal is to grow your ideal bonsai tree.\nYou can start your journey with watering your new bonsai bud, by pressing on the flower pot.",
+            "tutorialStageName": "Watering"
+        }, 
+        {
+            "tutorialText": "As your bonsai starts to grow larger, you can start to trim it. Trimming unwanted branches facilitates its growth. Access trimming with the \"Trim\" button, and press on unwanted branches to trim them.",
+            "tutorialStageName": "Trimming"
+        }
+    ]
+}
