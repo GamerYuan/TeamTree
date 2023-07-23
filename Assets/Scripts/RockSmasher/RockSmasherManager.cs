@@ -17,6 +17,15 @@ public class RockSmasherManager : GlobalMinigameManager
         int i = 0;
         wormCount = Mathf.CeilToInt((float)obstacleCount / 8);
         Debug.Log(wormCount);
+        int j = 0;
+        while (j < wormCount)
+        {
+            bool isOverlap = SpawnObstacle(3);
+            if (!isOverlap)
+            {
+                ++j;
+            }
+        }
         while (i < obstacleCount - wormCount)
         {
             int weightedRand = Mathf.FloorToInt(Mathf.Sqrt(Random.Range(0f, Mathf.Pow(obstacleList.Count - 1, 2) - 1)));
@@ -25,15 +34,6 @@ public class RockSmasherManager : GlobalMinigameManager
             if (!isOverlap)
             {
                 ++i;
-            }
-        }
-        int j = 0;
-        while (j < wormCount)
-        {
-            bool isOverlap = SpawnObstacle(3);
-            if (!isOverlap)
-            {
-                ++j;
             }
         }
     }
