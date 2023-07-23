@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Threading.Tasks;
 using UnityEngine;
 public class StageManagerBehaviour : MonoBehaviour
 {
@@ -95,6 +96,7 @@ public class StageManagerBehaviour : MonoBehaviour
         double timeDiff = currTime.Subtract(DateTimeOffset.FromUnixTimeSeconds(lastLoginEpoch).UtcDateTime).TotalMinutes;
         int updateIteration = (int)Math.Floor(timeDiff / updatePeriod);
         Debug.Log($"Time diff from last login: {timeDiff}, update {updateIteration} times");
+        Task.Delay(200);
         for (int i = 0; i < updateIteration; i++)
         {
             UpdateTree();

@@ -36,11 +36,11 @@ public class Bonsai : MonoBehaviour
         meshFilter = GetComponent<MeshFilter>();
         meshCollider = GetComponent<MeshCollider>();
         treeGeometry.SetConstants(constants);
+        lsystem.InitSystem();
     }
 
     private void Start()
     {
-        lsystem.InitSystem();
         LoadString(SaveData.currString);
         //lsystem.InitSystem();
     }
