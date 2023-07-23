@@ -8574,7 +8574,7 @@ MonoBehaviour:
   maxZoom: -35
   minZoom: -2
   baseZoom: -10
-  zoomAmp: 0.01
+  zoomAmp: 0.1
   moveBox: 10
 --- !u!4 &1862842564
 Transform:
