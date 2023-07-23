@@ -180,7 +180,7 @@ public class RandomEventManager : TutorialManager
 
     private void ChangedActiveScene(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name.Equals("SampleScene") && tutDoneCache)
+        if ((scene.name.Equals("SampleScene")||scene.name.Equals("PlayerScene")) && tutDoneCache)
         {
             CompleteTutorial();
         }

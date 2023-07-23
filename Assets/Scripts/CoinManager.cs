@@ -74,7 +74,7 @@ public class CoinManager : MonoBehaviour
 
     private void ChangedActiveScene(Scene scene, LoadSceneMode mode)
     {
-        if (scene.name.Equals("SampleScene"))
+        if (scene.name.Equals("SampleScene") || scene.name.Equals("PlayerScene"))
         {
             onCoinChanged.Raise(this, currentCoins);
             onCoinCanUse.Raise(this, currentCoins > 0);

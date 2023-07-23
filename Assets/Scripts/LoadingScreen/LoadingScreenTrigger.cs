@@ -8,4 +8,10 @@ public class LoadingScreenTrigger : MonoBehaviour
         SceneToLoad.sceneToLoad = sceneToLoad;
         SceneManager.LoadScene("LoadingScreen");
     }
+
+    public void LoadLoadingScreen(int sceneToLoad)
+    {
+        SceneToLoad.sceneToLoad = SceneManager.GetSceneByBuildIndex(sceneToLoad).name;
+        SceneManager.LoadScene("LoadingScreen");
+    }
 }

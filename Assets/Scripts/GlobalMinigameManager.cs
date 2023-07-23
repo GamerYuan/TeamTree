@@ -82,7 +82,7 @@ public class GlobalMinigameManager : MonoBehaviour
             yield return new WaitForSeconds(1f);
             --i;
         }
-        loadingScreenTrigger.LoadLoadingScreen("SampleScene");
+        loadingScreenTrigger.LoadLoadingScreen(1);
     }
 
     private IEnumerator Timer()

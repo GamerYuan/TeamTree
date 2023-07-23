@@ -26,7 +26,7 @@ public class SceneBehaviour : MonoBehaviour
         else
         {
             Debug.LogError($"No valid scene by name: {SceneToLoad.sceneToLoad} found!");
-            operation = SceneManager.LoadSceneAsync("SampleScene");
+            operation = SceneManager.LoadSceneAsync(1);
         }
         Debug.Log("I'm outside!");
         operation.allowSceneActivation = false;
