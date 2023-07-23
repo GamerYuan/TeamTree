@@ -4,7 +4,7 @@ public class Bug1 : BugBehaviour
 {
     // Start is called before the first frame update
     private GameObject body, head;
-    protected override void Death()
+    protected override void Kill()
     {
         body = gameObject.transform.GetChild(0).gameObject;
         head = gameObject.transform.GetChild(1).gameObject;
@@ -19,7 +19,7 @@ public class Bug1 : BugBehaviour
         Rigidbody rb = GetComponent<Rigidbody>();
         Vector3 velocity = rb.velocity;
         rb.velocity = Vector3.zero;
-        base.Death();
+        base.Kill();
         head.AddComponent<Rigidbody>();
         head.AddComponent<BoxCollider>();
         body.AddComponent<Rigidbody>();

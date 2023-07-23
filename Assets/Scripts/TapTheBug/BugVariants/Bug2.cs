@@ -4,7 +4,7 @@ public class Bug2 : BugBehaviour
 {
     // Update is called once per frame
 
-    protected override void Death()
+    protected override void Kill()
     {
         GameObject body = gameObject.transform.GetChild(0).gameObject;
         GameObject head = gameObject.transform.GetChild(1).gameObject;
@@ -19,7 +19,7 @@ public class Bug2 : BugBehaviour
         Rigidbody rb = GetComponent<Rigidbody>();
         Vector3 velocity = rb.velocity;
         rb.velocity = Vector3.zero;
-        base.Death();
+        base.Kill();
         head.AddComponent<Rigidbody>();
         head.AddComponent<BoxCollider>();
         body.AddComponent<Rigidbody>();

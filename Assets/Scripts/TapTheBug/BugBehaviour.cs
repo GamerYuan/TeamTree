@@ -31,8 +31,7 @@ public class BugBehaviour : MonoBehaviour
     {
         if (!isMoving)
         {
-            onBugKill.Raise(this, score);
-            Death();
+            Kill();
         }
     }
 
@@ -48,6 +47,12 @@ public class BugBehaviour : MonoBehaviour
             isHitWall = false;
             hitWalliFrame = 0.5f;
         }
+    }
+
+    protected virtual void Kill()
+    {
+        onBugKill.Raise(this, score);
+        Death();
     }
 
     protected virtual void Death()
