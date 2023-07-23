@@ -1,9 +1,18 @@
+using System;
 using UnityEngine;
 
-public class TimeChange : MonoBehaviour
+public class TimeChange : MonoBehaviour, ITimeChanger
 {
-    void Update()
+    void Awake()
     {
-        GetComponent<Light>().transform.Rotate(Time.deltaTime * 20f * ((transform.eulerAngles.x / 180) + 3) / 3, 0, 0);
+        ChangeTime(DateTime.Now);
+    }
+
+    public void ChangeTime(DateTime currTime)
+    {
+        int currHour = currTime.Hour;
+        int currMinute = currTime.Minute;
+        int currTimeOffset = currHour * 60 + currMinute;
+        GetComponent<Light>().transform.rotation = Quaternion.Euler((currTimeOffset - 360) * 360f / 1440f, 50, 0);
     }
 }

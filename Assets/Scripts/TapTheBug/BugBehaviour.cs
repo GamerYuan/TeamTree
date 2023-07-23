@@ -52,6 +52,7 @@ public class BugBehaviour : MonoBehaviour
 
     protected virtual void Death()
     {
+        Destroy(gameObject);
         onBugDeath.Raise(this, score);
     }
 
@@ -108,5 +109,31 @@ public class BugBehaviour : MonoBehaviour
         velZ = Mathf.Clamp(rb.velocity.z * -1.2f, -1.5f, 1.5f);
         rb.velocity = new Vector3(velX, 0, velZ);
         Rotate();
+    }
+
+    protected void GenerateSplatter(Color splatterColor)
+    {
+        GameObject splatterPlane = GameObject.CreatePrimitive(PrimitiveType.Plane);
+        splatterPlane.GetComponent<MeshCollider>().enabled = false;
+        MeshRenderer meshRenderer = splatterPlane.GetComponent<MeshRenderer>();
+        MeshFilter meshFilter = splatterPlane.GetComponent<MeshFilter>();
+        meshRenderer.material = Resources.Load<Material>("Sprites/Materials/splat");
+        meshRenderer.material.SetFloat("_Mode", 2);
+        meshRenderer.material.SetColor("_Color", splatterColor);
+        float randScale = Random.Range(0.09f, 0.12f);
+        splatterPlane.transform.localScale = Vector3.one * randScale;
+        splatterPlane.transform.eulerAngles = new Vector3(0, Random.Range(-180f, 180f), 0);
+        splatterPlane.transform.position = new Vector3(transform.position.x, 0.005f, transform.position.z);
+        Destroy(splatterPlane, Random.Range(5f, 20f));
+    }
+
+    protected Color RandomBlue()
+    {
+        return new Color(Random.Range(0f, 0.4f), Random.Range(0.8f, 1f), Random.Range(0.3f, 0.75f));
+    }
+
+    protected Color RandomRed()
+    {
+        return new Color(Random.Range(0.8f, 1f), Random.Range(0.3f, 0.75f), Random.Range(0f, 0.4f));
     }
 }
