@@ -119,8 +119,8 @@ public class Bonsai : MonoBehaviour
 
     public void LoadString(string str)
     {
-        Awake();
         lsystem.LoadString(str);
+        Debug.Log("String Loaded");
         GenerateSkeleton();
         GenerateMesh();
     }
