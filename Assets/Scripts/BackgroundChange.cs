@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class BackgroundChange : MonoBehaviour, ITimeChanger
 {
-    private Color baseColor = new(230f/255f, 130f/255f, 1f);
+    private float baseColorVal = 200f/255;
     private Camera cam;
     void Awake()
     {
@@ -19,7 +19,7 @@ public class BackgroundChange : MonoBehaviour, ITimeChanger
         int currMinute = currTime.Minute;
         int currTimeOffset = currHour * 60 + currMinute;
         int currTimeVal = Mathf.Abs(currTimeOffset - 720);
-        cam.backgroundColor = new Color(baseColor.r - (170f/720) * currTimeVal/255f, baseColor.g - (130f / 720) * currTimeVal / 255f, baseColor.b - (185f / 720) * currTimeVal / 255f);
+        float newColorVal = baseColorVal - 150f / 720 * currTimeVal / 255f;
+        cam.backgroundColor = new Color(newColorVal, newColorVal, newColorVal);
     }
-
 }
