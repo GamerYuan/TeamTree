@@ -14,7 +14,7 @@ public class StageManagerBehaviour : MonoBehaviour
     private GameObject currTree;
     [Header("Events")]
     [SerializeField] private GameEvent onUpdateChanged;
-    [SerializeField] private GameEvent onTrimStart;
+    [SerializeField] private GameEvent onTrimStart, onUpdateTimeChanged;
     void Awake()
     {
         if (instance != null && instance != this)
@@ -86,6 +86,7 @@ public class StageManagerBehaviour : MonoBehaviour
         currTree.GetComponent<Bonsai>().TreeUpdate();
         updateCount += 1;
         RaiseUpdateChange();
+        onUpdateTimeChanged.Raise(this, updateCount);
         Debug.Log("Update Count = " + updateCount);
     }
     public void SetUpdateIteration(long lastLoginEpoch)

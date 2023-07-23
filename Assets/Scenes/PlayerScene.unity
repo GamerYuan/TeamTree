@@ -139,6 +139,7 @@ GameObject:
   - component: {fileID: 12440915}
   - component: {fileID: 12440919}
   - component: {fileID: 12440921}
+  - component: {fileID: 12440922}
   m_Layer: 0
   m_Name: GlobalGameManager
   m_TagString: Untagged
@@ -242,18 +243,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 12440916}
-        m_TargetAssemblyTypeName: TimeManager, Assembly-CSharp
-        m_MethodName: ChangeUpdateTime
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &12440921
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -269,6 +258,34 @@ MonoBehaviour:
   triggerCount: 0000000008000000
   minigamePanel: {fileID: 358890590}
   tutorialCanvas: {fileID: 981774887}
+--- !u!114 &12440922
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 12440914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 26b6e244e4e6e134f92b142c3b091dd5, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameEvent: {fileID: 11400000, guid: 72927a896e5972340bb205d16bcf1416, type: 2}
+  response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 12440916}
+        m_TargetAssemblyTypeName: TimeManager, Assembly-CSharp
+        m_MethodName: ChangeUpdateTime
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &40881776
 GameObject:
   m_ObjectHideFlags: 0
@@ -4655,9 +4672,11 @@ MonoBehaviour:
   flowerPot: {fileID: 776637382}
   treePrefab: {fileID: 4792331704641498906, guid: 88fed723c2e32cc48a338a903601de5a,
     type: 3}
-  updatePeriod: 50000000
+  updatePeriod: 10
   onUpdateChanged: {fileID: 11400000, guid: 8c2fc548eccca8842be742f969584789, type: 2}
   onTrimStart: {fileID: 11400000, guid: 71f6e47962bd53343be328f32f673f85, type: 2}
+  onUpdateTimeChanged: {fileID: 11400000, guid: 72927a896e5972340bb205d16bcf1416,
+    type: 2}
 --- !u!4 &999606545
 Transform:
   m_ObjectHideFlags: 0
@@ -7028,7 +7047,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1427172198
 RectTransform:
   m_ObjectHideFlags: 0
